@@ -1,0 +1,15 @@
+plugins {
+    id 'application'
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    testImplementation 'junit:junit:4.12'
+}
+
+application {
+    mainClassName = 'ricochet_robots.Main'
+}
