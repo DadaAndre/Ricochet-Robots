@@ -1,15 +1,23 @@
 plugins {
-    id 'application'
+	id 'application'
 }
 
 repositories {
-    jcenter()
+	jcenter()
 }
 
-dependencies {
-    testImplementation 'junit:junit:4.12'
+dependencies {    
+	testImplementation('junit:junit:4.13')
 }
 
 application {
-    mainClassName = 'ricochet_robots.Main'
+	mainClassName = 'ricochet_robots.Main'
+}
+
+jar {
+	manifest {
+		attributes(
+			'Main-Class': mainClassName
+		)
+	}
 }
