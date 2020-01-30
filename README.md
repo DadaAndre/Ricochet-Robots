@@ -15,10 +15,11 @@ Le but de ce projet est de développer un programme permettant de trouver une so
 # Structuration du projet
 
 Le projet comporte 2 dossiers :
-- app → Contient le code source de l'application
+- src → Contient le code source de l'application
 - doc → Regroupe les différents documents importants du projet
 
 # Bibliothèques / Framework utilisées
+
 - JavaFX
 
 # Mode d'emploi
@@ -26,8 +27,8 @@ Le projet comporte 2 dossiers :
 ## Compilation 
 Pour compiler le projet, les actions suivantes sont requises:
 
-1. Ouvrir un terminal dans le dossier app
-2. Compiler avec la commande "gradle run" 
+1. Ouvrir un terminal à la racine du projet
+2. Compiler avec la commande "./build.sh"
 
 # Collaborateurs
 
@@ -35,5 +36,5 @@ Le projet étant réalisé en groupe, voici la liste des personnes affectées su
 
 - 21809742 Lorada Andre [@LoradaAndre](https://github.com/LoradaAndre)
 - 21707781 Théo Auvray [@Tehe11](https://github.com/Tehe11)
-- 21704698 Valentin Auvray ValentinAuvray [@ValentinAuvray](https://github.com/ValentinAuvray)
+- 21704698 Valentin Auvray [@ValentinAuvray](https://github.com/ValentinAuvray)
 - 21810777 Oussama Kachri [@OussamaKachri](https://github.com/OussamaKachri)
