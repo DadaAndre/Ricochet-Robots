@@ -7,21 +7,25 @@ public class Plateau{
 
     public Plateau(){}
 
-        //Methode qui convertit un entier a un nombre binaire 
+		//Methode qui convertit un nombre entier en un tableau binaire
+		public int[] intToBinary(int number) {
+		   int divNumber = number;
+		   int div = 8;
+		   int[] tabBinary = new int[4];
+		   for(int i = 0; i<4; i++){
+			   tabBinary[i] = divNumber/div;
+			   divNumber = divNumber%div;
+			   div = div/2;
+		   }
+		   return tabBinary;
+	   	}
 
-        public String intTobinary(int number) {
-            String str = toBinaryString(number);
-            while(str.length()<4){
-                str="0"+str;
-            }
-            return "["+str.charAt(0)+","+str.charAt(1)+","+str.charAt(2)+","+str.charAt(3)+"]";
-        }
 
         //Methode qui transforme une chaine de caractere en une mini-grille
 
         public String[]  stringToMiniGrille(String chaine){
             String [] tab1D = chaine.split(",");
-            
+
             for (int i=0 ; i<tab1D.length;i++) {
                 int num = Integer.parseInt(tab1D[i]);
                 tab1D[i] = intTobinary(num);
@@ -39,4 +43,3 @@ public class Plateau{
 
 
 }
-  
