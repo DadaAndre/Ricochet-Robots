@@ -1,7 +1,6 @@
 package ricochet_robots;
 
-import static java.lang.Integer.toBinaryString;
-import java.util.Arrays;
+import java.util.ArrayList;
 
 public class Plateau{
 
@@ -9,8 +8,7 @@ public class Plateau{
 	private Case[][] miniGrille2;
 	private Case[][] miniGrille3;
 	private Case[][] miniGrille4;
-
-	private Case[][] plateau;
+	private ArrayList<Case[][]> tableauMiniGrille = new ArrayList<>();
 
 	public final String chaine1 = "1,2,4,5,6,7,5,14,15";
 	public final String chaine2 = "6,2,4,5,6,7,5,12,15";
@@ -18,7 +16,11 @@ public class Plateau{
 	public final String chaine4 = "9,8,1,5,6,7,5,12,13";
 	public final String[] chaines = {chaine1, chaine2, chaine3, chaine4};
 
-    public Plateau(){}
+	private Case[][] plateau;
+
+	public Plateau(){
+		creerMiniGrille(4); //on crée 4 mini-grilles
+	}
 
 		//Méthode qui convertit un nombre entier en un tableau binaire
 		public int[] intToBinary(int number) {
@@ -36,7 +38,7 @@ public class Plateau{
 
 		//Méthode qui transforme une chaine de caractère en une mini-grille
         public Case[][]  stringToMiniGrille(String chaine){
-            String [] tab1D = chaine.split(",");
+            String[] tab1D = chaine.split(",");
             int tailleTab = (int) Math.sqrt(tab1D.length);
 			int index = 0;
 
@@ -44,19 +46,28 @@ public class Plateau{
 
 			for(int i = 0; i<tailleTab; i++){
                 for(int j = 0; j < tailleTab; j++){
-					miniGrille[i][j] = new Case();
+					miniGrille[i][j] = new Case(intToBinary(Integer.parseInt(tab1D[index])));
+					index++;
+
                 }
             }
 			return miniGrille;
         }
 
-		//Méthode pour créer une mini-grille
-		public ArrayList<Case[][]> creerMiniGrille(){
-		   ArrayList<Case[][]> tableauMiniGrille = new ArrayList<>();
-		   for(int i = 0 ; i < tableauMiniGrille.size(); i++){
-			   tableauMiniGrille.add(stringToMiniGrille(this.chaines[i]));
-		   }
-		   return tableauMiniGrille;
-	   }
+		//Méthode pour créer les mini-grilles
+		public void creerMiniGrille(int nombreOccurence){
+			if(nombreOccurence <= this.chaines.length){
+				for(int i = 0 ; i < nombreOccurence; i++){
+				   this.tableauMiniGrille.add(stringToMiniGrille(this.chaines[i]));
+				}
+			}
+		}
 
+		public void afficheMiniGrille(Case[][] miniGrille){
+			for(int i = 0; i< miniGrille.length; i++){
+				for(int j = 0; j<miniGrille[i].length; j++){
+					System.out.print(miniGrille[i][j]);
+				}System.out.println();
+			}
+		}
 }

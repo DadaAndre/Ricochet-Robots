@@ -2,36 +2,44 @@ package ricochet_robots;
 
 public class Case{
 
-	private boolean valHaut;
-	private boolean valDroit;
-	private boolean valBas;
-	private boolean valGauche;
+	private int valHaut;
+	private int valDroit;
+	private int valBas;
+	private int valGauche;
 
-	public Case() {
-
+	public Case(int[] tableau) {
+		this.valHaut = tableau[0];
+		this.valDroit = tableau[1];
+		this.valBas = tableau[2];
+		this.valGauche = tableau[3];
 	}
 
-	public Case(boolean valHaut, boolean valDroit, boolean valBas, boolean valGauche) {
+	public Case(int valHaut, int valDroit, int valBas, int valGauche) {
 		this.valHaut = valHaut;
 		this.valDroit = valDroit;
 		this.valBas = valBas;
 		this.valGauche = valGauche;
 	}
 
-	public boolean getValHaut() {
+	public int getValHaut() {
 	   return this.valHaut;
 	}
 
-	public boolean getValDroit() {
+	public int getValDroit() {
 	   return this.valDroit;
 	}
 
-	public boolean getValBas() {
+	public int getValBas() {
 	   return this.valHaut;
 	}
 
-	public boolean getValGauche() {
+	public int getValGauche() {
 	   return this.valBas;
+	}
+
+	@Override
+	public String toString(){
+		return "[" + valHaut + "," + valDroit + "," + valBas + "," + valGauche + "]";
 	}
 
 }
