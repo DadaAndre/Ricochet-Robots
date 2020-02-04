@@ -50,13 +50,13 @@ public class Plateau{
 			return miniGrille;
         }
 
-        //Methode pour creer une mini-grille
-
-        public String  creerMiniGrille(String chaine){
-            String[] str =stringToMiniGrille(chaine);
-            String str2 = Arrays.toString(str);
-            return str2;
-        }
-
+		//Méthode pour créer une mini-grille
+		public ArrayList<Case[][]> creerMiniGrille(){
+		   ArrayList<Case[][]> tableauMiniGrille = new ArrayList<>();
+		   for(int i = 0 ; i < tableauMiniGrille.size(); i++){
+			   tableauMiniGrille.add(stringToMiniGrille(this.chaines[i]));
+		   }
+		   return tableauMiniGrille;
+	   }
 
 }
