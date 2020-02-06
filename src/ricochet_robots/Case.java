@@ -8,6 +8,7 @@ public class Case{
 	private int valGauche;
 
 	public Case(int[] tableau) {
+	//	this.tableau = tableau;
 		this.valHaut = tableau[0];
 		this.valDroit = tableau[1];
 		this.valBas = tableau[2];
@@ -30,12 +31,16 @@ public class Case{
 	}
 
 	public int getValBas() {
-	   return this.valHaut;
+	   return this.valBas;
 	}
 
 	public int getValGauche() {
-	   return this.valBas;
-	}
+	   return this.valGauche;
+   }
+
+   public boolean isValueEquals(Case caseSelect){
+	   return caseSelect.valHaut == valHaut && caseSelect.valBas == valBas && caseSelect.valGauche == valGauche && caseSelect.valDroit == valDroit;
+   }
 
 	@Override
 	public String toString(){
