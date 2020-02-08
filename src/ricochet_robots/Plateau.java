@@ -21,12 +21,19 @@ public class Plateau{
 	public Plateau(){
 		creerMiniGrille(4); //on crée 4 mini-grilles
 		// for(int i = 0; i< chaines.length; i++){
-		// 	System.out.println("chaine" + (i+1) + " est a sa bonne position? : " + positionEstVraie(tableauMiniGrille.get(i),  i+1));
 		// 	System.out.println("........");
 		// }
-		afficheMiniGrille(tableauMiniGrille.get(0));
-		System.out.println("........");
-		afficheMiniGrille(rotationMiniGrille(tableauMiniGrille.get(0), 2));
+		// afficheMiniGrille(tableauMiniGrille.get(0));
+		// System.out.println("........");
+		// afficheMiniGrille(rotationMiniGrille(tableauMiniGrille.get(0), 2));
+
+		System.out.println("chaine 1 est a sa bonne position? : " + positionEstVraie(tableauMiniGrille.get(1),  1));
+
+		System.out.println("Après rotation........");
+		Case[][] a = rotation(tableauMiniGrille.get(1), 1);
+
+		System.out.println("chaine 1 est a sa bonne position? : " + positionEstVraie(a,  1));
+
 	}
 
 		//Méthode qui convertit un nombre entier en un tableau binaire
@@ -78,17 +85,34 @@ public class Plateau{
 			}
 		}
 
-		public Case[][] rotationMiniGrille(Case[][] miniGrille, int position){
+		public Case[][] rotation(Case[][] miniGrille, int position){
 			Case[][] miniGrilleRota = new Case[miniGrille.length][miniGrille.length];
-			//while(positionEstVraie(miniGrilleRota, position) != true){
-				//remplissage copie liste
-				for(int y = 0; y < miniGrille[0].length; y++){
-					for(int x = 0; x < miniGrille.length; x++){
-						//System.out.println("iciiii" + miniGrille[miniGrille.length-y-1][x]);
-						miniGrilleRota[x][y] = miniGrille[y][miniGrille.length-x-1];
-					}
+			//remplissage de la copie de la liste
+			for(int y = 0; y < miniGrille[0].length; y++){
+				for(int x = 0; x < miniGrille.length; x++){
+					//System.out.println("iciiii" + miniGrille[miniGrille.length-y-1][x]);
+					miniGrilleRota[x][y] = miniGrille[x][y];
 				}
-				return miniGrilleRota;
+			}
+
+			while(positionEstVraie(miniGrilleRota, position) != true){
+				miniGrilleRota = rotationMiniGrille(miniGrilleRota);
+			}
+
+			return miniGrilleRota;
+		}
+
+		public Case[][] rotationMiniGrille(Case[][] miniGrille) {
+			Case[][] miniGrilleRota = new Case[miniGrille.length][miniGrille.length];
+			for(int y = 0; y < miniGrille[0].length; y++){
+				for(int x = 0; x < miniGrille.length; x++){
+					//System.out.println("iciiii" + miniGrille[miniGrille.length-y-1][x]);
+					miniGrilleRota[x][y] = miniGrille[y][miniGrille.length-x-1];
+					miniGrilleRota[x][y].rotationCase();
+				}
+			}
+
+			return miniGrilleRota;
 		}
 
 		public boolean positionEstVraie(Case[][] miniGrille, int position){
