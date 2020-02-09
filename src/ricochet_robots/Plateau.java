@@ -1,15 +1,14 @@
 package ricochet_robots;
 
+import java.util.Random;
 import java.util.ArrayList;
 
 public class Plateau{
 
-	private Case[][] miniGrille1;
-	private Case[][] miniGrille2;
-	private Case[][] miniGrille3;
-	private Case[][] miniGrille4;
+	//Un tableau de miniGrille
 	private ArrayList<Case[][]> tableauMiniGrille = new ArrayList<>();
 
+	//les différentes miniGrilles
 	public final String chaine1 = "9,8,8,1,0,0,1,0,0";
 	public final String chaine2 = "8,8,12,0,0,4,0,0,4";
 	public final String chaine3 = "0,0,4,0,0,4,2,2,6";
@@ -19,13 +18,11 @@ public class Plateau{
 	private Case[][] plateau;
 
 	public Plateau(){
-		creerMiniGrille(4); //on crée 4 mini-grilles
-		// for(int i = 0; i< chaines.length; i++){
-		// 	System.out.println("........");
-		// }
-		// afficheMiniGrille(tableauMiniGrille.get(0));
-		// System.out.println("........");
-		// afficheMiniGrille(rotationMiniGrille(tableauMiniGrille.get(0), 2));
+		creerMiniGrille(4);
+
+		//creerPlateau();
+
+
 
 		System.out.println("chaine 1 est a sa bonne position? : " + positionEstVraie(tableauMiniGrille.get(1),  1));
 
@@ -131,6 +128,23 @@ public class Plateau{
 			return false;
 		}
 
+		public int getPositionMiniGrille(Case[][] miniGrille){
+			if(verifGauche(miniGrille) && verifHaut(miniGrille)){
+				return 1;
+
+			}else if(verifHaut(miniGrille) && verifDroite(miniGrille)){
+				return 2;
+
+			}else if(verifDroite(miniGrille) && verifBas(miniGrille)){
+				return 3;
+
+			}else if(verifBas(miniGrille) && verifGauche(miniGrille)){
+				return 4;
+			}
+
+			return 0;
+		}
+
 	public boolean verifHaut(Case[][] miniGrille){
 		boolean ok = false;
 		int y = 0;
@@ -186,4 +200,9 @@ public class Plateau{
 		}
 		return ok;
 	}
+
+
+//------------------------------------------------------------------------
+
+
 }
