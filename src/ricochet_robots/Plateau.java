@@ -273,7 +273,8 @@ public class Plateau{
 			}
 
 		//si la position de la mini-grille est la deuxième, elle va dans la partie en haut, à droite du plateau
-		}else if(getPositionMiniGrille(miniGrille) == 2){
+		}
+		else if(getPositionMiniGrille(miniGrille) == 2){
 			for(int y = 0; y < demiTabY; y++){
 				for(int x = demiTabX; x < this.plateau[0].length ; x++){
 					this.plateau[x][y] = miniGrille[x-demiTabX][y];
@@ -281,20 +282,23 @@ public class Plateau{
 			}
 
 		//si la position de la mini-grille est la troisième, elle va dans la partie en bas, à droite du plateau
-		}else if(getPositionMiniGrille(miniGrille) == 3){
+		}
+		else if(getPositionMiniGrille(miniGrille) == 3){
+				for(int y = demiTabY; y < this.plateau.length ; y++){
+					for(int x = demiTabX ; x < this.plateau[0].length -1; x++){
+						this.plateau[x][y] = miniGrille[x-demiTabX][y-demiTabY];
+					}
+				}
+
+		//si la position de la mini-grille est la quatrième, elle va dans la partie en bas, à gauche du plateau
+		}
+		else if(getPositionMiniGrille(miniGrille) == 4){
 			for(int y = demiTabY; y < this.plateau.length ; y++){
 				for(int x = 0; x < demiTabX; x++){
 					this.plateau[x][y] = miniGrille[x][y-demiTabX];
 				}
 			}
 
-		//si la position de la mini-grille est la quatrième, elle va dans la partie en bas, à gauche du plateau
-		}else if(getPositionMiniGrille(miniGrille) == 4){
-			for(int y = demiTabY; y < this.plateau.length ; y++){
-				for(int x = demiTabX ; x < this.plateau[0].length -1; x++){
-					this.plateau[x][y] = miniGrille[x-demiTabX][y-demiTabY];
-				}
-			}
 		}
 	}
 
