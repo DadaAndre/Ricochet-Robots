@@ -15,15 +15,21 @@ public class Plateau{
 	public final String chaine4 = "1,0,0,1,0,0,3,2,2";
 	public final String[] chaines = {chaine1, chaine2, chaine3, chaine4};
 
-	private Case[][] plateau;
+	private Case[][] plateau  = new Case[6][6];
 
 	public Plateau(){
 
 		//On créer les miniGrille
 		for(int i = 0 ; i < chaines.length; i++){
 			creerMiniGrille(chaines[i]);
+			System.out.println("miniGrille: " + (i+1) + "...............................");
+			afficheMiniGrille(tableauMiniGrille.get(i));
+
 		}
-		//creerPlateau();
+
+		System.out.println("...............................");
+		//Création du plateau
+		creerPlateau();
 
 	}
 
@@ -208,7 +214,6 @@ public class Plateau{
 		//on parcours à x = 0, tout les valeurs de y de la mini-grille
 		for(int y = 0; y <miniGrille.length; y++){
 			//Avoir un mur à gauche, signifie que la valeur valGauche de Case est bien à 1
-			System.out.println(miniGrille[x][y] + "Gauche");
 			if(miniGrille[x][y].getValGauche() == 1){
 				ok = true;
 			}else{
@@ -220,23 +225,35 @@ public class Plateau{
 
 	//Méthode pour créer le plateau
 	public void creerPlateau(){
+		//Création d'une ArrayList conteannt la liste des position tirées de manière aléatoire
 		ArrayList<Integer> position = new ArrayList<>();
 		int alea = 0;
-		//boolean reroll = true;
 		Random r = new Random();
 
+		//On tire un nombre àléatoire tant qu'on a pas 4 valeurs
 		while(position.size() != 4){
-
+			//On tire un nombre entre 1 et 4 (compris)
 			alea = r.nextInt(4) + 1;
 
+			//Si notre ArrayList n'a pas cette valeur, on l'ajoute
 			if(!position.contains(alea)){
 				position.add(alea);
+				System.out.print("." + alea);
 			}
+			//..... si non on la perd et on retire
+
 		}
 
 		for(int i = 0; i< tableauMiniGrille.size(); i++){
-			System.out.println("coucou" + position.get(i));
+			/*On modifie la miniGrille correspondante pour qu'elle puisse
+			aller dans sa position, choisie de manière aléatoire
+			*/
 			tableauMiniGrille.set(i, rotation(tableauMiniGrille.get(i), position.get(i)));
+			//On ajoute la mini-grille correspondante au plateau
+			System.out.println("affiche minigrille ");
+			afficheMiniGrille(tableauMiniGrille.get(i));
+			System.out.println(".....................");
+			ajouterMiniGrille(tableauMiniGrille.get(i));
 		}
 	}
 
@@ -246,8 +263,8 @@ public class Plateau{
 
 		int demiTabX = this.plateau[0].length/2;
 		int demiTabY = this.plateau.length/2;
-		//this.plateau = new Case[16][16];
 
+		//si la position de la mini-grille est la première, elle va dans la partie en haut, à gauche du plateau
 		if(getPositionMiniGrille(miniGrille) == 1){
 			for(int y = 0; y < demiTabY; y++){
 				for(int x = 0; x < demiTabX; x++){
@@ -255,24 +272,27 @@ public class Plateau{
 				}
 			}
 
+		//si la position de la mini-grille est la deuxième, elle va dans la partie en haut, à droite du plateau
 		}else if(getPositionMiniGrille(miniGrille) == 2){
 			for(int y = 0; y < demiTabY; y++){
-				for(int x = demiTabX; x < this.plateau[0].length; x++){
-					this.plateau[x][y] = miniGrille[x-demiTabX][y]; 			// nom de miniGrille2 à modifier
+				for(int x = demiTabX; x < this.plateau[0].length ; x++){
+					this.plateau[x][y] = miniGrille[x-demiTabX][y];
 				}
 			}
 
+		//si la position de la mini-grille est la troisième, elle va dans la partie en bas, à droite du plateau
 		}else if(getPositionMiniGrille(miniGrille) == 3){
-			for(int y = demiTabY; y < this.plateau.length; y++){
+			for(int y = demiTabY; y < this.plateau.length ; y++){
 				for(int x = 0; x < demiTabX; x++){
-					this.plateau[x][y] = miniGrille3[x][y-demiTabX]; 			// nom de miniGrille3 à modifier
+					this.plateau[x][y] = miniGrille[x][y-demiTabX];
 				}
 			}
 
+		//si la position de la mini-grille est la quatrième, elle va dans la partie en bas, à gauche du plateau
 		}else if(getPositionMiniGrille(miniGrille) == 4){
-			for(int y = demiTabY; y < this.plateau.length; y++){
-				for(int x = demiTabX; x < this.plateau[0].length; x++){
-					this.plateau[x][y] = miniGrille4[x-demiTabX][y-demiTabY]; 		// nom de miniGrille4 à modifier
+			for(int y = demiTabY; y < this.plateau.length ; y++){
+				for(int x = demiTabX ; x < this.plateau[0].length -1; x++){
+					this.plateau[x][y] = miniGrille[x-demiTabX][y-demiTabY];
 				}
 			}
 		}
