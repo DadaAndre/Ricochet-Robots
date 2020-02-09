@@ -218,4 +218,64 @@ public class Plateau{
 		return ok;
 	}
 
+	//Méthode pour créer le plateau
+	public void creerPlateau(){
+		ArrayList<Integer> position = new ArrayList<>();
+		int alea = 0;
+		//boolean reroll = true;
+		Random r = new Random();
+
+		while(position.size() != 4){
+
+			alea = r.nextInt(4) + 1;
+
+			if(!position.contains(alea)){
+				position.add(alea);
+			}
+		}
+
+		for(int i = 0; i< tableauMiniGrille.size(); i++){
+			System.out.println("coucou" + position.get(i));
+			tableauMiniGrille.set(i, rotation(tableauMiniGrille.get(i), position.get(i)));
+		}
+	}
+
+
+	//Méthode pour ajouter les mini-grilles au plateau
+	public void ajouterMiniGrille(Case[][] miniGrille){
+
+		int demiTabX = this.plateau[0].length/2;
+		int demiTabY = this.plateau.length/2;
+		//this.plateau = new Case[16][16];
+
+		if(getPositionMiniGrille(miniGrille) == 1){
+			for(int y = 0; y < demiTabY; y++){
+				for(int x = 0; x < demiTabX; x++){
+					this.plateau[x][y] = miniGrille[x][y];
+				}
+			}
+
+		}else if(getPositionMiniGrille(miniGrille) == 2){
+			for(int y = 0; y < demiTabY; y++){
+				for(int x = demiTabX; x < this.plateau[0].length; x++){
+					this.plateau[x][y] = miniGrille[x-demiTabX][y]; 			// nom de miniGrille2 à modifier
+				}
+			}
+
+		}else if(getPositionMiniGrille(miniGrille) == 3){
+			for(int y = demiTabY; y < this.plateau.length; y++){
+				for(int x = 0; x < demiTabX; x++){
+					this.plateau[x][y] = miniGrille3[x][y-demiTabX]; 			// nom de miniGrille3 à modifier
+				}
+			}
+
+		}else if(getPositionMiniGrille(miniGrille) == 4){
+			for(int y = demiTabY; y < this.plateau.length; y++){
+				for(int x = demiTabX; x < this.plateau[0].length; x++){
+					this.plateau[x][y] = miniGrille4[x-demiTabX][y-demiTabY]; 		// nom de miniGrille4 à modifier
+				}
+			}
+		}
+	}
+
 }
