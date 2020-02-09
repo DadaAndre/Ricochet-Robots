@@ -15,21 +15,20 @@ public class Plateau{
 	public final String chaine4 = "1,0,0,1,0,0,3,2,2";
 	public final String[] chaines = {chaine1, chaine2, chaine3, chaine4};
 
-	private Case[][] plateau  = new Case[6][6];
+	private Case[][] plateau;
 
-	public Plateau(){
+
+	public Plateau(int tailleX, int tailleY){
+		 this.plateau = new Case[tailleX][tailleY];
 
 		//On créer les miniGrille
 		for(int i = 0 ; i < chaines.length; i++){
 			creerMiniGrille(chaines[i]);
-			System.out.println("miniGrille: " + (i+1) + "...............................");
-			afficheMiniGrille(tableauMiniGrille.get(i));
-
 		}
-
-		System.out.println("...............................");
 		//Création du plateau
 		creerPlateau();
+		//Affichage du plateau
+		afficheGrille(plateau);
 
 	}
 
@@ -45,7 +44,6 @@ public class Plateau{
 	   }
 	   return tabBinary;
    	}
-
 
 	//Transforme une chaine de caractère en une mini-grille
     public Case[][]  stringToMiniGrille(String chaine){
@@ -77,10 +75,10 @@ public class Plateau{
 		this.tableauMiniGrille.add(stringToMiniGrille(chaine));
 	}
 
-	public void afficheMiniGrille(Case[][] miniGrille){
-		for(int i = 0; i < miniGrille.length; i++){
-			for(int j = 0; j<miniGrille[i].length; j++){
-				System.out.print(miniGrille[j][i]);
+	public void afficheGrille(Case[][] grille){
+		for(int i = 0; i < grille.length; i++){
+			for(int j = 0; j< grille[i].length ; j++){
+				System.out.print(grille[j][i]);
 			}
 			System.out.println();
 		}
@@ -238,7 +236,6 @@ public class Plateau{
 			//Si notre ArrayList n'a pas cette valeur, on l'ajoute
 			if(!position.contains(alea)){
 				position.add(alea);
-				System.out.print("." + alea);
 			}
 			//..... si non on la perd et on retire
 
@@ -250,13 +247,9 @@ public class Plateau{
 			*/
 			tableauMiniGrille.set(i, rotation(tableauMiniGrille.get(i), position.get(i)));
 			//On ajoute la mini-grille correspondante au plateau
-			System.out.println("affiche minigrille ");
-			afficheMiniGrille(tableauMiniGrille.get(i));
-			System.out.println(".....................");
 			ajouterMiniGrille(tableauMiniGrille.get(i));
 		}
 	}
-
 
 	//Méthode pour ajouter les mini-grilles au plateau
 	public void ajouterMiniGrille(Case[][] miniGrille){
@@ -285,7 +278,7 @@ public class Plateau{
 		//si la position de la mini-grille est la troisième, elle va dans la partie en bas, à droite du plateau
 		else if(getPositionMiniGrille(miniGrille) == 3){
 			for(int y = demiTabY; y < this.plateau.length ; y++){
-				for(int x = demiTabX ; x < this.plateau[0].length -1; x++){
+				for(int x = demiTabX ; x < this.plateau[0].length; x++){
 					this.plateau[x][y] = miniGrille[x-demiTabX][y-demiTabY];
 				}
 			}
