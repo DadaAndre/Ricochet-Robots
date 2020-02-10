@@ -18,13 +18,15 @@ public class Plateau{
 	public final String chaine4 = "6,1,0,0,0,0,0,4,8,0,0,0,4,3,0,4,0,0,0,0,0,8,0,4,0,6,1,0,0,0,0,6,1,8,0,0,0,0,2,12,0,0,2,0,0,0,12,5,0,4,9,0,0,0,0,4,2,2,2,6,3,2,2,6";
 	public final String[] chaines = {chaine1, chaine2, chaine3, chaine4};
 
+	//Le plateau
 	private Case[][] plateau;
 
 
 	public Plateau(int tailleX, int tailleY){
+		//Initialisation du plateau
 		 this.plateau = new Case[tailleX][tailleY];
 
-		//On créer les miniGrille
+		//Création des miniGrille
 		for(int i = 0 ; i < chaines.length; i++){
 			creerMiniGrille(chaines[i]);
 		}
@@ -35,6 +37,7 @@ public class Plateau{
 
 	}
 
+	//Récupère une case à une position donnée
 	public Case getCase(int x, int y) {
 		if(x >= 0 && x <= plateau.length -1 && y >= 0 && y <= plateau.length -1) {
 			return this.plateau[x][y];
@@ -85,6 +88,7 @@ public class Plateau{
 		this.tableauMiniGrille.add(stringToMiniGrille(chaine));
 	}
 
+	//Affichage de la grille
 	public void afficheGrille(Case[][] grille){
 		for(int i = 0; i < grille.length; i++){
 			for(int j = 0; j< grille[i].length ; j++){
@@ -304,10 +308,12 @@ public class Plateau{
 		}
 	}
 
+	//Ajouter un robot à une ArrayList
 	public void ajouterRobot(Robot robot){
 		tableauRobots.add(robot);
 	}
 
+	//Récupère la liste des robots créés
 	public ArrayList<Robot> getListeRobot(){
 		return tableauRobots;
 	}

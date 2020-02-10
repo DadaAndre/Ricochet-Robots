@@ -9,17 +9,18 @@ public class Main{
 
 		Random r = new Random();
 
-		int x = 0;
-		int y = 0;
-
-        System.out.println("coucou");
+		//Initialisation du plateau
         Plateau plateauJeu = new Plateau(16,16);
 
+		//Tirage de deux nombre aléatoires pour les coordonnées initiale d'un robot
 		int aleaX = r.nextInt(15);
 		int aleaY = r.nextInt(15);
 
+		//On vérifie si la position tirée n'existe pas
 		int[] posRobotJaune = Robot.positionRobotNonUtilise(plateauJeu);
+		//Création d'un robot Jaune
         Robot robotJaune = new Robot(plateauJeu, "jaune", posRobotJaune[0], posRobotJaune[1]);
+		//On ajoute le robot créé à une ArrayList de Robot
 		plateauJeu.ajouterRobot(robotJaune);
 
 		int[] posRobotBleu = Robot.positionRobotNonUtilise(plateauJeu);
