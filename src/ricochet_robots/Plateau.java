@@ -24,8 +24,6 @@ public class Plateau{
 		//On créer les miniGrille
 		for(int i = 0 ; i < chaines.length; i++){
 			creerMiniGrille(chaines[i]);
-			afficheGrille(tableauMiniGrille.get(i));
-			System.out.println("........");
 		}
 		//Création du plateau
 		creerPlateau();
