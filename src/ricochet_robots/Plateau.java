@@ -5,6 +5,9 @@ import java.util.ArrayList;
 
 public class Plateau{
 
+	//Un tableau de Robots
+	private ArrayList<Robot> tableauRobots = new ArrayList<>();
+
 	//Un tableau de miniGrille
 	private ArrayList<Case[][]> tableauMiniGrille = new ArrayList<>();
 
@@ -30,6 +33,13 @@ public class Plateau{
 		//Affichage du plateau
 		afficheGrille(plateau);
 
+	}
+
+	public Case getCase(int x, int y) {
+		if(x >= 0 && x <= plateau.length -1 && y >= 0 && y <= plateau.length -1) {
+			return this.plateau[x][y];
+		}
+		return null;
 	}
 
 	//Convertit un nombre entier en un tableau binaire
@@ -293,4 +303,14 @@ public class Plateau{
 			}
 		}
 	}
+
+	public void ajouterRobot(Robot robot){
+		tableauRobots.add(robot);
+	}
+
+	public ArrayList<Robot> getListeRobot(){
+		return tableauRobots;
+	}
+
+
 }
