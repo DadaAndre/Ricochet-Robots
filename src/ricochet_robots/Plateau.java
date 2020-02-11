@@ -9,10 +9,10 @@ public class Plateau{
 	private ArrayList<Case[][]> tableauMiniGrille = new ArrayList<>();
 
 	//les différentes miniGrilles représentées par une chaine de caractère
-	public final String chaine1 = "9,8,8,1,0,0,1,0,0";
-	public final String chaine2 = "8,8,12,0,0,4,0,0,4";
-	public final String chaine3 = "0,0,4,0,0,4,2,2,6";
-	public final String chaine4 = "1,0,0,1,0,0,3,2,2";
+	public final String chaine1 = "9,8,8,12,9,8,8,8,1,0,0,0,0,0,0,0,1,0,0,0,0,6,1,0,1,0,2,0,0,8,0,0,3,0,12,1,0,0,0,0,9,2,0,0,0,0,4,3,5,9,0,0,0,0,0,10,1,0,0,0,0,0,4,9";
+	public final String chaine2 = "8,12,9,8,8,8,8,12,0,0,0,0,0,6,1,6,0,2,0,0,0,8,0,12,4,9,0,0,0,0,2,4,0,0,0,0,0,0,12,5,0,0,0,0,0,0,0,4,2,0,0,4,3,0,0,4,12,1,0,0,8,0,0,4";
+	public final String chaine3 = "1,0,0,0,0,0,4,3,1,0,0,4,3,0,2,8,3,0,0,0,8,4,9,0,9,0,0,0,0,0,0,2,1,2,0,0,0,0,0,12,1,12,1,0,0,0,0,0,1,0,0,6,1,0,0,0,3,2,2,10,6,3,2,2";
+	public final String chaine4 = "6,1,0,0,0,0,0,4,8,0,0,0,4,3,0,4,0,0,0,0,0,8,0,4,0,6,1,0,0,0,0,6,1,8,0,0,0,0,2,12,0,0,2,0,0,0,12,5,0,4,9,0,0,0,0,4,2,2,2,6,3,2,2,6";
 	public final String[] chaines = {chaine1, chaine2, chaine3, chaine4};
 
 	private Case[][] plateau;
@@ -24,6 +24,8 @@ public class Plateau{
 		//On créer les miniGrille
 		for(int i = 0 ; i < chaines.length; i++){
 			creerMiniGrille(chaines[i]);
+			afficheGrille(tableauMiniGrille.get(i));
+			System.out.println("........");
 		}
 		//Création du plateau
 		creerPlateau();
@@ -230,9 +232,9 @@ public class Plateau{
 
 		//On tire un nombre àléatoire tant qu'on a pas 4 valeurs
 		while(position.size() != 4){
+
 			//On tire un nombre entre 1 et 4 (compris)
 			alea = r.nextInt(4) + 1;
-
 			//Si notre ArrayList n'a pas cette valeur, on l'ajoute
 			if(!position.contains(alea)){
 				position.add(alea);
