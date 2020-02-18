@@ -21,6 +21,14 @@ public class Plateau{
 	//Le plateau
 	private Case[][] plateau;
 
+	//Zone de positionnement interdite des robots;
+	private int[][] deadZone = {{8,8},{9,8},{8,9},{9,9}};
+
+	Random r = new Random();
+
+	//Les nombres aléatoires
+	private int aleaX = -1;
+	private int aleaY = -1;
 
 	public Plateau(int tailleX, int tailleY){
 		//Initialisation du plateau
@@ -32,10 +40,6 @@ public class Plateau{
 		}
 		//Positionnement des jetons
 		positonJeton();
-
-		afficheGrille(tableauMiniGrille.get(2));
-
-		System.out.println("......................................");
 
 		//Création du plateau
 		creerPlateau();
@@ -320,9 +324,91 @@ public class Plateau{
 		tableauRobots.add(robot);
 	}
 
-	//Récupère la liste des robots créés
-	public ArrayList<Robot> getListeRobot(){
-		return tableauRobots;
+
+	public int[][] getZoneInterdite(){
+		return this.deadZone;
+	}
+
+	//Tire aléatoirement des coordonnées pour un robot et vérifie qu'un robot ne les a pas déjà
+	public int[] positionRobotNonUtilise(){
+
+		boolean surJeton = true;
+		boolean surRobot = true;
+		boolean surCaseInterdite = true;
+
+		this.aleaX = r.nextInt(15);
+		this.aleaY = r.nextInt(15);
+
+		int[] position = {this.aleaX, this.aleaY};
+
+		//On fait le procédé tant que les positions du robot générées ne sont ni sur un jeton, ni sur un robot, ni sur case interdite
+		while(surJeton || surCaseInterdite){
+
+			surJeton = estSurJeton();
+			//si les coordonnées sont sur un jeton, alors on re-génère des coordonnées
+			if(surJeton){
+				this.aleaX = r.nextInt(15);
+				this.aleaY = r.nextInt(15);
+
+			}
+			//Sinon on passe à la suite
+			else{
+				surCaseInterdite = estSurCaseInterdite();
+
+				//si les coordonnées sont sur une case interdite, alors on re-génère
+				if(surCaseInterdite){
+					this.aleaX = r.nextInt(15);
+					this.aleaY = r.nextInt(15);
+
+				}
+				//Sinon on passe à la suite
+				else{
+					//On vérifie si on a déja des robots de créer
+					if(tableauRobots.size() != 0){
+						surRobot = estSurAutresRobots();
+
+						//si les coordonnées sont sur un robot déja crée, alors on re-génère
+						if(surRobot){
+							this.aleaX = r.nextInt(15);
+							this.aleaY = r.nextInt(15);
+
+						}
+					}
+				}
+			}
+		}
+		return position;
+	}
+
+
+	public boolean estSurCaseInterdite(){
+		for(int i = 0; i < deadZone.length; i++){
+			if(this.aleaX == deadZone[i][0] && this.aleaY == deadZone[i][1]){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean estSurAutresRobots(){
+		for(int i = 0; i <= tableauRobots.size() -1 ; i++){
+			//Vérifie si les coordonnées X et Y tirées sont déja affectés a un robot déja crée
+			if(this.aleaX == tableauRobots.get(i).getPositionInitialeX() && this.aleaY == tableauRobots.get(i).getPositionInitialeY()){
+				//Si c'est le cas, on retrourne vrai
+				return true;
+			}
+		}
+		//Si ce n'est pas le cas, on retrourne false
+		return false;
+	}
+
+	public boolean estSurJeton(){
+		if(getCase(this.aleaX, this.aleaY) instanceof CaseJeton){
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 
 	public void positonJeton(){

@@ -56,40 +56,6 @@ public class Robot{
 		return couleur;
 	}
 
-	//Tire aléatoirement des coordonnées pour un robot et vérifie qu'un robot ne les a pas déjà
-	public static int[] positionRobotNonUtilise(Plateau plateau){
-
-		Random r = new Random();
-		//Génération de 2 nombres aléatoires pour des coordonnées X et Y du robot
-		int aleaX = r.nextInt(15);
-		int aleaY = r.nextInt(15);
-		int[] positions = {aleaX, aleaY};
-		int index = 0;
-
-		//Si aucun robot n'a été créé, alors on renvoie dirrectement les coordonnées tirées
-		if(plateau.getListeRobot().size() == 0){
-			return positions;
-		}
-
-		//Sinon, on vérifie les coordonnées de chaque robot
-		while(index <= (plateau.getListeRobot().size() +1)){
-			for(int i = 0; i < plateau.getListeRobot().size() ; i++){
-				//Vérifie si les coordonnées X et Y tirées existe
-				if(aleaX == plateau.getListeRobot().get(i).getPositionInitialeX() && aleaY == plateau.getListeRobot().get(i).getPositionInitialeY()){
-					//Si c'est le cas, on re-génère des coordonnées
-					aleaX = r.nextInt(15);
-					aleaY = r.nextInt(15);
-					index = 0;
-				}
-				//Si non, on passe au robot suivant
-				else{
-					index +=1;
-				}
-			}
-		}
-		return positions;
-	}
-
 	//Déplacement du robot
 	public void deplacementRobot(Deplacement direction){
 		//Vérification de la direction choisie

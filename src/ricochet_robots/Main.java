@@ -17,21 +17,21 @@ public class Main{
 		int aleaY = r.nextInt(15);
 
 		//On vérifie si la position tirée n'existe pas
-		int[] posRobotJaune = Robot.positionRobotNonUtilise(plateauJeu);
+		int[] posRobotJaune = plateauJeu.positionRobotNonUtilise();
 		//Création d'un robot Jaune
         Robot robotJaune = new Robot(plateauJeu, "jaune", posRobotJaune[0], posRobotJaune[1]);
 		//On ajoute le robot créé à une ArrayList de Robot
 		plateauJeu.ajouterRobot(robotJaune);
 
-		int[] posRobotBleu = Robot.positionRobotNonUtilise(plateauJeu);
+		int[] posRobotBleu = plateauJeu.positionRobotNonUtilise();
         Robot robotBleu = new Robot(plateauJeu, "bleu", posRobotBleu[0], posRobotBleu[1]);
 		plateauJeu.ajouterRobot(robotBleu);
 
-		int[] posRobotRouge = Robot.positionRobotNonUtilise(plateauJeu);
+		int[] posRobotRouge = plateauJeu.positionRobotNonUtilise();
         Robot robotRouge = new Robot(plateauJeu, "rouge", posRobotRouge[0], posRobotRouge[1]);
 		plateauJeu.ajouterRobot(robotRouge);
 
-		int[] posRobotVert = Robot.positionRobotNonUtilise(plateauJeu);
+		int[] posRobotVert = plateauJeu.positionRobotNonUtilise();
         Robot robotVert = new Robot(plateauJeu, "vert", posRobotVert[0], posRobotVert[1]);
 		plateauJeu.ajouterRobot(robotVert);
 
