@@ -40,13 +40,12 @@ public class Plateau{
 		}
 		//Positionnement des jetons
 		positonJeton();
-		afficheGrille(tableauMiniGrille.get(2));
 
 		//Création du plateau
 		creerPlateau();
 
 		//Affichage du plateau
-		//afficheGrille(plateau);
+		afficheGrille(plateau);
 	}
 
 	//Récupère une case à une position donnée

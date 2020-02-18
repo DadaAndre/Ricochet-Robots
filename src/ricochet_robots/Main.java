@@ -13,8 +13,8 @@ public class Main{
         Plateau plateauJeu = new Plateau(16,16);
 
 		//Tirage de deux nombre aléatoires pour les coordonnées initiale d'un robot
-		int aleaX = r.nextInt(15);
-		int aleaY = r.nextInt(15);
+		int aleaX = r.nextInt(16);
+		int aleaY = r.nextInt(16);
 
 		//On vérifie si la position tirée n'existe pas
 		int[] posRobotJaune = plateauJeu.positionRobotNonUtilise();
