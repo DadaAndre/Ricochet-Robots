@@ -52,6 +52,11 @@ public class Robot{
 		this.positionY = positionY;
 	}
 
+	public void setPosition(int x, int y){
+		this.positionY = positionY;
+		this.positionX = positionX;
+	}
+
 	public String getCouleur(){
 		return couleur;
 	}
