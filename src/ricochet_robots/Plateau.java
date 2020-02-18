@@ -324,6 +324,10 @@ public class Plateau{
 		tableauRobots.add(robot);
 	}
 
+	public ArrayList<Robot> getTableauRobot(){
+		return this.tableauRobots;
+	}
+
 
 	public int[][] getZoneInterdite(){
 		return this.deadZone;
@@ -412,36 +416,17 @@ public class Plateau{
 	}
 
 	public void positonJeton(){
-
-		//Positionnement des jetons à la première miniGrille (en haut, à gauche)
-
-		tableauMiniGrille.get(0)[5][2] = new CaseJeton(tableauMiniGrille.get(0)[5][2].getValHaut(), tableauMiniGrille.get(0)[5][2].getValDroit(), tableauMiniGrille.get(0)[5][2].getValBas(), tableauMiniGrille.get(0)[5][2].getValGauche(), "étoile", "bleu");
-		tableauMiniGrille.get(0)[2][4] = new CaseJeton(tableauMiniGrille.get(0)[2][4].getValHaut(), tableauMiniGrille.get(0)[2][4].getValDroit(), tableauMiniGrille.get(0)[2][4].getValBas(), tableauMiniGrille.get(0)[2][4].getValGauche(), "rond", "vert");
-		tableauMiniGrille.get(0)[1][6] = new CaseJeton(tableauMiniGrille.get(0)[1][6].getValHaut(), tableauMiniGrille.get(0)[1][6].getValDroit(), tableauMiniGrille.get(0)[1][6].getValBas(), tableauMiniGrille.get(0)[1][6].getValGauche(), "carré", "jaune");
-		tableauMiniGrille.get(0)[7][5] = new CaseJeton(tableauMiniGrille.get(0)[7][5].getValHaut(), tableauMiniGrille.get(0)[7][5].getValDroit(), tableauMiniGrille.get(0)[7][5].getValBas(), tableauMiniGrille.get(0)[7][5].getValGauche(), "triangle", "rouge");
-
-		//Positionnement des jetons à la deuxième miniGrille (en haut, à droite)
-
-		tableauMiniGrille.get(1)[5][1] = new CaseJeton(tableauMiniGrille.get(1)[5][1].getValHaut(), tableauMiniGrille.get(1)[5][1].getValDroit(), tableauMiniGrille.get(1)[5][1].getValBas(), tableauMiniGrille.get(1)[5][1].getValGauche(), "triangle", "vert");
-		tableauMiniGrille.get(1)[1][3] = new CaseJeton(tableauMiniGrille.get(1)[1][3].getValHaut(), tableauMiniGrille.get(1)[1][3].getValDroit(), tableauMiniGrille.get(1)[1][3].getValBas(), tableauMiniGrille.get(1)[1][3].getValGauche(), "carré", "bleu");
-		tableauMiniGrille.get(1)[6][4] = new CaseJeton(tableauMiniGrille.get(1)[6][4].getValHaut(), tableauMiniGrille.get(1)[6][4].getValDroit(), tableauMiniGrille.get(1)[6][4].getValBas(), tableauMiniGrille.get(1)[6][4].getValGauche(), "rond", "rouge");
-		tableauMiniGrille.get(1)[4][6] = new CaseJeton(tableauMiniGrille.get(1)[4][6].getValHaut(), tableauMiniGrille.get(1)[4][6].getValDroit(), tableauMiniGrille.get(1)[4][6].getValBas(), tableauMiniGrille.get(1)[4][6].getValGauche(), "étoile", "jaune");
-
-		//Positionnement des jetons à la troisième miniGrille (en bas, à droite)
-
-		tableauMiniGrille.get(2)[5][1] = new CaseJeton(tableauMiniGrille.get(2)[5][1].getValHaut(), tableauMiniGrille.get(2)[5][1].getValDroit(), tableauMiniGrille.get(2)[5][1].getValBas(), tableauMiniGrille.get(2)[5][1].getValGauche(), "triangle", "bleu");
-		tableauMiniGrille.get(2)[1][3] = new CaseJeton(tableauMiniGrille.get(2)[1][3].getValHaut(), tableauMiniGrille.get(2)[1][3].getValDroit(), tableauMiniGrille.get(2)[1][3].getValBas(), tableauMiniGrille.get(2)[1][3].getValGauche(), "rond", "jaune");
-		tableauMiniGrille.get(2)[6][5] = new CaseJeton(tableauMiniGrille.get(2)[6][5].getValHaut(), tableauMiniGrille.get(2)[6][5].getValDroit(), tableauMiniGrille.get(2)[6][5].getValBas(), tableauMiniGrille.get(2)[6][5].getValGauche(), "carré", "rouge");
-		tableauMiniGrille.get(2)[2][6] = new CaseJeton(tableauMiniGrille.get(2)[2][6].getValHaut(), tableauMiniGrille.get(2)[2][6].getValDroit(), tableauMiniGrille.get(2)[2][6].getValBas(), tableauMiniGrille.get(2)[2][6].getValGauche(), "étoile", "verte");
-
-		//Positionnement des jetons à la quatrième miniGrille (en bas, à gauche)
-
-		tableauMiniGrille.get(3)[4][1] = new CaseJeton(tableauMiniGrille.get(3)[4][1].getValHaut(), tableauMiniGrille.get(3)[4][1].getValDroit(), tableauMiniGrille.get(3)[4][1].getValBas(), tableauMiniGrille.get(3)[4][1].getValGauche(), "triangle", "jaune");
-		tableauMiniGrille.get(3)[6][2] = new CaseJeton(tableauMiniGrille.get(3)[6][2].getValHaut(), tableauMiniGrille.get(3)[6][2].getValDroit(), tableauMiniGrille.get(3)[6][2].getValBas(), tableauMiniGrille.get(3)[6][2].getValGauche(), "rond", "bleu");
-		tableauMiniGrille.get(3)[1][5] = new CaseJeton(tableauMiniGrille.get(3)[1][5].getValHaut(), tableauMiniGrille.get(3)[1][5].getValDroit(), tableauMiniGrille.get(3)[1][5].getValBas(), tableauMiniGrille.get(3)[1][5].getValGauche(), "étoile", "rouge");
-		tableauMiniGrille.get(3)[3][6] = new CaseJeton(tableauMiniGrille.get(3)[3][6].getValHaut(), tableauMiniGrille.get(3)[3][6].getValDroit(), tableauMiniGrille.get(3)[3][6].getValBas(), tableauMiniGrille.get(3)[3][6].getValGauche(), "carré", "vert");
+		int k=0;
+		String[] forme = {"carré","triangle","rond","étoile"};
+		String[] couleur = {"rouge","vert","bleu","jaune"};
+		int[][] coordonnee = {{2,6,5},{3,3,6},{1,1,3},{0,1,6},{0,7,5},{1,5,1},{2,5,1},{3,4,1},{1,6,4},{0,2,4},{3,6,2},{2,1,3},{3,1,5},{2,2,6},{0,5,2},{1,4,6}};
+		for(int i=0; i <= forme.length -1; i++){
+			for(int j=0; j <= couleur.length -1; j++){
+				tableauMiniGrille.get(coordonnee[k][0])[coordonnee[k][1]][coordonnee[k][2]] = new CaseJeton(tableauMiniGrille.get(coordonnee[k][0])[coordonnee[k][1]][coordonnee[k][2]].getValHaut(), tableauMiniGrille.get(coordonnee[k][0])[coordonnee[k][1]][coordonnee[k][2]].getValDroit(), tableauMiniGrille.get(coordonnee[k][0])[coordonnee[k][1]][coordonnee[k][2]].getValBas(), tableauMiniGrille.get(coordonnee[k][0])[coordonnee[k][1]][coordonnee[k][2]].getValGauche(), forme[i], couleur[j]);
+				k=k+1;
+			}
+		}
 		tableauMiniGrille.get(3)[7][4] = new CaseJeton(tableauMiniGrille.get(3)[7][4].getValHaut(), tableauMiniGrille.get(3)[7][4].getValDroit(), tableauMiniGrille.get(3)[7][4].getValBas(), tableauMiniGrille.get(3)[7][4].getValGauche(), "spirale", "multi");
 	}
-
 
 }

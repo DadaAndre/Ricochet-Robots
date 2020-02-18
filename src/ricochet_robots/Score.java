@@ -9,26 +9,26 @@ public class Score{
     public Score(){
         score = 0;
         nbCoups = 0;
-        meilleurscore = 0;
+        meilleurScore = 0;
     }
 
-    public getScore(){
+    public int getScore(){
         return this.score;
     }
 
-    public getMeilleurScore(){
+    public int getMeilleurScore(){
         return this.meilleurScore;
     }
 
-    public getNbCoups(){
+    public int getNbCoups(){
         return this.nbCoups;
     }
 
-    public setScore(int nouveauScore){
+    public void setScore(int nouveauScore){
         this.score += nouveauScore;
     }
 
-    public setMeilleurScore(int nouveauMeilleurScore){
+    public void setMeilleurScore(int nouveauMeilleurScore){
         if(this.meilleurScore < nouveauMeilleurScore){
             this.meilleurScore = nouveauMeilleurScore;
         }
