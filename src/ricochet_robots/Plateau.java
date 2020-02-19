@@ -3,6 +3,20 @@ package ricochet_robots;
 import java.util.Random;
 import java.util.ArrayList;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
+import java.util.HashMap;
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import javafx.scene.shape.Rectangle;
+
 public class Plateau{
 
 	//Un tableau de Robots
@@ -56,47 +70,10 @@ public class Plateau{
 		return null;
 	}
 
-	//Convertit un nombre entier en un tableau binaire
-	public int[] intToBinary(int number) {
-	   int divNumber = number;
-	   int div = 8;
-	   int[] tabBinary = new int[4];
-	   for(int i = 0; i<4; i++){
-		   tabBinary[i] = divNumber/div;
-		   divNumber = divNumber%div;
-		   div = div/2;
-	   }
-	   return tabBinary;
-   	}
-
-	//Transforme une chaine de caractère en une mini-grille
-    public Case[][]  stringToMiniGrille(String chaine){
-
-		//On "découpe" la chaine de caractère entre chaque virgule, et on récupère dans tab1D un tableau de chaine de caractère
-        String[] tab1D = chaine.split(",");
-        int tailleTab = (int) Math.sqrt(tab1D.length);
-		int index = 0;
-
-		//On créer une miniGrille, un tableau 2D de Case
-        Case[][] miniGrille = new Case[tailleTab][tailleTab];
-
-		for(int y = 0; y<tailleTab; y++){
-            for(int x = 0; x < tailleTab; x++){
-				/*A chaque case de la miniGrille, on créer une instance de Case,
-				 dans laquelle on envoie un tableau de nombre (ex: [1,0,0,1]), récolté à partir d'un entier,
-				 qui lui même est dù à une chaine de caractère contenu dans chaine1, chaine2,chaine3 ou chaine4
-				*/
-				miniGrille[x][y] = new Case(intToBinary(Integer.parseInt(tab1D[index])));
-				index++;
-            }
-        }
-		return miniGrille;
-    }
-
 	//Créer les mini-grilles
 	public void creerMiniGrille(String chaine){
 		//on ajoute à tableauMiniGrille la miniGrille obtenue avec la méthode stringToMiniGrille
-		this.tableauMiniGrille.add(stringToMiniGrille(chaine));
+		this.tableauMiniGrille.add(Utilitaire.stringToMiniGrille(chaine));
 	}
 
 	//Affichage de la grille
@@ -108,6 +85,39 @@ public class Plateau{
 			System.out.println();
 		}
 	}
+
+	//Dessine le plateau
+	public void dessinerPlateau(DessinPlateau draw, Group root, int departGrilleX, int departGrilleY){
+
+		//On récupère l'ensemble des dessins de cases (tile) du tableau existants
+		HashMap<Integer, Image> listeImagesPlateau = draw.getImagesPlateau();
+
+		//Création d'un ArrayList contenant l'ensemble des vues des tiles dessinées pour le plateau
+		ArrayList<ImageView> ensDessinCase = new ArrayList<>();
+
+		int index = 0;
+		//On parcours le plateau
+		for(int y = 0; y < plateau.length; y++){
+			for(int x = 0; x < plateau[y].length ; x++){
+
+				//On transforme la case à la position X,Y en un int, correspondant à une clé
+				int key = Utilitaire.CaseToInt(this.getCase(x,y));
+
+				/*On cherche la tile parmis l'ensemble de tile, qui correspond
+				  à la clé et on ajoute la vue de cette tile à l'ArrayList
+				*/
+				ensDessinCase.add(new ImageView(listeImagesPlateau.get(key)));
+				//ensuite, on l'ajoute au groupe d'objets graphique
+				root.getChildren().add(ensDessinCase.get(index));
+				//On place cette tile à une position donnée
+				ensDessinCase.get(index).setX(departGrilleX + (Case.DIM * (x+1)));
+				ensDessinCase.get(index).setY(departGrilleY + (Case.DIM * (y+1)));
+				index++;
+			}
+		}
+	}
+
+
 
 	//Fait la rotation de la mini-grille en fonction de la position choisie
 	public Case[][] rotation(Case[][] miniGrille, int position){

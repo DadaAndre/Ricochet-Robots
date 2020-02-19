@@ -2,6 +2,8 @@ package ricochet_robots;
 
 public class Case{
 
+	public static final int DIM = 42;
+
 	private int valHaut;
 	private int valDroit;
 	private int valBas;
@@ -56,5 +58,4 @@ public class Case{
 	public String toString(){
 		return "[" + valHaut + "," + valDroit + "," + valBas + "," + valGauche + "]";
 	}
-
 }
