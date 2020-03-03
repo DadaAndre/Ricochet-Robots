@@ -66,12 +66,12 @@ public class Main extends Application {
         tableauRobots.add(robotVert);
 
 		//Initialisation des dessins du plateau
-		DessinPlateau desp = new DessinPlateau();
-        DessinRobot desR = new DessinRobot(tableauRobots);
+		DessinPlateau desp = new DessinPlateau(root);
+        DessinRobot desR = new DessinRobot(root, tableauRobots);
 
 		//On dessine le plateau
-		desp.dessinerPlateau(plateauJeu, root, Case.DIM, Case.DIM);
-        desR.dessinerRobot(plateauJeu, root, Case.DIM, Case.DIM);
+		desp.dessinerPlateau(plateauJeu, Case.DIM, Case.DIM);
+        desR.dessinerRobot(plateauJeu, Case.DIM, Case.DIM);
 
 		//On montre les dessins
         primaryStage.show();

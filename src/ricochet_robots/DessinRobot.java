@@ -26,10 +26,13 @@ public class DessinRobot{
     //Associe une couleur à l'image du robot
     HashMap<String, ImageView> listeImageRobot;
 
+	Group root;
+
     //Liste des couleurs du robots
     String[] listeCouleurRobot = {"rouge", "bleu", "vert", "jaune"};
 
-    public DessinRobot(ArrayList<Robot> tableauRobot){
+    public DessinRobot(Group root, ArrayList<Robot> tableauRobot){
+		this.root = root;
         this.tableauRobot = tableauRobot;
         creerListeImageRobot();
     }
@@ -46,10 +49,10 @@ public class DessinRobot{
 		}
     }
 
-    public void dessinerRobot(Plateau plateau, Group root, int departX, int departY){
+    public void dessinerRobot(Plateau plateau, int departX, int departY){
 
 		for(int i = 0; i < tableauRobot.size(); i++){
-            root.getChildren().add(tabImageRobot.get(i));
+            this.root.getChildren().add(tabImageRobot.get(i));
 			//on récupère la couleur d'un robot
 			String couleurRobotActuel = tableauRobot.get(i).getCouleur();
 			for (HashMap.Entry<String,ImageView> m : listeImageRobot.entrySet()) {
@@ -59,7 +62,6 @@ public class DessinRobot{
 				   System.out.println("robot" + i + "(colo: "+ couleurRobotActuel +"): posX: " + tableauRobot.get(i).getPositionX() + " posY: " + tableauRobot.get(i).getPositionY());
 				   break;
 			   }
-			  //System.out.println("clé: "+ m.getKey() + " | valeur: " + m.getValue());
 			}
 		}
 
