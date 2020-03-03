@@ -33,7 +33,7 @@ public class Plateau{
 	private Case[][] plateau;
 
 	//Zone de positionnement interdite des robots;
-	private int[][] deadZone = {{8,8},{9,8},{8,9},{9,9}};
+	private int[][] deadZone = {{7,7},{8,7},{7,8},{8,8}};
 
 	Random r = new Random();
 

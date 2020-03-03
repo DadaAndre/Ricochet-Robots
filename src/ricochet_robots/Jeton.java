@@ -22,12 +22,13 @@ public class  Jeton{
 		return couleur;
 	}
 
-	public void tirageJeton(){
-		String[] forme = {"carré","triangle","rond","étoile"};
+	public static Jeton tirageJeton(){
+		Random r = new Random();
+		String[] forme = {"carre","triangle","rond","etoile"};
 		String[] couleur = {"rouge","vert","bleu","jaune"};
 		int tirCouleur = r.nextInt(4);
 		int tirForme = r.nextInt(4);
-		new Jeton(forme[tirForme], couleur[tirCouleur]);
+		return new Jeton(forme[tirForme], couleur[tirCouleur]);
 	}
 
 }

@@ -29,12 +29,12 @@ public class DessinPlateau{
 
 
 	//Associe un string (forme et couleur) à une image correspondante
-	HashMap<String, ImageView> listeImagesJeton;
+	HashMap<String, Image> listeImagesJeton;
 	//L'ensemble des couleurs possibles au jeton
 	String[] tableauCouleurs = {"rouge","bleu","vert","jaune","multi"};
 	String[] tableauForme = {"carre","triangle","rond","etoile","spirale"};
 	//L'ensemble des images possibles aux jetons
-	ArrayList<ImageView> tabImageJeton;
+	ArrayList<Image> tabImageJeton;
 
 	public DessinPlateau(Group root){
 		this.root = root;
@@ -63,7 +63,7 @@ public class DessinPlateau{
 		for(int i = 0; i < tableauCouleurs.length-1; i++){
 			//on s'arrête avant la spirale
 			for (int j = 0 ; j < tableauForme.length-1 ; j++){
-				tabImageJeton.add(new ImageView(new Image("images/imgJeton/" + (tableauForme[j] + "-" + tableauCouleurs[i])+ ".png")));
+				tabImageJeton.add(new Image("images/imgJeton/" + (tableauForme[j] + "-" + tableauCouleurs[i])+ ".png"));
 				listeImagesJeton.put(tableauForme[j] + "," + tableauCouleurs[i] , tabImageJeton.get(count));
 
 				count++;
@@ -80,8 +80,13 @@ public class DessinPlateau{
 
 		//Création d'un ArrayList contenant l'ensemble des vues des tiles dessinées pour le plateau
 		ArrayList<ImageView> ensDessinCase = new ArrayList<>();
+		ArrayList<ImageView> ensDessinJeton = new ArrayList<>();
 
 		int index = 0;
+		int count = 0;
+
+		Jeton jetonTire = Jeton.tirageJeton();
+
 		//On parcours le plateau
 		for(int y = 0; y < plateau.getTaillePlateau(); y++){
 			for(int x = 0; x < plateau.getTaillePlateau() ; x++){
@@ -100,21 +105,29 @@ public class DessinPlateau{
 				ensDessinCase.get(index).setY(departGrilleY + (Case.DIM * y));
 				index++;
 
-		if(plateau.getCase(x,y) instanceof CaseJeton){
-			CaseJeton caseJeton = (CaseJeton) plateau.getCase(x,y);
-			for(HashMap.Entry<String,ImageView> m : listeImagesJeton.entrySet()) {
-				String coulActuel = caseJeton.getCouleur();
-				String formeActuel = caseJeton.getForme();
-				if((formeActuel + "," + coulActuel).equals(m.getKey())){
-					this.root.getChildren().add(m.getValue());
-					m.getValue().setX(departGrilleX + (x * Case.DIM));
-					m.getValue().setY(departGrilleY + (y * Case.DIM));
-					break;
+				if(plateau.getCase(x,y) instanceof CaseJeton){
+					CaseJeton caseJeton = (CaseJeton) plateau.getCase(x,y);
+					for(HashMap.Entry<String,Image> m : listeImagesJeton.entrySet()) {
+						String coulActuel = caseJeton.getCouleur();
+						String formeActuel = caseJeton.getForme();
+						if((formeActuel + "," + coulActuel).equals(m.getKey())){
+							ensDessinJeton.add(new ImageView(m.getValue()));
+							this.root.getChildren().add(ensDessinJeton.get(count));
+							ensDessinJeton.get(count).setX(departGrilleX + (x * Case.DIM));
+							ensDessinJeton.get(count).setY(departGrilleY + (y * Case.DIM));
+							count++;
+						}
+						System.out.println("tire: " + jetonTire.getForme() + "," + jetonTire.getCouleur());
+						if((jetonTire.getForme() + "," + jetonTire.getCouleur()).equals(m.getKey())){
+							ensDessinJeton.add(new ImageView(m.getValue()));
+							this.root.getChildren().add(ensDessinJeton.get(count));
+							ensDessinJeton.get(count).setX(8 * Case.DIM + 0.5  * Case.DIM);
+							ensDessinJeton.get(count).setY(8 * Case.DIM + 0.5  * Case.DIM);
+							count++;
+						}
+					}
 				}
 			}
 		}
-			}
-		}
 	}
-
 }

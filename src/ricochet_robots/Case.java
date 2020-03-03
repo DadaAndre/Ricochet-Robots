@@ -2,7 +2,7 @@ package ricochet_robots;
 
 public class Case{
 
-	public static final int DIM = 48;
+	public static final int DIM = 49;
 
 	private int valHaut;
 	private int valDroit;
