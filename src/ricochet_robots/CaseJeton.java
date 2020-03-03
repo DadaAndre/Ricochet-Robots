@@ -19,15 +19,15 @@ public class  CaseJeton extends Case{
 	}
 
 	public String getForme(){
-		return forme;
+		return this.forme;
 	}
 
 	public String getCouleur(){
-		return couleur;
+		return this.couleur;
 	}
 
 	@Override
 	public String toString(){
-		return "[" + getValHaut() + "," + getValDroit() + "," + getValBas() + "," + getValGauche() +","+ forme + "," + couleur +"]";
+		return "[" + getValHaut() + "," + getValDroit() + "," + getValBas() + "," + getValGauche() +","+ this.forme + "," + this.couleur +"]";
 	}
 }
