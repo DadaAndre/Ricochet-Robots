@@ -23,6 +23,8 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws FileNotFoundException{
+        Random r = new Random();
+
         primaryStage.setTitle("Ricochet Robots");
 
 		//Créatoin du groupe contenant tout les objets graphiques
@@ -34,14 +36,42 @@ public class Main extends Application {
 		//Ajout de la fenêtre à l'objet Stage
 		primaryStage.setScene(scene);
 
-		//Initialisation des dessins du plateau
-		DessinPlateau desp = new DessinPlateau();
-
-		//On créer un plateau
+        //On créer un plateau
 		Plateau plateauJeu = new Plateau(16,16);
 
+        //Un tableau de Robots
+    	ArrayList<Robot> tableauRobots = new ArrayList<>();
+
+        //Tirage de deux nombre aléatoires pour les coordonnées initiale d'un robot
+        int aleaX = r.nextInt(16);
+        int aleaY = r.nextInt(16);
+
+        //On vérifie si la position tirée n'existe pas
+        int[] posRobotJaune = plateauJeu.positionRobotNonUtilise(tableauRobots);
+        //Création d'un robot Jaune
+        Robot robotJaune = new Robot(plateauJeu, "jaune", posRobotJaune[0], posRobotJaune[1]);
+        //On ajoute le robot créé à une ArrayList de Robot
+        tableauRobots.add(robotJaune);
+
+        int[] posRobotBleu = plateauJeu.positionRobotNonUtilise(tableauRobots);
+        Robot robotBleu = new Robot(plateauJeu, "bleu", posRobotBleu[0], posRobotBleu[1]);
+        tableauRobots.add(robotBleu);
+
+        int[] posRobotRouge = plateauJeu.positionRobotNonUtilise(tableauRobots);
+        Robot robotRouge = new Robot(plateauJeu, "rouge", posRobotRouge[0], posRobotRouge[1]);
+        tableauRobots.add(robotRouge);
+
+        int[] posRobotVert = plateauJeu.positionRobotNonUtilise(tableauRobots);
+        Robot robotVert = new Robot(plateauJeu, "vert", posRobotVert[0], posRobotVert[1]);
+        tableauRobots.add(robotVert);
+
+		//Initialisation des dessins du plateau
+		DessinPlateau desp = new DessinPlateau();
+        DessinRobot desR = new DessinRobot(tableauRobots);
+
 		//On dessine le plateau
-		plateauJeu.dessinerPlateau(desp, root, 0, 0);
+		desp.dessinerPlateau(plateauJeu, root, 0, 0);
+        desR.dessinerRobot(plateauJeu, root);
 
 		//On montre les dessins
         primaryStage.show();
@@ -51,29 +81,8 @@ public class Main extends Application {
 		// //Initialisation du plateau
         // Plateau plateauJeu = new Plateau(16,16);
 		//
-		// //Tirage de deux nombre aléatoires pour les coordonnées initiale d'un robot
-		// int aleaX = r.nextInt(16);
-		// int aleaY = r.nextInt(16);
-		//
-		// //On vérifie si la position tirée n'existe pas
-		// int[] posRobotJaune = plateauJeu.positionRobotNonUtilise();
-		// //Création d'un robot Jaune
-        // Robot robotJaune = new Robot(plateauJeu, "jaune", posRobotJaune[0], posRobotJaune[1]);
-		// //On ajoute le robot créé à une ArrayList de Robot
-		// plateauJeu.ajouterRobot(robotJaune);
-		//
-		// int[] posRobotBleu = plateauJeu.positionRobotNonUtilise();
-        // Robot robotBleu = new Robot(plateauJeu, "bleu", posRobotBleu[0], posRobotBleu[1]);
-		// plateauJeu.ajouterRobot(robotBleu);
-		//
-		// int[] posRobotRouge = plateauJeu.positionRobotNonUtilise();
-        // Robot robotRouge = new Robot(plateauJeu, "rouge", posRobotRouge[0], posRobotRouge[1]);
-		// plateauJeu.ajouterRobot(robotRouge);
-		//
-		// int[] posRobotVert = plateauJeu.positionRobotNonUtilise();
-        // Robot robotVert = new Robot(plateauJeu, "vert", posRobotVert[0], posRobotVert[1]);
-		// plateauJeu.ajouterRobot(robotVert);
-		//
+
+
 		// System.out.println("posRJ x= " + robotJaune.getPositionX() + " posRJ y = " + robotJaune.getPositionY());
 		// System.out.println("posRB x= " + robotBleu.getPositionX() + " posRB y = " + robotBleu.getPositionY());
 		// System.out.println("posRV x= " + robotVert.getPositionX() + " posRV y = " + robotVert.getPositionY());

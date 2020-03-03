@@ -19,9 +19,6 @@ import javafx.scene.shape.Rectangle;
 
 public class Plateau{
 
-	//Un tableau de Robots
-	private ArrayList<Robot> tableauRobots = new ArrayList<>();
-
 	//Un tableau de miniGrille
 	private ArrayList<Case[][]> tableauMiniGrille = new ArrayList<>();
 
@@ -85,39 +82,6 @@ public class Plateau{
 			System.out.println();
 		}
 	}
-
-	//Dessine le plateau
-	public void dessinerPlateau(DessinPlateau draw, Group root, int departGrilleX, int departGrilleY){
-
-		//On récupère l'ensemble des dessins de cases (tile) du tableau existants
-		HashMap<Integer, Image> listeImagesPlateau = draw.getImagesPlateau();
-
-		//Création d'un ArrayList contenant l'ensemble des vues des tiles dessinées pour le plateau
-		ArrayList<ImageView> ensDessinCase = new ArrayList<>();
-
-		int index = 0;
-		//On parcours le plateau
-		for(int y = 0; y < plateau.length; y++){
-			for(int x = 0; x < plateau[y].length ; x++){
-
-				//On transforme la case à la position X,Y en un int, correspondant à une clé
-				int key = Utilitaire.CaseToInt(this.getCase(x,y));
-
-				/*On cherche la tile parmis l'ensemble de tile, qui correspond
-				  à la clé et on ajoute la vue de cette tile à l'ArrayList
-				*/
-				ensDessinCase.add(new ImageView(listeImagesPlateau.get(key)));
-				//ensuite, on l'ajoute au groupe d'objets graphique
-				root.getChildren().add(ensDessinCase.get(index));
-				//On place cette tile à une position donnée
-				ensDessinCase.get(index).setX(departGrilleX + (Case.DIM * (x+1)));
-				ensDessinCase.get(index).setY(departGrilleY + (Case.DIM * (y+1)));
-				index++;
-			}
-		}
-	}
-
-
 
 	//Fait la rotation de la mini-grille en fonction de la position choisie
 	public Case[][] rotation(Case[][] miniGrille, int position){
@@ -329,22 +293,13 @@ public class Plateau{
 		}
 	}
 
-	//Ajouter un robot à une ArrayList
-	public void ajouterRobot(Robot robot){
-		tableauRobots.add(robot);
-	}
-
-	public ArrayList<Robot> getTableauRobot(){
-		return this.tableauRobots;
-	}
-
 
 	public int[][] getZoneInterdite(){
 		return this.deadZone;
 	}
 
 	//Tire aléatoirement des coordonnées pour un robot et vérifie qu'un robot ne les a pas déjà
-	public int[] positionRobotNonUtilise(){
+	public int[] positionRobotNonUtilise(ArrayList<Robot> tableauRobots){
 
 		boolean surJeton = true;
 		boolean surRobot = true;
@@ -379,7 +334,7 @@ public class Plateau{
 				else{
 					//On vérifie si on a déja des robots de créer
 					if(tableauRobots.size() != 0){
-						surRobot = estSurAutresRobots();
+						surRobot = Robot.estSurAutresRobots(this.aleaX, this.aleaY, tableauRobots);
 
 						//si les coordonnées sont sur un robot déja crée, alors on re-génère
 						if(surRobot){
@@ -404,17 +359,6 @@ public class Plateau{
 		return false;
 	}
 
-	public boolean estSurAutresRobots(){
-		for(int i = 0; i <= tableauRobots.size() -1 ; i++){
-			//Vérifie si les coordonnées X et Y tirées sont déja affectés a un robot déja crée
-			if(this.aleaX == tableauRobots.get(i).getPositionInitialeX() && this.aleaY == tableauRobots.get(i).getPositionInitialeY()){
-				//Si c'est le cas, on retrourne vrai
-				return true;
-			}
-		}
-		//Si ce n'est pas le cas, on retrourne false
-		return false;
-	}
 
 	public boolean estSurJeton(){
 		if(getCase(this.aleaX, this.aleaY) instanceof CaseJeton){
@@ -427,7 +371,7 @@ public class Plateau{
 
 	public void positonJeton(){
 		int k=0;
-		String[] forme = {"carré","triangle","rond","étoile"};
+		String[] forme = {"carre","triangle","rond","etoile"};
 		String[] couleur = {"rouge","vert","bleu","jaune"};
 		int[][] coordonnee = {{2,6,5},{3,3,6},{1,1,3},{0,1,6},{0,7,5},{1,5,1},{2,5,1},{3,4,1},{1,6,4},{0,2,4},{3,6,2},{2,1,3},{3,1,5},{2,2,6},{0,5,2},{1,4,6}};
 		for(int i=0; i <= forme.length -1; i++){
@@ -437,6 +381,10 @@ public class Plateau{
 			}
 		}
 		tableauMiniGrille.get(3)[7][4] = new CaseJeton(tableauMiniGrille.get(3)[7][4].getValHaut(), tableauMiniGrille.get(3)[7][4].getValDroit(), tableauMiniGrille.get(3)[7][4].getValBas(), tableauMiniGrille.get(3)[7][4].getValGauche(), "spirale", "multi");
+	}
+
+	public int getTaillePlateau(){
+		return plateau.length;
 	}
 
 }
