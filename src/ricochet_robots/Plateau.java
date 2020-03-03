@@ -103,11 +103,6 @@ public class Plateau{
 				//On transforme la case à la position X,Y en un int, correspondant à une clé
 				int key = Utilitaire.CaseToInt(this.getCase(x,y));
 
-				if(this.getCase(x,y) instanceof CaseJeton){
-					this.getCase(x,y).getCouleur();
-					this.getCase(x,y).getForme();
-				}
-
 				/*On cherche la tile parmis l'ensemble de tile, qui correspond
 				  à la clé et on ajoute la vue de cette tile à l'ArrayList
 				*/
