@@ -28,7 +28,7 @@ public class Plateau{
 	//les différentes miniGrilles représentées par une chaine de caractère
 	public final String chaine1 = "9,8,8,12,9,8,8,8,1,0,0,0,0,0,0,0,1,0,0,0,0,6,1,0,1,0,2,0,0,8,0,0,3,0,12,1,0,0,0,0,9,2,0,0,0,0,4,3,5,9,0,0,0,0,0,10,1,0,0,0,0,0,4,9"; //haut, gauche
 	public final String chaine2 = "8,12,9,8,8,8,8,12,0,0,0,0,0,6,1,6,0,2,0,0,0,8,0,12,4,9,0,0,0,0,2,4,0,0,0,0,0,0,12,5,0,0,0,0,0,0,0,4,2,0,0,4,3,0,0,4,12,1,0,0,8,0,0,4"; //haut droit
-	public final String chaine3 = "6,1,0,0,0,0,0,4,8,0,0,0,4,3,0,4,0,0,0,0,0,8,0,4,0,6,1,0,0,0,0,6,1,8,0,0,0,0,2,12,0,0,2,0,0,0,12,5,0,4,9,0,0,0,0,4,2,2,2,6,3,2,2,6"; //bas droit
+	public final String chaine3 = "6,1,0,0,0,0,0,4,8,0,0,0,4,3,0,4,0,0,0,0,0,8,0,4,0,6,1,0,0,0,0,6,0,8,0,0,0,0,2,12,0,0,2,0,0,0,12,5,0,4,9,0,0,0,0,4,2,2,2,6,3,2,2,6"; //bas droit
 	public final String chaine4 = "1,0,0,0,0,0,4,3,1,0,0,4,3,0,2,8,3,0,0,0,8,4,9,0,9,0,0,0,0,0,0,2,1,2,0,0,0,0,0,12,1,12,1,0,0,0,0,0,1,0,0,6,1,0,0,0,3,2,2,10,6,3,2,2"; //bas gauche
 	public final String[] chaines = {chaine1, chaine2, chaine3, chaine4};
 
@@ -102,6 +102,11 @@ public class Plateau{
 
 				//On transforme la case à la position X,Y en un int, correspondant à une clé
 				int key = Utilitaire.CaseToInt(this.getCase(x,y));
+
+				if(this.getCase(x,y) instanceof CaseJeton){
+					this.getCase(x,y).getCouleur();
+					this.getCase(x,y).getForme();
+				}
 
 				/*On cherche la tile parmis l'ensemble de tile, qui correspond
 				  à la clé et on ajoute la vue de cette tile à l'ArrayList

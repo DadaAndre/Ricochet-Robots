@@ -31,7 +31,7 @@ public class DessinPlateau{
 		this.tabImage = new ArrayList<>();
 
 		for(int i = 0; i < tableauValeur.length; i++){
-			tabImage.add(new Image("images/img" + Integer.toString(tableauValeur[i])+ ".png"));
+			tabImage.add(new Image("images/imgPlateau/img" + Integer.toString(tableauValeur[i])+ ".png"));
 
 			listeImagesPlateau.put(tableauValeur[i] , tabImage.get(i));
 
@@ -42,9 +42,4 @@ public class DessinPlateau{
 		return listeImagesPlateau;
 	}
 
-
-		// for(Map<TypeCle, TypeValeur> entry : s) {
-		//     TypeCle cle = entry.getKey();
-		//     TypeValeur valeur = entry.getValue();
-		//     // traitements
 }

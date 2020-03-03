@@ -29,7 +29,7 @@ public class Main extends Application {
         Group root = new Group();
 
 		//Créatoin de la fenêtre, contenant l'objet Group
-        Scene scene = new Scene(root, 1000, 800, Color.LIGHTGREEN);
+        Scene scene = new Scene(root, 1000, 900, Color.LIGHTGREEN);
 
 		//Ajout de la fenêtre à l'objet Stage
 		primaryStage.setScene(scene);
