@@ -325,6 +325,7 @@ public class Plateau{
 				surCaseInterdite = estSurCaseInterdite();
 
 				//si les coordonnées sont sur une case interdite, alors on re-génère
+				System.out.println("sur case interdite: " + surCaseInterdite);
 				if(surCaseInterdite){
 					this.aleaX = r.nextInt(15);
 					this.aleaY = r.nextInt(15);

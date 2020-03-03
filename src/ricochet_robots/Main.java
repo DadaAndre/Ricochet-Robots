@@ -70,8 +70,8 @@ public class Main extends Application {
         DessinRobot desR = new DessinRobot(tableauRobots);
 
 		//On dessine le plateau
-		desp.dessinerPlateau(plateauJeu, root, 0, 0);
-        desR.dessinerRobot(plateauJeu, root);
+		desp.dessinerPlateau(plateauJeu, root, Case.DIM, Case.DIM);
+        desR.dessinerRobot(plateauJeu, root, Case.DIM, Case.DIM);
 
 		//On montre les dessins
         primaryStage.show();

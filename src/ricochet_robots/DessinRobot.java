@@ -46,13 +46,25 @@ public class DessinRobot{
 		}
     }
 
-    public void dessinerRobot(Plateau plateau, Group root){
+    public void dessinerRobot(Plateau plateau, Group root, int departX, int departY){
 
 		for(int i = 0; i < tableauRobot.size(); i++){
             root.getChildren().add(tabImageRobot.get(i));
-
+			//on récupère la couleur d'un robot
+			String couleurRobotActuel = tableauRobot.get(i).getCouleur();
+			for (HashMap.Entry<String,ImageView> m : listeImageRobot.entrySet()) {
+			   if(couleurRobotActuel == m.getKey()){
+				   m.getValue().setX(tableauRobot.get(i).getPositionX()* Case.DIM + departX);
+			       m.getValue().setY(tableauRobot.get(i).getPositionY()* Case.DIM + departY);
+				   System.out.println("robot" + i + "(colo: "+ couleurRobotActuel +"): posX: " + tableauRobot.get(i).getPositionX() + " posY: " + tableauRobot.get(i).getPositionY());
+				   break;
+			   }
+			  //System.out.println("clé: "+ m.getKey() + " | valeur: " + m.getValue());
+			}
 		}
-        tabImageRobot.get(0).setX(0);
-        tabImageRobot.get(0).setY(0);
+
+
+        // tabImageRobot.get(0).setX(0);
+        // tabImageRobot.get(0).setY(0);
 	}
 }

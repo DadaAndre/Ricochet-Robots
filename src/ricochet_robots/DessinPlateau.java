@@ -84,8 +84,8 @@ public class DessinPlateau{
 				//ensuite, on l'ajoute au groupe d'objets graphique
 				root.getChildren().add(ensDessinCase.get(index));
 				//On place cette tile à une position donnée
-				ensDessinCase.get(index).setX(departGrilleX + (Case.DIM * (x+1)));
-				ensDessinCase.get(index).setY(departGrilleY + (Case.DIM * (y+1)));
+				ensDessinCase.get(index).setX(departGrilleX + (Case.DIM * x));
+				ensDessinCase.get(index).setY(departGrilleY + (Case.DIM * y));
 				index++;
 			}
 		}
