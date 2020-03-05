@@ -49,8 +49,7 @@ public class Main extends Application{
 
 		//Tirage du jeton aléatoirement
 		Jeton jetonTire = Jeton.tirageJeton();
-		jetonTire.dessinerFond();
-		jetonTire.dessinerJetonTire();
+		root.getChildren().add(jetonTire);
 
 		//Initialisation des dessins du plateau
 		//DessinPlateau desp = new DessinPlateau(root, jetonTire);

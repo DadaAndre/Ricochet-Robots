@@ -56,18 +56,18 @@ public class Jeton extends Parent{
 	public void dessinerJetonTire(){
 		this.imageJeton = new ImageView(new Image("images/imgJeton/" + forme + "-" + couleur + ".png"));
 		this.getChildren().add(this.imageJeton);
-		refresh();
+		refresh(this.imageJeton);
 	}
 
 	public void dessinerFond(){
 		this.fondPiece = new ImageView(new Image("images/imgJeton/fondPiece.png"));
 		this.getChildren().add(this.fondPiece);
-		refresh();
+		refresh(this.fondPiece);
 	}
 
-	public void refresh(){
-		this.fondPiece.setX(8 * Case.DIM + 0.5  * Case.DIM);
-		this.fondPiece.setY(8 * Case.DIM + 0.5  * Case.DIM);
+	public void refresh(ImageView image){
+		image.setX(8 * Case.DIM + 0.5  * Case.DIM);
+		image.setY(8 * Case.DIM + 0.5  * Case.DIM);
 	}
 
 
