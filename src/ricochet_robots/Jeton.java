@@ -1,10 +1,30 @@
 package ricochet_robots;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
+import java.util.ArrayList;
+
+import java.util.HashMap;
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import javafx.scene.shape.Rectangle;
+
+import javafx.scene.Parent;
+
 import java.util.Random;
 
-public class  Jeton{
+public class Jeton extends Parent{
 	private String forme;
 	private String couleur;
+	private ImageView fondPiece;
+	private ImageView imageJeton;
 
 	Random r = new Random();
 
@@ -12,6 +32,8 @@ public class  Jeton{
 		this.forme = forme;
 		this.couleur = couleur;
 
+		dessinerFond();
+		dessinerJetonTire();
 	}
 
 	public String getForme(){
@@ -30,5 +52,23 @@ public class  Jeton{
 		int tirForme = r.nextInt(4);
 		return new Jeton(forme[tirForme], couleur[tirCouleur]);
 	}
+
+	public void dessinerJetonTire(){
+		this.imageJeton = new ImageView(new Image("images/imgJeton/" + forme + "-" + couleur + ".png"));
+		this.getChildren().add(this.imageJeton);
+		refresh();
+	}
+
+	public void dessinerFond(){
+		this.fondPiece = new ImageView(new Image("images/imgJeton/fondPiece.png"));
+		this.getChildren().add(this.fondPiece);
+		refresh();
+	}
+
+	public void refresh(){
+		this.fondPiece.setX(8 * Case.DIM + 0.5  * Case.DIM);
+		this.fondPiece.setY(8 * Case.DIM + 0.5  * Case.DIM);
+	}
+
 
 }

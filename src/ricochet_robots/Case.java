@@ -1,6 +1,22 @@
 package ricochet_robots;
 
-public class Case{
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
+import java.util.ArrayList;
+
+import java.util.HashMap;
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import javafx.scene.shape.Rectangle;
+
+public class Case extends CaseCalque {
 
 	public static final int DIM = 49;
 
@@ -9,18 +25,31 @@ public class Case{
 	private int valBas;
 	private int valGauche;
 
-	public Case(int[] tableau) {
-		this.valHaut = tableau[0];
-		this.valDroit = tableau[1];
-		this.valBas = tableau[2];
-		this.valGauche = tableau[3];
+	protected int xCase;
+	protected int yCase;
+
+	private int id;
+
+	public Case(int[] tableau, int xCase, int yCase) {
+		this(tableau[0], tableau[1], tableau[2], tableau[3], xCase, yCase, true);
 	}
 
-	public Case(int valHaut, int valDroit, int valBas, int valGauche) {
+	public Case(int valHaut, int valDroit, int valBas, int valGauche, int xCase, int yCase) {
+		this(valHaut, valDroit, valBas, valGauche, xCase, yCase, true);
+	}
+
+	public Case(int valHaut, int valDroit, int valBas, int valGauche, int xCase, int yCase, boolean loadImage) {
 		this.valHaut = valHaut;
 		this.valDroit = valDroit;
 		this.valBas = valBas;
 		this.valGauche = valGauche;
+		this.xCase = xCase;
+		this.yCase = yCase;
+
+		this.id = Utilitaire.CaseToInt(this);
+
+		this.addImage(new Image("images/imgPlateau/img" + id + ".png"));
+		refresh();
 	}
 
 	public int getValHaut() {
@@ -39,6 +68,25 @@ public class Case{
 	   return this.valGauche;
 	}
 
+	public int getXCase() {
+	   return xCase;
+	}
+
+	public int getYCase() {
+	   return yCase;
+	}
+
+	public int getID() {
+	   return id;
+	}
+
+	public void setValue(int xCase, int yCase){
+		this.xCase = xCase;
+		this.yCase = yCase;
+		refresh();
+	}
+
+
 	//Retourne vrai si les valeurs de la case envoyée sont équivalentes à celles qu'on teste
 	public boolean isValueEquals(Case caseSelect){
 	   return caseSelect.valHaut == valHaut && caseSelect.valBas == valBas && caseSelect.valGauche == valGauche && caseSelect.valDroit == valDroit;
@@ -51,6 +99,16 @@ public class Case{
 	   this.valBas = this.valDroit;
 	   this.valDroit = this.valHaut;
 	   this.valHaut = temp;
+
+	   this.id = Utilitaire.CaseToInt(this);
+
+	   this.addImage(new Image("images/imgPlateau/img" + id + ".png"));
+
+	}
+
+	public void refresh(){
+		this.setLayoutX(this.xCase * Case.DIM + Plateau.DEPART_X);
+		this.setLayoutY(this.yCase * Case.DIM + Plateau.DEPART_Y);
 	}
 
 	//affichage de la Case

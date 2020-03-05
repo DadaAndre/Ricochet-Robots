@@ -29,7 +29,7 @@ public class Utilitaire{
 	}
 
 	//Transforme une chaine de caractère en une mini-grille
-	public static Case[][]  stringToMiniGrille(String chaine){
+	public static Case[][] stringToMiniGrille(String chaine){
 
 		//On "découpe" la chaine de caractère entre chaque virgule, et on récupère dans tab1D un tableau de chaine de caractère
 		String[] tab1D = chaine.split(",");
@@ -45,7 +45,7 @@ public class Utilitaire{
 				 dans laquelle on envoie un tableau de nombre (ex: [1,0,0,1]), récolté à partir d'un entier,
 				 qui lui même est dù à une chaine de caractère contenu dans chaine1, chaine2,chaine3 ou chaine4
 				*/
-				miniGrille[x][y] = new Case(Utilitaire.intToBinary(Integer.parseInt(tab1D[index])));
+				miniGrille[x][y] = new Case(Utilitaire.intToBinary(Integer.parseInt(tab1D[index])), x, y);
 				index++;
 			}
 		}

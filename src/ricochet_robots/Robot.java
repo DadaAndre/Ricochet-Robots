@@ -3,7 +3,26 @@ package ricochet_robots;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Robot{
+import javafx.scene.input.*;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
+import java.util.ArrayList;
+
+import java.util.HashMap;
+import javafx.application.Application;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.Parent;
+
+public class Robot extends Parent{
 
 	Random r = new Random();
 
@@ -14,13 +33,20 @@ public class Robot{
 	private int positionY;
 	private Plateau plateauJeu;
 
+	private ImageView imageRobot;
+
 	public Robot(Plateau plateauJeu, String couleur, int positionX, int positionY){
+		System.out.println("couleur:" + couleur);
 		this.couleur = couleur;
 		this.positionInitialeX = positionX;
 		this.positionInitialeY = positionY;
 		this.positionX = positionX;
 		this.positionY = positionY;
 		this.plateauJeu = plateauJeu;
+		System.out.println("couleur:" + couleur);
+
+		dessinerRobot();
+
 	}
 
 	public int getPositionInitialeX(){
@@ -154,5 +180,17 @@ public class Robot{
 				System.out.println("x: " + positionX + " y: " + positionY);
 			}
 		}
+	}
+
+	public void dessinerRobot(){
+		System.out.println("images/imgRobot/" + this.couleur + ".png");
+		this.imageRobot = new ImageView(new Image("images/imgRobot/" + this.couleur + ".png"));
+		this.getChildren().add(this.imageRobot);
+		refresh();
+	}
+
+	public void refresh(){
+		this.imageRobot.setX(this.positionX * Case.DIM + Plateau.DEPART_X);
+		this.imageRobot.setY(this.positionY * Case.DIM + Plateau.DEPART_X);
 	}
 }

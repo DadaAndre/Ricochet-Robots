@@ -8,6 +8,7 @@ import javafx.scene.image.ImageView;
 
 import java.util.HashMap;
 import javafx.application.Application;
+import javafx.scene.input.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -17,7 +18,12 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.shape.Rectangle;
 
-public class Plateau{
+import javafx.scene.Parent;
+
+public class Plateau extends Parent{
+
+	public static final int DEPART_X = 49;
+	public static final int DEPART_Y = 49;
 
 	//Un tableau de miniGrille
 	private ArrayList<Case[][]> tableauMiniGrille = new ArrayList<>();
@@ -56,7 +62,22 @@ public class Plateau{
 		creerPlateau();
 
 		//Affichage du plateau
-		afficheGrille(plateau);
+		afficheGrille();
+
+		System.out.println(plateau[0][0].getID());
+
+		this.setOnMousePressed(new EventHandler<MouseEvent>(){
+			public void handle(MouseEvent me){
+				//appuyer
+				System.out.println("case  appuyé!!" );
+			}
+		});
+		this.setOnMouseReleased(new EventHandler<MouseEvent>(){
+			public void handle(MouseEvent me){
+				//relacher();
+				System.out.println("case relaché!!" );
+			}
+		});
 	}
 
 	//Récupère une case à une position donnée
@@ -74,10 +95,11 @@ public class Plateau{
 	}
 
 	//Affichage de la grille
-	public void afficheGrille(Case[][] grille){
-		for(int i = 0; i < grille.length; i++){
-			for(int j = 0; j< grille[i].length ; j++){
-				System.out.print(grille[j][i]);
+	public void afficheGrille(){
+		for(int y = 0; y < plateau[0].length; y++){
+			for(int x = 0; x < plateau.length; x++){
+				this.plateau[x][y].setValue(x,y);
+				this.getChildren().add(plateau[x][y]);
 			}
 			System.out.println();
 		}
@@ -279,6 +301,7 @@ public class Plateau{
 			for(int y = demiTabY; y < this.plateau.length ; y++){
 				for(int x = demiTabX ; x < this.plateau[0].length; x++){
 					this.plateau[x][y] = miniGrille[x-demiTabX][y-demiTabY];
+					System.out.println(this.plateau[x][y]);
 				}
 			}
 		}
@@ -288,6 +311,7 @@ public class Plateau{
 			for(int y = demiTabY; y < this.plateau.length ; y++){
 				for(int x = 0; x < demiTabX; x++){
 					this.plateau[x][y] = miniGrille[x][y-demiTabX];
+					//this.plateau[x][y].setValue(x,y);
 				}
 			}
 		}
@@ -377,11 +401,11 @@ public class Plateau{
 		int[][] coordonnee = {{2,6,5},{3,3,6},{1,1,3},{0,1,6},{0,7,5},{1,5,1},{2,5,1},{3,4,1},{1,6,4},{0,2,4},{3,6,2},{2,1,3},{3,1,5},{2,2,6},{0,5,2},{1,4,6}};
 		for(int i=0; i <= forme.length -1; i++){
 			for(int j=0; j <= couleur.length -1; j++){
-				tableauMiniGrille.get(coordonnee[k][0])[coordonnee[k][1]][coordonnee[k][2]] = new CaseJeton(tableauMiniGrille.get(coordonnee[k][0])[coordonnee[k][1]][coordonnee[k][2]].getValHaut(), tableauMiniGrille.get(coordonnee[k][0])[coordonnee[k][1]][coordonnee[k][2]].getValDroit(), tableauMiniGrille.get(coordonnee[k][0])[coordonnee[k][1]][coordonnee[k][2]].getValBas(), tableauMiniGrille.get(coordonnee[k][0])[coordonnee[k][1]][coordonnee[k][2]].getValGauche(), forme[i], couleur[j]);
+				tableauMiniGrille.get(coordonnee[k][0])[coordonnee[k][1]][coordonnee[k][2]] = new CaseJeton(tableauMiniGrille.get(coordonnee[k][0])[coordonnee[k][1]][coordonnee[k][2]].getValHaut(), tableauMiniGrille.get(coordonnee[k][0])[coordonnee[k][1]][coordonnee[k][2]].getValDroit(), tableauMiniGrille.get(coordonnee[k][0])[coordonnee[k][1]][coordonnee[k][2]].getValBas(), tableauMiniGrille.get(coordonnee[k][0])[coordonnee[k][1]][coordonnee[k][2]].getValGauche(),i,j, forme[i], couleur[j]);
 				k=k+1;
 			}
 		}
-		tableauMiniGrille.get(3)[7][4] = new CaseJeton(tableauMiniGrille.get(3)[7][4].getValHaut(), tableauMiniGrille.get(3)[7][4].getValDroit(), tableauMiniGrille.get(3)[7][4].getValBas(), tableauMiniGrille.get(3)[7][4].getValGauche(), "spirale", "multi");
+		//tableauMiniGrille.get(3)[7][4] = new CaseJeton(tableauMiniGrille.get(3)[7][4].getValHaut(), tableauMiniGrille.get(3)[7][4].getValDroit(), tableauMiniGrille.get(3)[7][4].getValBas(), tableauMiniGrille.get(3)[7][4].getValGauche(), "spirale", "multi");
 	}
 
 	public int getTaillePlateau(){
