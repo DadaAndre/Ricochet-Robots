@@ -61,7 +61,11 @@ public class Robot{
 	}
 
 	public String getCouleur(){
-		return couleur;
+		return this.couleur;
+	}
+
+	public void setCouleur(String couleur){
+		this.couleur = couleur;
 	}
 
 	public static boolean estSurAutresRobots(int aleaX, int aleaY, ArrayList<Robot> tableauRobots){
@@ -78,7 +82,7 @@ public class Robot{
 
 	public boolean estUneCollisionRobot(Deplacement direction, ArrayList<Robot> tableauRobots){
 		switch(direction){
-			case DIRECTION_HAUT:
+			case UP:
 				for(int i = 0; i< tableauRobots.size(); i++){
 					if(tableauRobots.get(i).getCouleur() != couleur && tableauRobots.get(i).getPositionX() == positionX &&  tableauRobots.get(i).getPositionY() == (positionY - 1)){
 						return true;
@@ -86,7 +90,7 @@ public class Robot{
 				}
 				return false;
 
-			case DIRECTION_BAS:
+			case DOWN:
 				for(int i = 0; i< tableauRobots.size(); i++){
 					if(tableauRobots.get(i).getCouleur() != couleur && tableauRobots.get(i).getPositionX() == positionX &&  tableauRobots.get(i).getPositionY() == (positionY + 1)){
 						return true;
@@ -94,7 +98,7 @@ public class Robot{
 				}
 				return false;
 
-			case DIRECTION_GAUCHE:
+			case LEFT:
 				for(int i = 0; i< tableauRobots.size(); i++){
 					if(tableauRobots.get(i).getCouleur() != couleur && tableauRobots.get(i).getPositionX() == (positionX - 1)  &&  tableauRobots.get(i).getPositionY() == positionY){
 						return true;
@@ -102,7 +106,7 @@ public class Robot{
 				}
 				return false;
 
-			case DIRECTION_DROITE:
+			case RIGHT:
 				for(int i = 0; i< tableauRobots.size(); i++){
 					if(tableauRobots.get(i).getCouleur() != couleur && tableauRobots.get(i).getPositionX() == (positionX + 1)  &&  tableauRobots.get(i).getPositionY() == positionY){
 						return true;
@@ -113,28 +117,41 @@ public class Robot{
 		return true;
 	}
 
+	public boolean estRobotAJouer(String couleurTire){
+		if(this.couleur.equals(couleurTire)){
+			return true;
+		}
+		return false;
+	}
+
 	//Déplacement du robot
-	public void deplacementRobot(Deplacement direction, ArrayList<Robot> listeRobot){
+	public void move(Deplacement direction, ArrayList<Robot> listeRobot){
+
 		//Vérification de la direction choisie
-		if(direction == Deplacement.DIRECTION_HAUT){
+		if(direction == Deplacement.UP){
 			//Tant que le robot ne rencontre pas un mur en haut, il se dirige vers le haut
-			while(this.plateauJeu.getCase(positionX, positionY - 1).getValHaut() != 1 && !estUneCollisionRobot(direction, listeRobot)){
+			while(this.plateauJeu.getCase(positionX, positionY).getValHaut() != 1 && this.plateauJeu.getCase(positionX, positionY - 1).getValBas() != 1 && !estUneCollisionRobot(direction, listeRobot)){
 				this.positionY -= 1;
+				System.out.println("x: " + positionX + " y: " + positionY);System.out.println("ya un mur en haut:" + this.plateauJeu.getCase(positionX, positionY).getValHaut());
+				System.out.println("ya un mur en haut:" + this.plateauJeu.getCase(positionX, positionY).getValHaut());
 			}
-		}else if(direction == Deplacement.DIRECTION_BAS){
+		}else if(direction == Deplacement.DOWN){
 			//Tant que le robot ne rencontre pas un mur en bas, il se dirige vers le bas
-			while(this.plateauJeu.getCase(positionX, positionY + 1).getValBas() != 1 && !estUneCollisionRobot(direction, listeRobot)){
+			while(this.plateauJeu.getCase(positionX, positionY).getValBas() != 1 && this.plateauJeu.getCase(positionX, positionY +1).getValHaut() != 1 && !estUneCollisionRobot(direction, listeRobot)){
 				this.positionY += 1;
+				System.out.println("x: " + positionX + " y: " + positionY);
 			}
-		}else if(direction == Deplacement.DIRECTION_GAUCHE){
+		}else if(direction == Deplacement.LEFT){
 			//Tant que le robot ne rencontre pas un mur à gauche, il se dirige vers la gauche
-			while(this.plateauJeu.getCase(positionX - 1, positionY).getValGauche() != 1 && !estUneCollisionRobot(direction, listeRobot)){
+			while(this.plateauJeu.getCase(positionX, positionY).getValGauche() != 1 && this.plateauJeu.getCase(positionX -1, positionY).getValDroit() != 1&& !estUneCollisionRobot(direction, listeRobot)){
 				this.positionX -= 1;
+				System.out.println("x: " + positionX + " y: " + positionY);
 			}
-		}else if(direction == Deplacement.DIRECTION_DROITE){
+		}else if(direction == Deplacement.RIGHT){
 			//Tant que le robot ne rencontre pas un mur à droite, il se dirige vers la droite
-			while(this.plateauJeu.getCase(positionX + 1, positionY).getValDroit() != 1 && !estUneCollisionRobot(direction, listeRobot)){
+			while(this.plateauJeu.getCase(positionX, positionY).getValDroit() != 1 && this.plateauJeu.getCase(positionX + 1, positionY).getValGauche() != 1  && !estUneCollisionRobot(direction, listeRobot)){
 				this.positionX += 1;
+				System.out.println("x: " + positionX + " y: " + positionY);
 			}
 		}
 	}

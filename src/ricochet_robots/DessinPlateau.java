@@ -19,6 +19,7 @@ import javafx.scene.shape.Rectangle;
 public class DessinPlateau{
 
 	Group root;
+	Jeton jetonTire;
 
 	//Associe un chiffre du plateau à une image correspondante au chiffre
 	HashMap<Integer, Image> listeImagesPlateau;
@@ -36,8 +37,9 @@ public class DessinPlateau{
 	//L'ensemble des images possibles aux jetons
 	ArrayList<Image> tabImageJeton;
 
-	public DessinPlateau(Group root){
+	public DessinPlateau(Group root, Jeton jetonTire){
 		this.root = root;
+		this.jetonTire = jetonTire;
 		crerListeImagePlateau();
 		creeListeImageJeton();
 	}
@@ -85,8 +87,6 @@ public class DessinPlateau{
 		int index = 0;
 		int count = 0;
 
-		Jeton jetonTire = Jeton.tirageJeton();
-
 		//On parcours le plateau
 		for(int y = 0; y < plateau.getTaillePlateau(); y++){
 			for(int x = 0; x < plateau.getTaillePlateau() ; x++){
@@ -117,8 +117,14 @@ public class DessinPlateau{
 							ensDessinJeton.get(count).setY(departGrilleY + (y * Case.DIM));
 							count++;
 						}
-						System.out.println("tire: " + jetonTire.getForme() + "," + jetonTire.getCouleur());
-						if((jetonTire.getForme() + "," + jetonTire.getCouleur()).equals(m.getKey())){
+						System.out.println("tire: " + this.jetonTire.getForme() + "," + this.jetonTire.getCouleur());
+						if((this.jetonTire.getForme() + "," + this.jetonTire.getCouleur()).equals(m.getKey())){
+
+							ImageView fondPionSelect = new ImageView(new Image("images/imgJeton/fondPiece.png"));
+							this.root.getChildren().add(fondPionSelect);
+							fondPionSelect.setX(8 * Case.DIM + 0.5  * Case.DIM);
+							fondPionSelect.setY(8 * Case.DIM + 0.5  * Case.DIM);
+							
 							ensDessinJeton.add(new ImageView(m.getValue()));
 							this.root.getChildren().add(ensDessinJeton.get(count));
 							ensDessinJeton.get(count).setX(8 * Case.DIM + 0.5  * Case.DIM);
@@ -129,5 +135,9 @@ public class DessinPlateau{
 				}
 			}
 		}
+	}
+
+	public void refresh(){
+
 	}
 }

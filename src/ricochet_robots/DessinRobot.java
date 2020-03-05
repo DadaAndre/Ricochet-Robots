@@ -27,11 +27,15 @@ public class DessinRobot{
     HashMap<String, ImageView> listeImageRobot;
 
 	Group root;
+	int departX;
+	int departY;
 
     //Liste des couleurs du robots
     String[] listeCouleurRobot = {"rouge", "bleu", "vert", "jaune"};
 
-    public DessinRobot(Group root, ArrayList<Robot> tableauRobot){
+    public DessinRobot(Group root, ArrayList<Robot> tableauRobot, int departX, int departY){
+		this.departX = departX;
+		this.departY = departY;
 		this.root = root;
         this.tableauRobot = tableauRobot;
         creerListeImageRobot();
@@ -49,24 +53,20 @@ public class DessinRobot{
 		}
     }
 
-    public void dessinerRobot(Plateau plateau, int departX, int departY){
-
+    public void dessinerRobot(Plateau plateau){
 		for(int i = 0; i < tableauRobot.size(); i++){
             this.root.getChildren().add(tabImageRobot.get(i));
 			//on récupère la couleur d'un robot
-			String couleurRobotActuel = tableauRobot.get(i).getCouleur();
-			for (HashMap.Entry<String,ImageView> m : listeImageRobot.entrySet()) {
-			   if(couleurRobotActuel == m.getKey()){
-				   m.getValue().setX(tableauRobot.get(i).getPositionX()* Case.DIM + departX);
-			       m.getValue().setY(tableauRobot.get(i).getPositionY()* Case.DIM + departY);
-				   System.out.println("robot" + i + "(colo: "+ couleurRobotActuel +"): posX: " + tableauRobot.get(i).getPositionX() + " posY: " + tableauRobot.get(i).getPositionY());
-				   break;
-			   }
-			}
+			refresh(tableauRobot.get(i));
 		}
+	}
 
-
-        // tabImageRobot.get(0).setX(0);
-        // tabImageRobot.get(0).setY(0);
+	public void refresh(Robot robot){
+		for (HashMap.Entry<String,ImageView> m : listeImageRobot.entrySet()) {
+		   if(robot.getCouleur() == m.getKey()){
+			   m.getValue().setX(robot.getPositionX()* Case.DIM + departX);
+			   m.getValue().setY(robot.getPositionY()* Case.DIM + departX);
+		   }
+		}
 	}
 }
