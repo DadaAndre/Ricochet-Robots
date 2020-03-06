@@ -9,6 +9,7 @@ import java.util.HashMap;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.input.*;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -28,6 +29,8 @@ public class Case extends CaseCalque {
 	protected int xCase;
 	protected int yCase;
 
+	protected boolean clic = false;
+
 	private int id;
 
 	public Case(int[] tableau, int xCase, int yCase) {
@@ -46,10 +49,24 @@ public class Case extends CaseCalque {
 		this.xCase = xCase;
 		this.yCase = yCase;
 
+
 		this.id = Utilitaire.CaseToInt(this);
 
 		this.addImage(new Image("images/imgPlateau/img" + id + ".png"));
 		refresh();
+
+		this.setOnMousePressed(new EventHandler<MouseEvent>(){
+			public void handle(MouseEvent me){
+				//appuyer
+				System.out.println("case  appuyé!!" );
+			}
+		});
+		this.setOnMouseReleased(new EventHandler<MouseEvent>(){
+			public void handle(MouseEvent me){
+				//relacher();
+				System.out.println("case relaché!!" );
+			}
+		});
 	}
 
 	public int getValHaut() {
@@ -85,6 +102,15 @@ public class Case extends CaseCalque {
 		this.yCase = yCase;
 		refresh();
 	}
+
+	// public Robot contientRobot(ArrayList<Robot> tableauRobots){
+	// 	for(int i = 0; i < tableauRobots.size(); i++){
+	// 		if(tableauRobots.get(i).getPositionX() == this.xCase && tableauRobots.get(i).getPositionY() == this.yCase){
+	// 			return tableauRobots.get(i);
+	// 		}
+	// 	}
+	// 	return null;
+	// }
 
 
 	//Retourne vrai si les valeurs de la case envoyée sont équivalentes à celles qu'on teste

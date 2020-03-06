@@ -15,12 +15,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.event.EventHandler;
+import javafx.scene.input.*;
 import javafx.scene.shape.Rectangle;
 
 
 public class Main extends Application{
-
-	private	Robot robotSelect = null;
 
     public static void main(String[] args){
 		//Lancement de l'application avec javaFx
@@ -33,7 +32,7 @@ public class Main extends Application{
 
         primaryStage.setTitle("Ricochet Robots");
 
-		//Créatoin du groupe contenant tout les objets graphiques
+		//Créatoin du groupe contenant tout les groupes graphiques
         Group root = new Group();
 
 		//Créatoin de la fenêtre, contenant l'objet Group
@@ -51,13 +50,6 @@ public class Main extends Application{
 		Jeton jetonTire = Jeton.tirageJeton();
 		root.getChildren().add(jetonTire);
 
-		//Initialisation des dessins du plateau
-		//DessinPlateau desp = new DessinPlateau(root, jetonTire);
-        //DessinRobot desR = new DessinRobot(root, tableauRobots,  Case.DIM, Case.DIM);
-
-		//On dessine le plateau
-		//desp.dessinerPlateau(plateauJeu, Case.DIM, Case.DIM);
-
         //Un tableau de Robots
     	ArrayList<Robot> tableauRobots = new ArrayList<>();
 
@@ -72,52 +64,49 @@ public class Main extends Application{
 		root.getChildren().add(robotJaune);
         //On ajoute le robot créé à une ArrayList de Robot
         tableauRobots.add(robotJaune);
+		robotJaune.ajouterObserveurRobotClique(plateauJeu);
 
         int[] posRobotBleu = plateauJeu.positionRobotNonUtilise(tableauRobots);
         Robot robotBleu = new Robot(plateauJeu, "bleu", posRobotBleu[0], posRobotBleu[1]);
 		root.getChildren().add(robotBleu);
         tableauRobots.add(robotBleu);
+		robotBleu.ajouterObserveurRobotClique(plateauJeu);
 
         int[] posRobotRouge = plateauJeu.positionRobotNonUtilise(tableauRobots);
         Robot robotRouge = new Robot(plateauJeu, "rouge", posRobotRouge[0], posRobotRouge[1]);
 		root.getChildren().add(robotRouge);
         tableauRobots.add(robotRouge);
+		robotRouge.ajouterObserveurRobotClique(plateauJeu);
 
         int[] posRobotVert = plateauJeu.positionRobotNonUtilise(tableauRobots);
         Robot robotVert = new Robot(plateauJeu, "vert", posRobotVert[0], posRobotVert[1]);
 		root.getChildren().add(robotVert);
         tableauRobots.add(robotVert);
+		robotVert.ajouterObserveurRobotClique(plateauJeu);
 
-		for(int i =0; i< tableauRobots.size(); i++){
-			if(tableauRobots.get(i).estRobotAJouer(jetonTire.getCouleur())){
-				robotSelect = tableauRobots.get(i);
-				break;
-			}
-		}
-
-		System.out.println("couleur robot: " + robotSelect.getCouleur());
-
+		//
+		// for(int i =0; i< tableauRobots.size(); i++){
+		// 	if(tableauRobots.get(i).estRobotAJouer(jetonTire.getCouleur())){
+		// 		robotSelect = tableauRobots.get(i);
+		// 		break;
+		// 	}
+		// }
 		scene.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
 			public void handle(KeyEvent ke) {
 				if (ke.getCode() == KeyCode.DOWN) {
-					System.out.println("Key Pressed: " + ke.getCode());
-					robotSelect.move(Deplacement.DOWN, tableauRobots);
-					robotSelect.refresh();
+					plateauJeu.deplacerRobot(tableauRobots,Deplacement.DOWN);
 					ke.consume(); // <-- stops passing the event to next node
 				} else if (ke.getCode() == KeyCode.LEFT) {
 					System.out.println("Key Pressed: " + ke.getCode());
-					robotSelect.move(Deplacement.LEFT, tableauRobots);
-					robotSelect.refresh();
+					plateauJeu.deplacerRobot(tableauRobots,Deplacement.LEFT);
 					ke.consume(); // <-- stops passing the event to next node
 				} else if (ke.getCode() == KeyCode.UP) {
 					System.out.println("Key Pressed: " + ke.getCode());
-					robotSelect.move(Deplacement.UP, tableauRobots);
-					robotSelect.refresh();
+					plateauJeu.deplacerRobot(tableauRobots,Deplacement.UP);
 					ke.consume(); // <-- stops passing the event to next node
 				} else if (ke.getCode() == KeyCode.RIGHT) {
 					System.out.println("Key Pressed: " + ke.getCode());
-					robotSelect.move(Deplacement.RIGHT, tableauRobots);
-					robotSelect.refresh();
+					plateauJeu.deplacerRobot(tableauRobots,Deplacement.RIGHT);
 					ke.consume(); // <-- stops passing the event to next node
 				}
 			}

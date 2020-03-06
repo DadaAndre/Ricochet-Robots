@@ -20,7 +20,7 @@ import javafx.scene.shape.Rectangle;
 
 import javafx.scene.Parent;
 
-public class Plateau extends Parent{
+public class Plateau extends Parent implements RobotClickedObserver{
 
 	public static final int DEPART_X = 49;
 	public static final int DEPART_Y = 49;
@@ -37,6 +37,9 @@ public class Plateau extends Parent{
 
 	//Le plateau
 	private Case[][] plateau;
+
+	//Robot joué
+	Robot robotSelect = null;
 
 	//Zone de positionnement interdite des robots;
 	private int[][] deadZone = {{7,7},{8,7},{7,8},{8,8}};
@@ -63,21 +66,18 @@ public class Plateau extends Parent{
 
 		//Affichage du plateau
 		afficheGrille();
+	}
 
-		System.out.println(plateau[0][0].getID());
-
-		this.setOnMousePressed(new EventHandler<MouseEvent>(){
-			public void handle(MouseEvent me){
-				//appuyer
-				System.out.println("case  appuyé!!" );
-			}
-		});
-		this.setOnMouseReleased(new EventHandler<MouseEvent>(){
-			public void handle(MouseEvent me){
-				//relacher();
-				System.out.println("case relaché!!" );
-			}
-		});
+	@Override
+	public void clicSurRobot(Robot robot){
+		//tu fais ca
+		System.out.println("Robot " + robot.getCouleur() + " cliqué");
+		robotSelect = robot;
+	}
+	
+	public void deplacerRobot(ArrayList<Robot> tableauRobots, Deplacement direction){
+		robotSelect.move(tableauRobots,direction);
+		robotSelect.refresh();
 	}
 
 	//Récupère une case à une position donnée
@@ -98,6 +98,7 @@ public class Plateau extends Parent{
 	public void afficheGrille(){
 		for(int y = 0; y < plateau[0].length; y++){
 			for(int x = 0; x < plateau.length; x++){
+				System.out.print(plateau[x][y]);
 				this.plateau[x][y].setValue(x,y);
 				this.getChildren().add(plateau[x][y]);
 			}
@@ -301,7 +302,6 @@ public class Plateau extends Parent{
 			for(int y = demiTabY; y < this.plateau.length ; y++){
 				for(int x = demiTabX ; x < this.plateau[0].length; x++){
 					this.plateau[x][y] = miniGrille[x-demiTabX][y-demiTabY];
-					System.out.println(this.plateau[x][y]);
 				}
 			}
 		}
@@ -349,7 +349,6 @@ public class Plateau extends Parent{
 				surCaseInterdite = estSurCaseInterdite();
 
 				//si les coordonnées sont sur une case interdite, alors on re-génère
-				System.out.println("sur case interdite: " + surCaseInterdite);
 				if(surCaseInterdite){
 					this.aleaX = r.nextInt(15);
 					this.aleaY = r.nextInt(15);

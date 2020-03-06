@@ -22,7 +22,7 @@ import javafx.stage.Stage;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.Parent;
 
-public class Robot extends Parent{
+public class Robot extends Parent implements RobotClickedObservable{
 
 	Random r = new Random();
 
@@ -33,20 +33,55 @@ public class Robot extends Parent{
 	private int positionY;
 	private Plateau plateauJeu;
 
+	private boolean clic = false;
+
 	private ImageView imageRobot;
 
+	private ArrayList<RobotClickedObserver> listObserver;
+
 	public Robot(Plateau plateauJeu, String couleur, int positionX, int positionY){
-		System.out.println("couleur:" + couleur);
 		this.couleur = couleur;
 		this.positionInitialeX = positionX;
 		this.positionInitialeY = positionY;
 		this.positionX = positionX;
 		this.positionY = positionY;
 		this.plateauJeu = plateauJeu;
-		System.out.println("couleur:" + couleur);
 
 		dessinerRobot();
 
+		listObserver = new ArrayList<>();
+
+		this.setOnMousePressed(new EventHandler<MouseEvent>(){
+			public void handle(MouseEvent me){
+				//System.out.println("Robot " + couleur +  " appuyé!!" );
+				notifierRobotClique(Robot.this);
+			}
+		});
+		this.setOnMouseReleased(new EventHandler<MouseEvent>(){
+			public void handle(MouseEvent me){
+				//relacher();
+				//System.out.println("Robot " + couleur +" relaché!!" );
+			}
+		});
+		clic = false;
+
+	}
+
+	@Override
+	public void notifierRobotClique(Robot robot){
+		for(int i = 0; i < listObserver.size(); i++){
+			plateauJeu.clicSurRobot(robot);
+		}
+	}
+
+	@Override
+	public void ajouterObserveurRobotClique(RobotClickedObserver robotObserver){
+		listObserver.add(robotObserver);
+	}
+
+	@Override
+	public void supprimerObserveurRobotClique(RobotClickedObserver robotObserver){
+		listObserver.remove(robotObserver);
 	}
 
 	public int getPositionInitialeX(){
@@ -150,40 +185,38 @@ public class Robot extends Parent{
 		return false;
 	}
 
+	public boolean caseAvecRobot(int xCase, int yCase){
+		return xCase == this.positionX && yCase == this.positionY;
+	}
+
 	//Déplacement du robot
-	public void move(Deplacement direction, ArrayList<Robot> listeRobot){
+	public void move(ArrayList<Robot> listeRobot,Deplacement direction){
 
 		//Vérification de la direction choisie
 		if(direction == Deplacement.UP){
 			//Tant que le robot ne rencontre pas un mur en haut, il se dirige vers le haut
 			while(this.plateauJeu.getCase(positionX, positionY).getValHaut() != 1 && this.plateauJeu.getCase(positionX, positionY - 1).getValBas() != 1 && !estUneCollisionRobot(direction, listeRobot)){
 				this.positionY -= 1;
-				System.out.println("x: " + positionX + " y: " + positionY);System.out.println("ya un mur en haut:" + this.plateauJeu.getCase(positionX, positionY).getValHaut());
-				System.out.println("ya un mur en haut:" + this.plateauJeu.getCase(positionX, positionY).getValHaut());
 			}
 		}else if(direction == Deplacement.DOWN){
 			//Tant que le robot ne rencontre pas un mur en bas, il se dirige vers le bas
 			while(this.plateauJeu.getCase(positionX, positionY).getValBas() != 1 && this.plateauJeu.getCase(positionX, positionY +1).getValHaut() != 1 && !estUneCollisionRobot(direction, listeRobot)){
 				this.positionY += 1;
-				System.out.println("x: " + positionX + " y: " + positionY);
 			}
 		}else if(direction == Deplacement.LEFT){
 			//Tant que le robot ne rencontre pas un mur à gauche, il se dirige vers la gauche
 			while(this.plateauJeu.getCase(positionX, positionY).getValGauche() != 1 && this.plateauJeu.getCase(positionX -1, positionY).getValDroit() != 1&& !estUneCollisionRobot(direction, listeRobot)){
 				this.positionX -= 1;
-				System.out.println("x: " + positionX + " y: " + positionY);
 			}
 		}else if(direction == Deplacement.RIGHT){
 			//Tant que le robot ne rencontre pas un mur à droite, il se dirige vers la droite
 			while(this.plateauJeu.getCase(positionX, positionY).getValDroit() != 1 && this.plateauJeu.getCase(positionX + 1, positionY).getValGauche() != 1  && !estUneCollisionRobot(direction, listeRobot)){
 				this.positionX += 1;
-				System.out.println("x: " + positionX + " y: " + positionY);
 			}
 		}
 	}
 
 	public void dessinerRobot(){
-		System.out.println("images/imgRobot/" + this.couleur + ".png");
 		this.imageRobot = new ImageView(new Image("images/imgRobot/" + this.couleur + ".png"));
 		this.getChildren().add(this.imageRobot);
 		refresh();
