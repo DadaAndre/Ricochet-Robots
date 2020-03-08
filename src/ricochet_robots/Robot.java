@@ -26,6 +26,8 @@ public class Robot extends Parent implements RobotClickedObservable{
 
 	Random r = new Random();
 
+	public static ArrayList<Robot> tableauRobots = new ArrayList<>();
+
 	private String couleur;
 	private int positionInitialeX;
 	private int positionInitialeY;
@@ -40,6 +42,7 @@ public class Robot extends Parent implements RobotClickedObservable{
 	private ArrayList<RobotClickedObserver> listObserver;
 
 	public Robot(Plateau plateauJeu, String couleur, int positionX, int positionY){
+		tableauRobots.add(this);
 		this.couleur = couleur;
 		this.positionInitialeX = positionX;
 		this.positionInitialeY = positionY;
@@ -129,7 +132,7 @@ public class Robot extends Parent implements RobotClickedObservable{
 		this.couleur = couleur;
 	}
 
-	public static boolean estSurAutresRobots(int aleaX, int aleaY, ArrayList<Robot> tableauRobots){
+	public static boolean estSurAutresRobots(int aleaX, int aleaY){
 		for(int i = 0; i <= tableauRobots.size() -1 ; i++){
 			//Vérifie si les coordonnées X et Y tirées sont déja affectés a un robot déja crée
 			if(aleaX == tableauRobots.get(i).getPositionInitialeX() && aleaY == tableauRobots.get(i).getPositionInitialeY()){
@@ -141,7 +144,7 @@ public class Robot extends Parent implements RobotClickedObservable{
 		return false;
 	}
 
-	public boolean estUneCollisionRobot(Deplacement direction, ArrayList<Robot> tableauRobots){
+	public boolean estUneCollisionRobot(Deplacement direction){
 		switch(direction){
 			case UP:
 				for(int i = 0; i< tableauRobots.size(); i++){
@@ -190,27 +193,27 @@ public class Robot extends Parent implements RobotClickedObservable{
 	}
 
 	//Déplacement du robot
-	public void move(ArrayList<Robot> listeRobot,Deplacement direction){
+	public void move(Deplacement direction){
 
 		//Vérification de la direction choisie
 		if(direction == Deplacement.UP){
 			//Tant que le robot ne rencontre pas un mur en haut, il se dirige vers le haut
-			while(this.plateauJeu.getCase(positionX, positionY).getValHaut() != 1 && this.plateauJeu.getCase(positionX, positionY - 1).getValBas() != 1 && !estUneCollisionRobot(direction, listeRobot)){
+			while(this.plateauJeu.getCase(positionX, positionY).getValHaut() != 1 && this.plateauJeu.getCase(positionX, positionY - 1).getValBas() != 1 && !estUneCollisionRobot(direction)){
 				this.positionY -= 1;
 			}
 		}else if(direction == Deplacement.DOWN){
 			//Tant que le robot ne rencontre pas un mur en bas, il se dirige vers le bas
-			while(this.plateauJeu.getCase(positionX, positionY).getValBas() != 1 && this.plateauJeu.getCase(positionX, positionY +1).getValHaut() != 1 && !estUneCollisionRobot(direction, listeRobot)){
+			while(this.plateauJeu.getCase(positionX, positionY).getValBas() != 1 && this.plateauJeu.getCase(positionX, positionY +1).getValHaut() != 1 && !estUneCollisionRobot(direction)){
 				this.positionY += 1;
 			}
 		}else if(direction == Deplacement.LEFT){
 			//Tant que le robot ne rencontre pas un mur à gauche, il se dirige vers la gauche
-			while(this.plateauJeu.getCase(positionX, positionY).getValGauche() != 1 && this.plateauJeu.getCase(positionX -1, positionY).getValDroit() != 1&& !estUneCollisionRobot(direction, listeRobot)){
+			while(this.plateauJeu.getCase(positionX, positionY).getValGauche() != 1 && this.plateauJeu.getCase(positionX -1, positionY).getValDroit() != 1&& !estUneCollisionRobot(direction)){
 				this.positionX -= 1;
 			}
 		}else if(direction == Deplacement.RIGHT){
 			//Tant que le robot ne rencontre pas un mur à droite, il se dirige vers la droite
-			while(this.plateauJeu.getCase(positionX, positionY).getValDroit() != 1 && this.plateauJeu.getCase(positionX + 1, positionY).getValGauche() != 1  && !estUneCollisionRobot(direction, listeRobot)){
+			while(this.plateauJeu.getCase(positionX, positionY).getValDroit() != 1 && this.plateauJeu.getCase(positionX + 1, positionY).getValGauche() != 1  && !estUneCollisionRobot(direction)){
 				this.positionX += 1;
 			}
 		}

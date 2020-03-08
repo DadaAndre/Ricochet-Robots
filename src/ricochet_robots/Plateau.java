@@ -20,7 +20,7 @@ import javafx.scene.shape.Rectangle;
 
 import javafx.scene.Parent;
 
-public class Plateau extends Parent implements RobotClickedObserver{
+public class Plateau extends Parent implements RobotClickedObserver, CaseClickedObserver{
 
 	public static final int DEPART_X = 49;
 	public static final int DEPART_Y = 49;
@@ -39,7 +39,12 @@ public class Plateau extends Parent implements RobotClickedObserver{
 	private Case[][] plateau;
 
 	//Robot joué
-	Robot robotSelect = null;
+	private Robot robotSelect = null;
+
+	//Jeton tiré
+	Jeton jetonTire;
+
+	//ArrayList<Robot> tableauRobots;
 
 	//Zone de positionnement interdite des robots;
 	private int[][] deadZone = {{7,7},{8,7},{7,8},{8,8}};
@@ -64,19 +69,39 @@ public class Plateau extends Parent implements RobotClickedObserver{
 		//Création du plateau
 		creerPlateau();
 
+		//Tirage du jeton aléatoirement
+		jetonTire = Jeton.tirageJeton();
+
 		//Affichage du plateau
 		afficheGrille();
+
+		creerRobot();
 	}
 
 	@Override
 	public void clicSurRobot(Robot robot){
-		//tu fais ca
 		System.out.println("Robot " + robot.getCouleur() + " cliqué");
 		robotSelect = robot;
 	}
-	
-	public void deplacerRobot(ArrayList<Robot> tableauRobots, Deplacement direction){
-		robotSelect.move(tableauRobots,direction);
+
+	@Override
+	public void clicSurCase(Case casePlateau){
+		System.out.println("case " + casePlateau +"cliqué");
+		robotAJouer();
+
+	}
+
+	public void robotAJouer(){
+		for(int i =0; i< Robot.tableauRobots.size(); i++){
+			if(Robot.tableauRobots.get(i).estRobotAJouer(jetonTire.getCouleur())){
+				robotSelect = Robot.tableauRobots.get(i);
+				break;
+			}
+		}
+	}
+
+	public void deplacerRobot(Deplacement direction){
+		robotSelect.move(direction);
 		robotSelect.refresh();
 	}
 
@@ -86,6 +111,41 @@ public class Plateau extends Parent implements RobotClickedObserver{
 			return this.plateau[x][y];
 		}
 		return null;
+	}
+
+	public void creerRobot(){
+		//Tirage de deux nombre aléatoires pour les coordonnées initiale d'un robot
+        int aleaX = r.nextInt(16);
+        int aleaY = r.nextInt(16);
+
+        //On vérifie si la position tirée n'existe pas
+        int[] posRobotJaune = this.positionRobotNonUtilise();
+        //Création d'un robot Jaune
+        Robot robotJaune = new Robot(this, "jaune", posRobotJaune[0], posRobotJaune[1]);
+		this.getChildren().add(robotJaune);
+        //On ajoute le robot créé à une ArrayList de Robot
+        //tableauRobots.add(robotJaune);
+		robotJaune.ajouterObserveurRobotClique(this);
+
+        int[] posRobotBleu = this.positionRobotNonUtilise();
+        Robot robotBleu = new Robot(this, "bleu", posRobotBleu[0], posRobotBleu[1]);
+		this.getChildren().add(robotBleu);
+        //tableauRobots.add(robotBleu);
+		robotBleu.ajouterObserveurRobotClique(this);
+
+        int[] posRobotRouge = this.positionRobotNonUtilise();
+        Robot robotRouge = new Robot(this, "rouge", posRobotRouge[0], posRobotRouge[1]);
+		this.getChildren().add(robotRouge);
+        //tableauRobots.add(robotRouge);
+		robotRouge.ajouterObserveurRobotClique(this);
+
+        int[] posRobotVert = this.positionRobotNonUtilise();
+        Robot robotVert = new Robot(this, "vert", posRobotVert[0], posRobotVert[1]);
+		this.getChildren().add(robotVert);
+        //tableauRobots.add(robotVert);
+		robotVert.ajouterObserveurRobotClique(this);
+
+		robotAJouer();
 	}
 
 	//Créer les mini-grilles
@@ -100,10 +160,12 @@ public class Plateau extends Parent implements RobotClickedObserver{
 			for(int x = 0; x < plateau.length; x++){
 				System.out.print(plateau[x][y]);
 				this.plateau[x][y].setValue(x,y);
+				this.plateau[x][y].ajouterObserveurCaseClique(this);
 				this.getChildren().add(plateau[x][y]);
 			}
 			System.out.println();
 		}
+		this.getChildren().add(jetonTire);
 	}
 
 	//Fait la rotation de la mini-grille en fonction de la position choisie
@@ -323,8 +385,7 @@ public class Plateau extends Parent implements RobotClickedObserver{
 	}
 
 	//Tire aléatoirement des coordonnées pour un robot et vérifie qu'un robot ne les a pas déjà
-	public int[] positionRobotNonUtilise(ArrayList<Robot> tableauRobots){
-
+	public int[] positionRobotNonUtilise(){
 		boolean surJeton = true;
 		boolean surRobot = true;
 		boolean surCaseInterdite = true;
@@ -357,8 +418,8 @@ public class Plateau extends Parent implements RobotClickedObserver{
 				//Sinon on passe à la suite
 				else{
 					//On vérifie si on a déja des robots de créer
-					if(tableauRobots.size() != 0){
-						surRobot = Robot.estSurAutresRobots(this.aleaX, this.aleaY, tableauRobots);
+					if(Robot.tableauRobots.size() != 0){
+						surRobot = Robot.estSurAutresRobots(this.aleaX, this.aleaY);
 
 						//si les coordonnées sont sur un robot déja crée, alors on re-génère
 						if(surRobot){

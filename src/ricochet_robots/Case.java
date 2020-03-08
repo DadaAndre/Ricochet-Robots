@@ -17,7 +17,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.shape.Rectangle;
 
-public class Case extends CaseCalque {
+public class Case extends CaseCalque implements CaseClickedObservable{
 
 	public static final int DIM = 49;
 
@@ -28,6 +28,8 @@ public class Case extends CaseCalque {
 
 	protected int xCase;
 	protected int yCase;
+
+	private ArrayList<CaseClickedObserver> listObserver;
 
 	protected boolean clic = false;
 
@@ -58,15 +60,37 @@ public class Case extends CaseCalque {
 		this.setOnMousePressed(new EventHandler<MouseEvent>(){
 			public void handle(MouseEvent me){
 				//appuyer
-				System.out.println("case  appuyé!!" );
+				System.out.println("ah§§§§§");
+				notifierCaseClique(Case.this);
 			}
 		});
+
 		this.setOnMouseReleased(new EventHandler<MouseEvent>(){
 			public void handle(MouseEvent me){
 				//relacher();
-				System.out.println("case relaché!!" );
+				// System.out.println("case relaché!!" );
 			}
 		});
+
+		listObserver = new ArrayList<>();
+
+	}
+
+	@Override
+	public void notifierCaseClique(Case casePlateau){
+		for(int i = 0; i < listObserver.size(); i++){
+			listObserver.get(i).clicSurCase(this);
+		}
+	}
+
+	@Override
+	public void ajouterObserveurCaseClique(CaseClickedObserver casePlateauObserver){
+		listObserver.add(casePlateauObserver);
+	}
+
+	@Override
+	public void supprimerObserveurCaseClique(CaseClickedObserver casePlateauObserver){
+		listObserver.remove(casePlateauObserver);
 	}
 
 	public int getValHaut() {
