@@ -111,7 +111,7 @@ public class Plateau extends Parent implements RobotClickedObserver, CaseClicked
 		//Déplacement du robot
 		robotSelect.move(direction);
 		//On remet à jour l'affichage du robot
-		robotSelect.refresh();
+		robotSelect.refreshPosRobot();
 	}
 
 	//Récupère une case à une position donnée

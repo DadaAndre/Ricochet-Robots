@@ -50,6 +50,7 @@ public class Robot extends Parent implements RobotClickedObservable{
 		this.positionY = positionY;
 		this.plateauJeu = plateauJeu;
 
+		dessinerSocleRobot();
 		dessinerRobot();
 
 		listObserver = new ArrayList<>();
@@ -214,16 +215,34 @@ public class Robot extends Parent implements RobotClickedObservable{
 		}
 	}
 
+	public void nouvellePositionSocle(){
+		this.positionInitialeX = this.positionX;
+		this.positionInitialeY = this.positionY;
+	}
+
 	//On dessine le robot
 	public void dessinerRobot(){
 		this.imageRobot = new ImageView(new Image("images/imgRobot/" + this.couleur + ".png"));
 		this.getChildren().add(this.imageRobot);
-		refresh();
+		refreshPosRobot();
+	}
+
+	//On dessine la "socle" du robot
+	public void dessinerSocleRobot(){
+		this.imageRobot = new ImageView(new Image("images/imgSocleRobot/" + this.couleur + ".png"));
+		this.getChildren().add(this.imageRobot);
+		refreshPosSocleRobot();
 	}
 
 	//Mise à jour des positionnements des dessins du robot
-	public void refresh(){
+	public void refreshPosRobot(){
 		this.imageRobot.setX(this.positionX * Case.DIM + Plateau.DEPART_X);
 		this.imageRobot.setY(this.positionY * Case.DIM + Plateau.DEPART_X);
+	}
+
+	//Mise à jour des positionnements des dessins du robot
+	public void refreshPosSocleRobot(){
+		this.imageRobot.setX(this.positionInitialeX * Case.DIM + Plateau.DEPART_X);
+		this.imageRobot.setY(this.positionInitialeY * Case.DIM + Plateau.DEPART_X);
 	}
 }
