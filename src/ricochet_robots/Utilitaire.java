@@ -19,6 +19,7 @@ public class Utilitaire{
 	   return tabBinary;
 	}
 
+	//Transforme une case en un nombre
 	public static int CaseToInt(Case casePlateau){
 		int chiffre1 = casePlateau.getValHaut();
 		int chiffre2 = casePlateau.getValDroit();

@@ -44,6 +44,7 @@ public class Jeton extends Parent{
 		return couleur;
 	}
 
+	//Tire un jeton de manière aléatoire
 	public static Jeton tirageJeton(){
 		Random r = new Random();
 		String[] forme = {"carre","triangle","rond","etoile"};
@@ -53,19 +54,22 @@ public class Jeton extends Parent{
 		return new Jeton(forme[tirForme], couleur[tirCouleur]);
 	}
 
+	//dessine le jeton qui est tiré
 	public void dessinerJetonTire(){
 		this.imageJeton = new ImageView(new Image("images/imgJeton/" + forme + "-" + couleur + ".png"));
 		this.getChildren().add(this.imageJeton);
-		refresh(this.imageJeton);
+		posGraph(this.imageJeton);
 	}
 
+	//dessiner un fond pour le jeton tiré
 	public void dessinerFond(){
 		this.fondPiece = new ImageView(new Image("images/imgJeton/fondPiece.png"));
 		this.getChildren().add(this.fondPiece);
-		refresh(this.fondPiece);
+		posGraph(this.fondPiece);
 	}
 
-	public void refresh(ImageView image){
+	//positionnement graphique du jeton tiré et de son fond
+	public void posGraph(ImageView image){
 		image.setX(8 * Case.DIM + 0.5  * Case.DIM);
 		image.setY(8 * Case.DIM + 0.5  * Case.DIM);
 	}

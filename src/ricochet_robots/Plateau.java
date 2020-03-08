@@ -22,6 +22,7 @@ import javafx.scene.Parent;
 
 public class Plateau extends Parent implements RobotClickedObserver, CaseClickedObserver{
 
+	//La position de départ de dessin du plateau (en pixels)
 	public static final int DEPART_X = 49;
 	public static final int DEPART_Y = 49;
 
@@ -38,7 +39,7 @@ public class Plateau extends Parent implements RobotClickedObserver, CaseClicked
 	//Le plateau
 	private Case[][] plateau;
 
-	//Robot joué
+	//le robot qui est joué
 	private Robot robotSelect = null;
 
 	//Jeton tiré
@@ -75,15 +76,20 @@ public class Plateau extends Parent implements RobotClickedObserver, CaseClicked
 		//Affichage du plateau
 		afficheGrille();
 
+		ajoutObserveurCases();
+
+		//création des robots
 		creerRobot();
 	}
 
+	//On sélectionne le robot à déplacer si on clique dessus
 	@Override
 	public void clicSurRobot(Robot robot){
 		System.out.println("Robot " + robot.getCouleur() + " cliqué");
 		robotSelect = robot;
 	}
 
+	//On remet le robot à jouer si on clique sur une case
 	@Override
 	public void clicSurCase(Case casePlateau){
 		System.out.println("case " + casePlateau +"cliqué");
@@ -91,6 +97,7 @@ public class Plateau extends Parent implements RobotClickedObserver, CaseClicked
 
 	}
 
+	//désigner quel robot doit être déplacé
 	public void robotAJouer(){
 		for(int i =0; i< Robot.tableauRobots.size(); i++){
 			if(Robot.tableauRobots.get(i).estRobotAJouer(jetonTire.getCouleur())){
@@ -101,7 +108,9 @@ public class Plateau extends Parent implements RobotClickedObserver, CaseClicked
 	}
 
 	public void deplacerRobot(Deplacement direction){
+		//Déplacement du robot
 		robotSelect.move(direction);
+		//On remet à jour l'affichage du robot
 		robotSelect.refresh();
 	}
 
@@ -113,6 +122,7 @@ public class Plateau extends Parent implements RobotClickedObserver, CaseClicked
 		return null;
 	}
 
+	//Création des robots
 	public void creerRobot(){
 		//Tirage de deux nombre aléatoires pour les coordonnées initiale d'un robot
         int aleaX = r.nextInt(16);
@@ -122,15 +132,14 @@ public class Plateau extends Parent implements RobotClickedObserver, CaseClicked
         int[] posRobotJaune = this.positionRobotNonUtilise();
         //Création d'un robot Jaune
         Robot robotJaune = new Robot(this, "jaune", posRobotJaune[0], posRobotJaune[1]);
+		//On ajoute le robot créé au groupe de dessin
 		this.getChildren().add(robotJaune);
-        //On ajoute le robot créé à une ArrayList de Robot
-        //tableauRobots.add(robotJaune);
+        //On ajoute la possibilité du robot à avoir des événements clics
 		robotJaune.ajouterObserveurRobotClique(this);
 
         int[] posRobotBleu = this.positionRobotNonUtilise();
         Robot robotBleu = new Robot(this, "bleu", posRobotBleu[0], posRobotBleu[1]);
 		this.getChildren().add(robotBleu);
-        //tableauRobots.add(robotBleu);
 		robotBleu.ajouterObserveurRobotClique(this);
 
         int[] posRobotRouge = this.positionRobotNonUtilise();
@@ -159,13 +168,21 @@ public class Plateau extends Parent implements RobotClickedObserver, CaseClicked
 		for(int y = 0; y < plateau[0].length; y++){
 			for(int x = 0; x < plateau.length; x++){
 				System.out.print(plateau[x][y]);
-				this.plateau[x][y].setValue(x,y);
-				this.plateau[x][y].ajouterObserveurCaseClique(this);
+				this.plateau[x][y].setPositionsXY(x,y);
 				this.getChildren().add(plateau[x][y]);
 			}
 			System.out.println();
 		}
 		this.getChildren().add(jetonTire);
+	}
+
+	//Ajoute la possibilité que toute les cases soient cliquables
+	public void ajoutObserveurCases(){
+		for(int y = 0; y < plateau[0].length; y++){
+			for(int x = 0; x < plateau.length; x++){
+				this.plateau[x][y].ajouterObserveurCaseClique(this);
+			}
+		}
 	}
 
 	//Fait la rotation de la mini-grille en fonction de la position choisie
@@ -434,7 +451,6 @@ public class Plateau extends Parent implements RobotClickedObserver, CaseClicked
 		return position;
 	}
 
-
 	public boolean estSurCaseInterdite(){
 		for(int i = 0; i < deadZone.length; i++){
 			if(this.aleaX == deadZone[i][0] && this.aleaY == deadZone[i][1]){
@@ -454,6 +470,7 @@ public class Plateau extends Parent implements RobotClickedObserver, CaseClicked
 		}
 	}
 
+	//Positionnement des jetons (pas très propre, à voir comment faire mieux...)
 	public void positonJeton(){
 		int k=0;
 		String[] forme = {"carre","triangle","rond","etoile"};
@@ -471,5 +488,4 @@ public class Plateau extends Parent implements RobotClickedObserver, CaseClicked
 	public int getTaillePlateau(){
 		return plateau.length;
 	}
-
 }

@@ -26,6 +26,7 @@ public class Robot extends Parent implements RobotClickedObservable{
 
 	Random r = new Random();
 
+	//Liste des robots instanciés
 	public static ArrayList<Robot> tableauRobots = new ArrayList<>();
 
 	private String couleur;
@@ -35,13 +36,12 @@ public class Robot extends Parent implements RobotClickedObservable{
 	private int positionY;
 	private Plateau plateauJeu;
 
-	private boolean clic = false;
-
 	private ImageView imageRobot;
 
 	private ArrayList<RobotClickedObserver> listObserver;
 
 	public Robot(Plateau plateauJeu, String couleur, int positionX, int positionY){
+		//On ajoute le robot crée à la liste des robots
 		tableauRobots.add(this);
 		this.couleur = couleur;
 		this.positionInitialeX = positionX;
@@ -54,20 +54,12 @@ public class Robot extends Parent implements RobotClickedObservable{
 
 		listObserver = new ArrayList<>();
 
+		//Evènement clic sur le robot
 		this.setOnMousePressed(new EventHandler<MouseEvent>(){
 			public void handle(MouseEvent me){
-				//System.out.println("Robot " + couleur +  " appuyé!!" );
 				notifierRobotClique(Robot.this);
 			}
 		});
-		this.setOnMouseReleased(new EventHandler<MouseEvent>(){
-			public void handle(MouseEvent me){
-				//relacher();
-				//System.out.println("Robot " + couleur +" relaché!!" );
-			}
-		});
-		clic = false;
-
 	}
 
 	@Override
@@ -132,6 +124,7 @@ public class Robot extends Parent implements RobotClickedObservable{
 		this.couleur = couleur;
 	}
 
+	//Vérifie si deux robots sont en collisions
 	public static boolean estSurAutresRobots(int aleaX, int aleaY){
 		for(int i = 0; i <= tableauRobots.size() -1 ; i++){
 			//Vérifie si les coordonnées X et Y tirées sont déja affectés a un robot déja crée
@@ -181,6 +174,7 @@ public class Robot extends Parent implements RobotClickedObservable{
 		return true;
 	}
 
+	//Permet de savoir quel robot doit jouer
 	public boolean estRobotAJouer(String couleurTire){
 		if(this.couleur.equals(couleurTire)){
 			return true;
@@ -188,6 +182,7 @@ public class Robot extends Parent implements RobotClickedObservable{
 		return false;
 	}
 
+	//Vérifie si il y a un robot sur une case
 	public boolean caseAvecRobot(int xCase, int yCase){
 		return xCase == this.positionX && yCase == this.positionY;
 	}
@@ -197,34 +192,36 @@ public class Robot extends Parent implements RobotClickedObservable{
 
 		//Vérification de la direction choisie
 		if(direction == Deplacement.UP){
-			//Tant que le robot ne rencontre pas un mur en haut, il se dirige vers le haut
+			//Tant que le robot ne rencontre pas un mur en haut, ou un autre robot, il se dirige vers le haut
 			while(this.plateauJeu.getCase(positionX, positionY).getValHaut() != 1 && this.plateauJeu.getCase(positionX, positionY - 1).getValBas() != 1 && !estUneCollisionRobot(direction)){
 				this.positionY -= 1;
 			}
 		}else if(direction == Deplacement.DOWN){
-			//Tant que le robot ne rencontre pas un mur en bas, il se dirige vers le bas
+			//Tant que le robot ne rencontre pas un mur en bas, ou un autre robot, il se dirige vers le bas
 			while(this.plateauJeu.getCase(positionX, positionY).getValBas() != 1 && this.plateauJeu.getCase(positionX, positionY +1).getValHaut() != 1 && !estUneCollisionRobot(direction)){
 				this.positionY += 1;
 			}
 		}else if(direction == Deplacement.LEFT){
-			//Tant que le robot ne rencontre pas un mur à gauche, il se dirige vers la gauche
+			//Tant que le robot ne rencontre pas un mur à gauche,  ou un autre robot, il se dirige vers la gauche
 			while(this.plateauJeu.getCase(positionX, positionY).getValGauche() != 1 && this.plateauJeu.getCase(positionX -1, positionY).getValDroit() != 1&& !estUneCollisionRobot(direction)){
 				this.positionX -= 1;
 			}
 		}else if(direction == Deplacement.RIGHT){
-			//Tant que le robot ne rencontre pas un mur à droite, il se dirige vers la droite
+			//Tant que le robot ne rencontre pas un mur à droite,  ou un autre robot, il se dirige vers la droite
 			while(this.plateauJeu.getCase(positionX, positionY).getValDroit() != 1 && this.plateauJeu.getCase(positionX + 1, positionY).getValGauche() != 1  && !estUneCollisionRobot(direction)){
 				this.positionX += 1;
 			}
 		}
 	}
 
+	//On dessine le robot
 	public void dessinerRobot(){
 		this.imageRobot = new ImageView(new Image("images/imgRobot/" + this.couleur + ".png"));
 		this.getChildren().add(this.imageRobot);
 		refresh();
 	}
 
+	//Mise à jour des positionnements des dessins du robot
 	public void refresh(){
 		this.imageRobot.setX(this.positionX * Case.DIM + Plateau.DEPART_X);
 		this.imageRobot.setY(this.positionY * Case.DIM + Plateau.DEPART_X);

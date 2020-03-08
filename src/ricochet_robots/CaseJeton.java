@@ -18,7 +18,7 @@ import javafx.scene.shape.Rectangle;
 
 import javafx.scene.Parent;
 
-public class  CaseJeton extends Case {
+public class CaseJeton extends Case {
 	private String forme;
 	private String couleur;
 
@@ -34,6 +34,7 @@ public class  CaseJeton extends Case {
 		this.forme = forme;
 		this.couleur = couleur;
 
+		//On associe une case jeton avec un ajout d'un dessin de jeton
 		this.addImage(new Image("images/imgJeton/" + forme + "-" + couleur + ".png"));
 		refresh();
 	}
@@ -49,7 +50,7 @@ public class  CaseJeton extends Case {
  	 @Override
 	public void rotationCase(){
 		super.rotationCase();
-
+		//On redessine par dessus la nouvelle case rotationné, son jeton
 		this.addImage(new Image("images/imgJeton/" + forme + "-" + couleur + ".png"));
 	}
 

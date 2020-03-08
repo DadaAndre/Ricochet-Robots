@@ -19,6 +19,7 @@ import javafx.scene.shape.Rectangle;
 
 public class Case extends CaseCalque implements CaseClickedObservable{
 
+	//Diomension laissée pour une case
 	public static final int DIM = 49;
 
 	private int valHaut;
@@ -51,27 +52,19 @@ public class Case extends CaseCalque implements CaseClickedObservable{
 		this.xCase = xCase;
 		this.yCase = yCase;
 
-
 		this.id = Utilitaire.CaseToInt(this);
 
+		//Associe une image à une case
 		this.addImage(new Image("images/imgPlateau/img" + id + ".png"));
+
 		refresh();
 
+		//évènement cliqué
 		this.setOnMousePressed(new EventHandler<MouseEvent>(){
 			public void handle(MouseEvent me){
-				//appuyer
-				System.out.println("ah§§§§§");
 				notifierCaseClique(Case.this);
 			}
 		});
-
-		this.setOnMouseReleased(new EventHandler<MouseEvent>(){
-			public void handle(MouseEvent me){
-				//relacher();
-				// System.out.println("case relaché!!" );
-			}
-		});
-
 		listObserver = new ArrayList<>();
 
 	}
@@ -121,28 +114,18 @@ public class Case extends CaseCalque implements CaseClickedObservable{
 	   return id;
 	}
 
-	public void setValue(int xCase, int yCase){
+	public void setPositionsXY(int xCase, int yCase){
 		this.xCase = xCase;
 		this.yCase = yCase;
 		refresh();
 	}
-
-	// public Robot contientRobot(ArrayList<Robot> tableauRobots){
-	// 	for(int i = 0; i < tableauRobots.size(); i++){
-	// 		if(tableauRobots.get(i).getPositionX() == this.xCase && tableauRobots.get(i).getPositionY() == this.yCase){
-	// 			return tableauRobots.get(i);
-	// 		}
-	// 	}
-	// 	return null;
-	// }
-
 
 	//Retourne vrai si les valeurs de la case envoyée sont équivalentes à celles qu'on teste
 	public boolean isValueEquals(Case caseSelect){
 	   return caseSelect.valHaut == valHaut && caseSelect.valBas == valBas && caseSelect.valGauche == valGauche && caseSelect.valDroit == valDroit;
 	}
 
-	//fait une rotation de la case, c'est à dire qu'elle décale tout les valeurs da la case d'un cran
+	//Fait une rotation de la case, c'est à dire qu'elle décale tout les valeurs da la case d'un cran
 	public void rotationCase(){
 	   int temp = this.valGauche;
 	   this.valGauche = this.valBas;
@@ -152,16 +135,18 @@ public class Case extends CaseCalque implements CaseClickedObservable{
 
 	   this.id = Utilitaire.CaseToInt(this);
 
+	   //On change l'image de la case par la nouvelle correspondant à la rotation effectuée
 	   this.addImage(new Image("images/imgPlateau/img" + id + ".png"));
 
 	}
 
+	//Positionnement graphique des cases
 	public void refresh(){
 		this.setLayoutX(this.xCase * Case.DIM + Plateau.DEPART_X);
 		this.setLayoutY(this.yCase * Case.DIM + Plateau.DEPART_Y);
 	}
 
-	//affichage de la Case
+	//affichage en console de la Case
 	@Override
 	public String toString(){
 		return "[" + valHaut + "," + valDroit + "," + valBas + "," + valGauche + "]";
