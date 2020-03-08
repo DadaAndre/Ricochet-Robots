@@ -194,22 +194,22 @@ public class Robot extends Parent implements RobotClickedObservable{
 		//Vérification de la direction choisie
 		if(direction == Deplacement.UP){
 			//Tant que le robot ne rencontre pas un mur en haut, ou un autre robot, il se dirige vers le haut
-			while(this.plateauJeu.getCase(positionX, positionY).getValHaut() != 1 && this.plateauJeu.getCase(positionX, positionY - 1).getValBas() != 1 && !estUneCollisionRobot(direction)){
+			while(this.plateauJeu.getCasePlateau(positionX, positionY).getValHaut() != 1 && this.plateauJeu.getCasePlateau(positionX, positionY - 1).getValBas() != 1 && !estUneCollisionRobot(direction)){
 				this.positionY -= 1;
 			}
 		}else if(direction == Deplacement.DOWN){
 			//Tant que le robot ne rencontre pas un mur en bas, ou un autre robot, il se dirige vers le bas
-			while(this.plateauJeu.getCase(positionX, positionY).getValBas() != 1 && this.plateauJeu.getCase(positionX, positionY +1).getValHaut() != 1 && !estUneCollisionRobot(direction)){
+			while(this.plateauJeu.getCasePlateau(positionX, positionY).getValBas() != 1 && this.plateauJeu.getCasePlateau(positionX, positionY +1).getValHaut() != 1 && !estUneCollisionRobot(direction)){
 				this.positionY += 1;
 			}
 		}else if(direction == Deplacement.LEFT){
 			//Tant que le robot ne rencontre pas un mur à gauche,  ou un autre robot, il se dirige vers la gauche
-			while(this.plateauJeu.getCase(positionX, positionY).getValGauche() != 1 && this.plateauJeu.getCase(positionX -1, positionY).getValDroit() != 1&& !estUneCollisionRobot(direction)){
+			while(this.plateauJeu.getCasePlateau(positionX, positionY).getValGauche() != 1 && this.plateauJeu.getCasePlateau(positionX -1, positionY).getValDroit() != 1&& !estUneCollisionRobot(direction)){
 				this.positionX -= 1;
 			}
 		}else if(direction == Deplacement.RIGHT){
 			//Tant que le robot ne rencontre pas un mur à droite,  ou un autre robot, il se dirige vers la droite
-			while(this.plateauJeu.getCase(positionX, positionY).getValDroit() != 1 && this.plateauJeu.getCase(positionX + 1, positionY).getValGauche() != 1  && !estUneCollisionRobot(direction)){
+			while(this.plateauJeu.getCasePlateau(positionX, positionY).getValDroit() != 1 && this.plateauJeu.getCasePlateau(positionX + 1, positionY).getValGauche() != 1  && !estUneCollisionRobot(direction)){
 				this.positionX += 1;
 			}
 		}

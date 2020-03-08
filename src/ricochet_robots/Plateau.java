@@ -115,11 +115,20 @@ public class Plateau extends Parent implements RobotClickedObserver, CaseClicked
 	}
 
 	//Récupère une case à une position donnée
-	public Case getCase(int x, int y) {
+	public Case getCasePlateau(int x, int y) {
 		if(x >= 0 && x <= plateau.length -1 && y >= 0 && y <= plateau.length -1) {
 			return this.plateau[x][y];
 		}
 		return null;
+	}
+
+	public boolean collisionJetonTire(){
+		Case caseDessus = getCasePlateau(robotSelect.getPositionX(), robotSelect.getPositionY());
+		 if(caseDessus instanceof CaseJeton){
+			 CaseJeton caseJetonDessus = (CaseJeton) caseDessus;
+			 return robotSelect.getCouleur() == caseJetonDessus.getCouleur() && caseJetonDessus.estSurCaseJetonTire(jetonTire)
+		 }
+		 return false;
 	}
 
 	//Création des robots
@@ -460,9 +469,8 @@ public class Plateau extends Parent implements RobotClickedObserver, CaseClicked
 		return false;
 	}
 
-
 	public boolean estSurJeton(){
-		if(getCase(this.aleaX, this.aleaY) instanceof CaseJeton){
+		if(getCasePlateau(this.aleaX, this.aleaY) instanceof CaseJeton){
 			return true;
 		}
 		else{

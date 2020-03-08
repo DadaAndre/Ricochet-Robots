@@ -47,6 +47,10 @@ public class CaseJeton extends Case {
 		return this.couleur;
 	}
 
+	public boolean estSurCaseJetonTire(Jeton jetonTire){
+		return this.couleur == jetonTire.getCouleur() && this.forme == jetonTire.getForme();
+	}
+
  	 @Override
 	public void rotationCase(){
 		super.rotationCase();

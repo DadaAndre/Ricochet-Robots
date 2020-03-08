@@ -54,18 +54,22 @@ public class Main extends Application{
 			public void handle(KeyEvent ke) {
 				if (ke.getCode() == KeyCode.DOWN) {
 					plateauJeu.deplacerRobot(Deplacement.DOWN);
+					plateauJeu.collisionJetonTire();
 					ke.consume(); // <-- stops passing the event to next node
 				} else if (ke.getCode() == KeyCode.LEFT) {
 					System.out.println("Key Pressed: " + ke.getCode());
 					plateauJeu.deplacerRobot(Deplacement.LEFT);
+					plateauJeu.collisionJetonTire();
 					ke.consume(); // <-- stops passing the event to next node
 				} else if (ke.getCode() == KeyCode.UP) {
 					System.out.println("Key Pressed: " + ke.getCode());
 					plateauJeu.deplacerRobot(Deplacement.UP);
+					plateauJeu.collisionJetonTire();
 					ke.consume(); // <-- stops passing the event to next node
 				} else if (ke.getCode() == KeyCode.RIGHT) {
 					System.out.println("Key Pressed: " + ke.getCode());
 					plateauJeu.deplacerRobot(Deplacement.RIGHT);
+					plateauJeu.collisionJetonTire();
 					ke.consume(); // <-- stops passing the event to next node
 				}
 			}
