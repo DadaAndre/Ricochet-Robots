@@ -56,6 +56,8 @@ public class Plateau extends Parent implements RobotClickedObserver, CaseClicked
 	private int aleaX = -1;
 	private int aleaY = -1;
 
+	private int coup = 0;
+
 	public Plateau(int tailleX, int tailleY){
 		//Initialisation du plateau
 		 this.plateau = new Case[tailleX][tailleY];
@@ -123,12 +125,31 @@ public class Plateau extends Parent implements RobotClickedObserver, CaseClicked
 	}
 
 	public boolean collisionJetonTire(){
+		ajouterCoups();
 		Case caseDessus = getCasePlateau(robotSelect.getPositionX(), robotSelect.getPositionY());
-		 if(caseDessus instanceof CaseJeton){
-			 CaseJeton caseJetonDessus = (CaseJeton) caseDessus;
-			 return robotSelect.getCouleur() == caseJetonDessus.getCouleur() && caseJetonDessus.estSurCaseJetonTire(jetonTire)
+		if(caseDessus instanceof CaseJeton){
+			CaseJeton caseJetonDessus = (CaseJeton) caseDessus;
+			if(robotSelect.getCouleur() == caseJetonDessus.getCouleur() && caseJetonDessus.estSurCaseJetonTire(jetonTire)){
+				System.out.println("déplacement réalisé en " + coup + " coups");
+				reinitialiserCoup();
+				robotSelect.nouvellePositionSocle();
+				for(int i = 0; i < Robot.tableauRobots.size(); i++){
+					Robot.tableauRobots.get(i).reinitialiserPosition();
+				}
+				jetonTire = Jeton.tirageJeton();
+				this.getChildren().add(jetonTire);
+				robotAJouer();
+				return true;
+
+
+
+			}
 		 }
 		 return false;
+	}
+
+	public void afficherCoup(){
+		System.out.println("coups:" + coup);
 	}
 
 	//Création des robots
@@ -164,6 +185,14 @@ public class Plateau extends Parent implements RobotClickedObserver, CaseClicked
 		robotVert.ajouterObserveurRobotClique(this);
 
 		robotAJouer();
+	}
+
+	public void ajouterCoups(){
+		coup += 1;
+	}
+
+	public void reinitialiserCoup(){
+		coup = 0;
 	}
 
 	//Créer les mini-grilles
@@ -425,7 +454,7 @@ public class Plateau extends Parent implements RobotClickedObserver, CaseClicked
 		while(surJeton || surCaseInterdite){
 
 			surJeton = estSurJeton();
-			//si les coordonnées sont sur un jeton, alors on re-génère des coordonnées
+			//si les coordonnées sont sur un jeton, alors on re-génère des coordonnées et on recommence
 			if(surJeton){
 				this.aleaX = r.nextInt(15);
 				this.aleaY = r.nextInt(15);
@@ -435,7 +464,7 @@ public class Plateau extends Parent implements RobotClickedObserver, CaseClicked
 			else{
 				surCaseInterdite = estSurCaseInterdite();
 
-				//si les coordonnées sont sur une case interdite, alors on re-génère
+				//si les coordonnées sont sur une case interdite, alors on re-génère, et on recommence tout
 				if(surCaseInterdite){
 					this.aleaX = r.nextInt(15);
 					this.aleaY = r.nextInt(15);
@@ -447,7 +476,7 @@ public class Plateau extends Parent implements RobotClickedObserver, CaseClicked
 					if(Robot.tableauRobots.size() != 0){
 						surRobot = Robot.estSurAutresRobots(this.aleaX, this.aleaY);
 
-						//si les coordonnées sont sur un robot déja crée, alors on re-génère
+						//si les coordonnées sont sur un robot déja crée, alors on re-génère, et on recommence tout
 						if(surRobot){
 							this.aleaX = r.nextInt(15);
 							this.aleaY = r.nextInt(15);
@@ -457,6 +486,7 @@ public class Plateau extends Parent implements RobotClickedObserver, CaseClicked
 				}
 			}
 		}
+		System.out.println("posX: " + position[0] + " posy: " + position[1] + " / surCaseInterdite: " + surCaseInterdite);
 		return position;
 	}
 
