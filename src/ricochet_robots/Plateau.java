@@ -56,11 +56,13 @@ public class Plateau extends Parent implements RobotClickedObserver, CaseClicked
 	private int aleaX = -1;
 	private int aleaY = -1;
 
-	private int coup = 0;
+	private Score score;
 
-	public Plateau(int tailleX, int tailleY){
+	public Plateau(int tailleX, int tailleY, Score score){
 		//Initialisation du plateau
 		 this.plateau = new Case[tailleX][tailleY];
+
+		 this.score = score;
 
 		//Création des miniGrille
 		for(int i = 0 ; i < chaines.length; i++){
@@ -125,13 +127,13 @@ public class Plateau extends Parent implements RobotClickedObserver, CaseClicked
 	}
 
 	public boolean collisionJetonTire(){
-		ajouterCoups();
+		score.ajouterCoup();
 		Case caseDessus = getCasePlateau(robotSelect.getPositionX(), robotSelect.getPositionY());
 		if(caseDessus instanceof CaseJeton){
 			CaseJeton caseJetonDessus = (CaseJeton) caseDessus;
 			if(robotSelect.getCouleur() == caseJetonDessus.getCouleur() && caseJetonDessus.estSurCaseJetonTire(jetonTire)){
-				System.out.println("déplacement réalisé en " + coup + " coups");
-				reinitialiserCoup();
+				System.out.println("déplacement réalisé en " + score.getNbCoup() + " coups");
+				score.reinitialiserCoup();
 				robotSelect.nouvellePositionSocle();
 				for(int i = 0; i < Robot.tableauRobots.size(); i++){
 					Robot.tableauRobots.get(i).reinitialiserPosition();
@@ -146,10 +148,6 @@ public class Plateau extends Parent implements RobotClickedObserver, CaseClicked
 			}
 		 }
 		 return false;
-	}
-
-	public void afficherCoup(){
-		System.out.println("coups:" + coup);
 	}
 
 	//Création des robots
@@ -185,14 +183,6 @@ public class Plateau extends Parent implements RobotClickedObserver, CaseClicked
 		robotVert.ajouterObserveurRobotClique(this);
 
 		robotAJouer();
-	}
-
-	public void ajouterCoups(){
-		coup += 1;
-	}
-
-	public void reinitialiserCoup(){
-		coup = 0;
 	}
 
 	//Créer les mini-grilles

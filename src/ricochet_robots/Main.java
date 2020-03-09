@@ -36,13 +36,16 @@ public class Main extends Application{
         Group root = new Group();
 
 		//Créatoin de la fenêtre, contenant l'objet Group
-        Scene scene = new Scene(root, 1000, 900, Color.LIGHTGREEN);
+        Scene scene = new Scene(root, 900, 900, Color.WHITE);
 
 		//Ajout de la fenêtre à l'objet Stage
 		primaryStage.setScene(scene);
 
+		Score score = new Score();
+		root.getChildren().add(score);
+
         //On créer un plateau
-		Plateau plateauJeu = new Plateau(16,16);
+		Plateau plateauJeu = new Plateau(16,16, score);
 		root.getChildren().add(plateauJeu);
 
 
@@ -56,25 +59,25 @@ public class Main extends Application{
 					System.out.println("Key Pressed: " + ke.getCode());
 					plateauJeu.deplacerRobot(Deplacement.DOWN);
 					plateauJeu.collisionJetonTire();
-					plateauJeu.afficherCoup();
+					score.afficherCoup();
 					ke.consume(); // <-- stops passing the event to next node
 				} else if (ke.getCode() == KeyCode.LEFT) {
 					System.out.println("Key Pressed: " + ke.getCode());
 					plateauJeu.deplacerRobot(Deplacement.LEFT);
 					plateauJeu.collisionJetonTire();
-					plateauJeu.afficherCoup();
+					score.afficherCoup();
 					ke.consume(); // <-- stops passing the event to next node
 				} else if (ke.getCode() == KeyCode.UP) {
 					System.out.println("Key Pressed: " + ke.getCode());
 					plateauJeu.deplacerRobot(Deplacement.UP);
 					plateauJeu.collisionJetonTire();
-					plateauJeu.afficherCoup();
+					score.afficherCoup();
 					ke.consume(); // <-- stops passing the event to next node
 				} else if (ke.getCode() == KeyCode.RIGHT) {
 					System.out.println("Key Pressed: " + ke.getCode());
 					plateauJeu.deplacerRobot(Deplacement.RIGHT);
 					plateauJeu.collisionJetonTire();
-					plateauJeu.afficherCoup();
+					score.afficherCoup();
 					ke.consume(); // <-- stops passing the event to next node
 				}
 			}
