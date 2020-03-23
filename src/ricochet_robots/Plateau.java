@@ -82,8 +82,6 @@ public class Plateau extends Parent implements RobotClickedObserver, CaseClicked
 
 		ajoutObserveurCases();
 
-		//création des robots
-		creerRobot();
 	}
 
 	//On sélectionne le robot à déplacer si on clique dessus
@@ -103,9 +101,9 @@ public class Plateau extends Parent implements RobotClickedObserver, CaseClicked
 
 	//désigner quel robot doit être déplacé
 	public void robotAJouer(){
-		for(int i =0; i< Robot.tableauRobots.size(); i++){
-			if(Robot.tableauRobots.get(i).estRobotAJouer(jetonTire.getCouleur())){
-				robotSelect = Robot.tableauRobots.get(i);
+		for(int i =0; i< State.tableauRobots.size(); i++){
+			if(State.tableauRobots.get(i).estRobotAJouer(jetonTire.getCouleur())){
+				robotSelect = State.tableauRobots.get(i);
 				break;
 			}
 		}
@@ -135,8 +133,8 @@ public class Plateau extends Parent implements RobotClickedObserver, CaseClicked
 				System.out.println("déplacement réalisé en " + score.getNbCoup() + " coups");
 				score.reinitialiserCoup();
 				robotSelect.nouvellePositionSocle();
-				for(int i = 0; i < Robot.tableauRobots.size(); i++){
-					Robot.tableauRobots.get(i).reinitialiserPosition();
+				for(int i = 0; i < State.tableauRobots.size(); i++){
+					State.tableauRobots.get(i).reinitialiserPosition();
 				}
 				jetonTire = Jeton.tirageJeton();
 				this.getChildren().add(jetonTire);
@@ -148,41 +146,6 @@ public class Plateau extends Parent implements RobotClickedObserver, CaseClicked
 			}
 		 }
 		 return false;
-	}
-
-	//Création des robots
-	public void creerRobot(){
-		//Tirage de deux nombre aléatoires pour les coordonnées initiale d'un robot
-        int aleaX = r.nextInt(16);
-        int aleaY = r.nextInt(16);
-
-        //On vérifie si la position tirée n'existe pas
-        int[] posRobotJaune = this.positionRobotNonUtilise();
-        //Création d'un robot Jaune
-        Robot robotJaune = new Robot(this, "jaune", posRobotJaune[0], posRobotJaune[1]);
-		//On ajoute le robot créé au groupe de dessin
-		this.getChildren().add(robotJaune);
-        //On ajoute la possibilité du robot à avoir des événements clics
-		robotJaune.ajouterObserveurRobotClique(this);
-
-        int[] posRobotBleu = this.positionRobotNonUtilise();
-        Robot robotBleu = new Robot(this, "bleu", posRobotBleu[0], posRobotBleu[1]);
-		this.getChildren().add(robotBleu);
-		robotBleu.ajouterObserveurRobotClique(this);
-
-        int[] posRobotRouge = this.positionRobotNonUtilise();
-        Robot robotRouge = new Robot(this, "rouge", posRobotRouge[0], posRobotRouge[1]);
-		this.getChildren().add(robotRouge);
-        //tableauRobots.add(robotRouge);
-		robotRouge.ajouterObserveurRobotClique(this);
-
-        int[] posRobotVert = this.positionRobotNonUtilise();
-        Robot robotVert = new Robot(this, "vert", posRobotVert[0], posRobotVert[1]);
-		this.getChildren().add(robotVert);
-        //tableauRobots.add(robotVert);
-		robotVert.ajouterObserveurRobotClique(this);
-
-		robotAJouer();
 	}
 
 	//Créer les mini-grilles
@@ -463,7 +426,7 @@ public class Plateau extends Parent implements RobotClickedObserver, CaseClicked
 				//Sinon on passe à la suite
 				else{
 					//On vérifie si on a déja des robots de créer
-					if(Robot.tableauRobots.size() != 0){
+					if(State.tableauRobots.size() != 0){
 						surRobot = Robot.estSurAutresRobots(this.aleaX, this.aleaY);
 
 						//si les coordonnées sont sur un robot déja crée, alors on re-génère, et on recommence tout
@@ -515,5 +478,9 @@ public class Plateau extends Parent implements RobotClickedObserver, CaseClicked
 
 	public int getTaillePlateau(){
 		return plateau.length;
+	}
+
+	public void addGroupPlateau(Parent parent){
+		this.getChildren().add(parent);
 	}
 }

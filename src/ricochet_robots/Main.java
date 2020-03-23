@@ -12,10 +12,7 @@ import javafx.stage.Stage;
 import javafx.scene.paint.Color;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.event.EventHandler;
-import javafx.scene.input.*;
+
 import javafx.scene.shape.Rectangle;
 
 
@@ -45,43 +42,12 @@ public class Main extends Application{
 		root.getChildren().add(score);
 
         //On créer un plateau
-		Plateau plateauJeu = new Plateau(16,16, score);
-		root.getChildren().add(plateauJeu);
-
+		//Plateau plateauJeu = new Plateau(16,16, score);
+		State etatInitial = new State(16,16, score, scene);
+		root.getChildren().add(etatInitial.getEtatPlateau());
 
         //Un tableau de Robots
     	//ArrayList<Robot> tableauRobots = new ArrayList<>();
-
-
-		scene.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
-			public void handle(KeyEvent ke) {
-				if (ke.getCode() == KeyCode.DOWN) {
-					System.out.println("Key Pressed: " + ke.getCode());
-					plateauJeu.deplacerRobot(Deplacement.DOWN);
-					plateauJeu.collisionJetonTire();
-					score.afficherCoup();
-					ke.consume(); // <-- stops passing the event to next node
-				} else if (ke.getCode() == KeyCode.LEFT) {
-					System.out.println("Key Pressed: " + ke.getCode());
-					plateauJeu.deplacerRobot(Deplacement.LEFT);
-					plateauJeu.collisionJetonTire();
-					score.afficherCoup();
-					ke.consume(); // <-- stops passing the event to next node
-				} else if (ke.getCode() == KeyCode.UP) {
-					System.out.println("Key Pressed: " + ke.getCode());
-					plateauJeu.deplacerRobot(Deplacement.UP);
-					plateauJeu.collisionJetonTire();
-					score.afficherCoup();
-					ke.consume(); // <-- stops passing the event to next node
-				} else if (ke.getCode() == KeyCode.RIGHT) {
-					System.out.println("Key Pressed: " + ke.getCode());
-					plateauJeu.deplacerRobot(Deplacement.RIGHT);
-					plateauJeu.collisionJetonTire();
-					score.afficherCoup();
-					ke.consume(); // <-- stops passing the event to next node
-				}
-			}
-		});
 
 		//On montre les dessins
 		primaryStage.show();
