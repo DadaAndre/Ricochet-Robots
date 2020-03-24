@@ -394,51 +394,39 @@ public class Plateau extends Parent implements RobotClickedObserver, CaseClicked
 
 	//Tire aléatoirement des coordonnées pour un robot et vérifie qu'un robot ne les a pas déjà
 	public int[] positionRobotNonUtilise(){
-		boolean surJeton = true;
-		boolean surRobot = true;
-		boolean surCaseInterdite = true;
-
-		this.aleaX = r.nextInt(15);
-		this.aleaY = r.nextInt(15);
-
-		int[] position = {this.aleaX, this.aleaY};
+		boolean surJeton = false;
+		boolean surRobot = false;
+		boolean surCaseInterdite = false;;
 
 		//On fait le procédé tant que les positions du robot générées ne sont ni sur un jeton, ni sur un robot, ni sur case interdite
-		while(surJeton || surCaseInterdite){
+		do{
+			this.aleaX = r.nextInt(16);
+			this.aleaY = r.nextInt(16);
 
 			surJeton = estSurJeton();
 			//si les coordonnées sont sur un jeton, alors on re-génère des coordonnées et on recommence
 			if(surJeton){
-				this.aleaX = r.nextInt(15);
-				this.aleaY = r.nextInt(15);
-
+				continue;
 			}
-			//Sinon on passe à la suite
-			else{
-				surCaseInterdite = estSurCaseInterdite();
+			surCaseInterdite = estSurCaseInterdite();
 
-				//si les coordonnées sont sur une case interdite, alors on re-génère, et on recommence tout
-				if(surCaseInterdite){
-					this.aleaX = r.nextInt(15);
-					this.aleaY = r.nextInt(15);
+			//si les coordonnées sont sur une case interdite, alors on re-génère, et on recommence tout
+			if(surCaseInterdite){
+				continue;
+			}
 
-				}
-				//Sinon on passe à la suite
-				else{
-					//On vérifie si on a déja des robots de créer
-					if(State.tableauRobots.size() != 0){
-						surRobot = Robot.estSurAutresRobots(this.aleaX, this.aleaY);
+			//On vérifie si on a déja des robots de créer
+			if(State.tableauRobots.size() != 0){
+				surRobot = Robot.estSurAutresRobots(this.aleaX, this.aleaY);
 
-						//si les coordonnées sont sur un robot déja crée, alors on re-génère, et on recommence tout
-						if(surRobot){
-							this.aleaX = r.nextInt(15);
-							this.aleaY = r.nextInt(15);
-
-						}
-					}
+				//si les coordonnées sont sur un robot déja crée, alors on re-génère, et on recommence tout
+				if(surRobot){
+					continue;
 				}
 			}
-		}
+		}while(surJeton || surCaseInterdite || surRobot);
+
+		int[] position = {this.aleaX, this.aleaY};
 		System.out.println("posX: " + position[0] + " posy: " + position[1] + " / surCaseInterdite: " + surCaseInterdite);
 		return position;
 	}
