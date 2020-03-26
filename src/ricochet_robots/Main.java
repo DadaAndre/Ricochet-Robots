@@ -46,11 +46,11 @@ public class Main extends Application{
 		State etatInitial = new State(16,16, score, scene);
 		root.getChildren().add(etatInitial.getEtatPlateau());
 
-        //Un tableau de Robots
-    	//ArrayList<Robot> tableauRobots = new ArrayList<>();
-
 		//On montre les dessins
 		primaryStage.show();
+
+		AlgoAStar algo = new AlgoAStar(etatInitial);
+		algo.parcoursTotal();
 
     }
 }

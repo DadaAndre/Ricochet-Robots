@@ -31,6 +31,10 @@ public class State{
 		action();
 	}
 
+	public State(Plateau plateau){
+		this.plateauJeu = plateau;
+	}
+
 	public Plateau getEtatPlateau(){
 		return this.plateauJeu;
 	}
@@ -101,4 +105,23 @@ public class State{
 			}
 		});
 	}
+
+	public Jeton getJetonTire(){
+		return this.plateauJeu.getJetonTire();
+	}
+
+	public Robot getRobotAJouer(){
+		return this.plateauJeu.getRobotSelect();
+	}
+
+	public State etatSuivant(Deplacement direction){
+		plateauJeu.deplacerRobot(direction);
+		// plateauJeu.collisionJetonTire();
+		return new State(plateauJeu);
+	}
+
+	public boolean etatFinal(){
+		return plateauJeu.collisionJetonTire();
+	}
+
 }

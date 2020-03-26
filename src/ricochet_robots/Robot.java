@@ -111,8 +111,8 @@ public class Robot extends Parent implements RobotClickedObservable{
 	}
 
 	public void setPosition(int x, int y){
-		this.positionY = positionY;
-		this.positionX = positionX;
+		this.positionY = y;
+		this.positionX = x;
 	}
 
 	public String getCouleur(){

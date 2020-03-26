@@ -140,9 +140,6 @@ public class Plateau extends Parent implements RobotClickedObserver, CaseClicked
 				this.getChildren().add(jetonTire);
 				robotAJouer();
 				return true;
-
-
-
 			}
 		 }
 		 return false;
@@ -466,6 +463,14 @@ public class Plateau extends Parent implements RobotClickedObserver, CaseClicked
 
 	public int getTaillePlateau(){
 		return plateau.length;
+	}
+
+	public Robot getRobotSelect(){
+		return this.robotSelect;
+	}
+
+	public Jeton getJetonTire(){
+		return this.jetonTire;
 	}
 
 	public void addGroupPlateau(Parent parent){
