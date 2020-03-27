@@ -106,8 +106,19 @@ public class State{
 		});
 	}
 
-	public Jeton getJetonTire(){
-		return this.plateauJeu.getJetonTire();
+	public CaseJeton getCaseJetonTire(){
+		CaseJeton caseGagne;
+		for(int y = 0; y < plateauJeu.getTaillePlateau(); y++){
+			for(int x = 0; x < plateauJeu.getTaillePlateau(); x++){
+				if(plateauJeu.getCasePlateau(x, y) instanceof CaseJeton){
+					caseGagne = (CaseJeton) plateauJeu.getCasePlateau(x, y);
+					if(plateauJeu.getJetonTire().getCouleur() == caseGagne.getCouleur() && plateauJeu.getJetonTire().getForme() == caseGagne.getForme()){
+						return caseGagne;
+					}
+				 }
+			}
+		}
+		return null;
 	}
 
 	public Robot getRobotAJouer(){
@@ -119,9 +130,4 @@ public class State{
 		// plateauJeu.collisionJetonTire();
 		return new State(plateauJeu);
 	}
-
-	public boolean etatFinal(){
-		return plateauJeu.collisionJetonTire();
-	}
-
 }

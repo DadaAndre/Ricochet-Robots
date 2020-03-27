@@ -424,7 +424,6 @@ public class Plateau extends Parent implements RobotClickedObserver, CaseClicked
 		}while(surJeton || surCaseInterdite || surRobot);
 
 		int[] position = {this.aleaX, this.aleaY};
-		System.out.println("posX: " + position[0] + " posy: " + position[1] + " / surCaseInterdite: " + surCaseInterdite);
 		return position;
 	}
 

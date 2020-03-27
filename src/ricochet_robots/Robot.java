@@ -250,6 +250,5 @@ public class Robot extends Parent implements RobotClickedObservable{
 	public void refreshPosSocleRobot(){
 		this.imageSocle.setX(this.positionInitialeX * Case.DIM + Plateau.DEPART_X);
 		this.imageSocle.setY(this.positionInitialeY * Case.DIM + Plateau.DEPART_X);
-		System.out.println("robot " + couleur + " : socleX:" + this.positionInitialeX + " socleY: " + this.positionInitialeY );
 	}
 }
