@@ -38,7 +38,7 @@ public class AlgoAStar{
 		if(listeNoeudsRestant.size() == 0){
 			return;
 		}
-		//Sortie anticipée si on a trouvé la case de sortie 
+		//Sortie anticipée si on a trouvé la case de sortie
 		if(this.caseGagne == noeudAParcourir){
 			System.out.println("Raccourci");
 			System.out.println(""+listeNoeudsRestant.size());
@@ -50,7 +50,7 @@ public class AlgoAStar{
 
 		//On affecte les différentes positions
 		for(Deplacement direction : Deplacement.values()){
-			robotInitial.move(direction);
+			etatInitial.move(direction);
 			Case caseDuRobot = this.getCaseRobot(robotInitial);
 			//On vérifie que le noeud n'a pas été déjà exploré
 			if(!listeCaseVersCase.containsKey(caseDuRobot)){

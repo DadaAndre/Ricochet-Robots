@@ -40,13 +40,13 @@ public class Robot extends Parent implements RobotClickedObservable{
 
 	public Robot(State etatJeu, String couleur, int positionX, int positionY){
 		//On ajoute le robot crée à la liste des robots
-		State.tableauRobots.add(this);
 		this.couleur = couleur;
 		this.positionInitialeX = positionX;
 		this.positionInitialeY = positionY;
 		this.positionX = positionX;
 		this.positionY = positionY;
 		this.etatJeu = etatJeu;
+		etatJeu.addTableauRobots(this);
 
 		dessinerSocleRobot();
 		dessinerRobot();
@@ -64,7 +64,7 @@ public class Robot extends Parent implements RobotClickedObservable{
 	@Override
 	public void notifierRobotClique(Robot robot){
 		for(int i = 0; i < listObserver.size(); i++){
-			etatJeu.getEtatPlateau().clicSurRobot(robot);
+			etatJeu.clicSurRobot(robot);
 		}
 	}
 
@@ -110,6 +110,14 @@ public class Robot extends Parent implements RobotClickedObservable{
 		this.positionY = positionY;
 	}
 
+	public void translatePositionX(int position){
+		this.positionX += position;
+	}
+
+	public void translatePositionY(int position){
+		this.positionY += position;
+	}
+
 	public void setPosition(int x, int y){
 		this.positionY = y;
 		this.positionX = x;
@@ -123,56 +131,6 @@ public class Robot extends Parent implements RobotClickedObservable{
 		this.couleur = couleur;
 	}
 
-	//Vérifie si deux robots sont en collisions
-	public static boolean estSurAutresRobots(int aleaX, int aleaY){
-		for(int i = 0; i <= State.tableauRobots.size() -1 ; i++){
-			//Vérifie si les coordonnées X et Y tirées sont déja affectés a un robot déja crée
-			if(aleaX == State.tableauRobots.get(i).getPositionInitialeX() && aleaY == State.tableauRobots.get(i).getPositionInitialeY()){
-				//Si c'est le cas, on retrourne vrai
-				return true;
-			}
-		}
-		//Si ce n'est pas le cas, on retrourne false
-		return false;
-	}
-
-	public boolean estUneCollisionRobot(Deplacement direction){
-		switch(direction){
-			case UP:
-				for(int i = 0; i< State.tableauRobots.size(); i++){
-					if(State.tableauRobots.get(i).getCouleur() != couleur && State.tableauRobots.get(i).getPositionX() == positionX &&  State.tableauRobots.get(i).getPositionY() == (positionY - 1)){
-						return true;
-					}
-				}
-				return false;
-
-			case DOWN:
-				for(int i = 0; i< State.tableauRobots.size(); i++){
-					if(State.tableauRobots.get(i).getCouleur() != couleur && State.tableauRobots.get(i).getPositionX() == positionX &&  State.tableauRobots.get(i).getPositionY() == (positionY + 1)){
-						return true;
-					}
-				}
-				return false;
-
-			case LEFT:
-				for(int i = 0; i< State.tableauRobots.size(); i++){
-					if(State.tableauRobots.get(i).getCouleur() != couleur && State.tableauRobots.get(i).getPositionX() == (positionX - 1)  &&  State.tableauRobots.get(i).getPositionY() == positionY){
-						return true;
-					}
-				}
-				return false;
-
-			case RIGHT:
-				for(int i = 0; i< State.tableauRobots.size(); i++){
-					if(State.tableauRobots.get(i).getCouleur() != couleur && State.tableauRobots.get(i).getPositionX() == (positionX + 1)  &&  State.tableauRobots.get(i).getPositionY() == positionY){
-						return true;
-					}
-				}
-				return false;
-		}
-		return true;
-	}
-
 	//Permet de savoir quel robot doit jouer
 	public boolean estRobotAJouer(String couleurTire){
 		if(this.couleur.equals(couleurTire)){
@@ -184,33 +142,6 @@ public class Robot extends Parent implements RobotClickedObservable{
 	//Vérifie si il y a un robot sur une case
 	public boolean caseAvecRobot(int xCase, int yCase){
 		return xCase == this.positionX && yCase == this.positionY;
-	}
-
-	//Déplacement du robot
-	public void move(Deplacement direction){
-
-		//Vérification de la direction choisie
-		if(direction == Deplacement.UP){
-			//Tant que le robot ne rencontre pas un mur en haut, ou un autre robot, il se dirige vers le haut
-			while(this.etatJeu.getEtatPlateau().getCasePlateau(positionX, positionY).getValHaut() != 1 && this.etatJeu.getEtatPlateau().getCasePlateau(positionX, positionY - 1).getValBas() != 1 && !estUneCollisionRobot(direction)){
-				this.positionY -= 1;
-			}
-		}else if(direction == Deplacement.DOWN){
-			//Tant que le robot ne rencontre pas un mur en bas, ou un autre robot, il se dirige vers le bas
-			while(this.etatJeu.getEtatPlateau().getCasePlateau(positionX, positionY).getValBas() != 1 && this.etatJeu.getEtatPlateau().getCasePlateau(positionX, positionY +1).getValHaut() != 1 && !estUneCollisionRobot(direction)){
-				this.positionY += 1;
-			}
-		}else if(direction == Deplacement.LEFT){
-			//Tant que le robot ne rencontre pas un mur à gauche,  ou un autre robot, il se dirige vers la gauche
-			while(this.etatJeu.getEtatPlateau().getCasePlateau(positionX, positionY).getValGauche() != 1 && this.etatJeu.getEtatPlateau().getCasePlateau(positionX -1, positionY).getValDroit() != 1&& !estUneCollisionRobot(direction)){
-				this.positionX -= 1;
-			}
-		}else if(direction == Deplacement.RIGHT){
-			//Tant que le robot ne rencontre pas un mur à droite,  ou un autre robot, il se dirige vers la droite
-			while(this.etatJeu.getEtatPlateau().getCasePlateau(positionX, positionY).getValDroit() != 1 && this.etatJeu.getEtatPlateau().getCasePlateau(positionX + 1, positionY).getValGauche() != 1  && !estUneCollisionRobot(direction)){
-				this.positionX += 1;
-			}
-		}
 	}
 
 	public void nouvellePositionSocle(){

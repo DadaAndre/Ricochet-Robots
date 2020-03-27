@@ -20,7 +20,7 @@ import javafx.scene.shape.Rectangle;
 
 import javafx.scene.Parent;
 
-public class Plateau extends Parent implements RobotClickedObserver, CaseClickedObserver{
+public class Plateau extends Parent{
 
 	//La position de départ de dessin du plateau (en pixels)
 	public static final int DEPART_X = 49;
@@ -38,23 +38,6 @@ public class Plateau extends Parent implements RobotClickedObserver, CaseClicked
 
 	//Le plateau
 	private Case[][] plateau;
-
-	//le robot qui est joué
-	private Robot robotSelect = null;
-
-	//Jeton tiré
-	Jeton jetonTire;
-
-	//ArrayList<Robot> tableauRobots;
-
-	//Zone de positionnement interdite des robots;
-	private int[][] deadZone = {{7,7},{8,7},{7,8},{8,8}};
-
-	Random r = new Random();
-
-	//Les nombres aléatoires
-	private int aleaX = -1;
-	private int aleaY = -1;
 
 	private Score score;
 
@@ -74,46 +57,8 @@ public class Plateau extends Parent implements RobotClickedObserver, CaseClicked
 		//Création du plateau
 		creerPlateau();
 
-		//Tirage du jeton aléatoirement
-		jetonTire = Jeton.tirageJeton();
-
 		//Affichage du plateau
 		afficheGrille();
-
-		ajoutObserveurCases();
-
-	}
-
-	//On sélectionne le robot à déplacer si on clique dessus
-	@Override
-	public void clicSurRobot(Robot robot){
-		System.out.println("Robot " + robot.getCouleur() + " cliqué");
-		robotSelect = robot;
-	}
-
-	//On remet le robot à jouer si on clique sur une case
-	@Override
-	public void clicSurCase(Case casePlateau){
-		System.out.println("case " + casePlateau +"cliqué");
-		robotAJouer();
-
-	}
-
-	//désigner quel robot doit être déplacé
-	public void robotAJouer(){
-		for(int i =0; i< State.tableauRobots.size(); i++){
-			if(State.tableauRobots.get(i).estRobotAJouer(jetonTire.getCouleur())){
-				robotSelect = State.tableauRobots.get(i);
-				break;
-			}
-		}
-	}
-
-	public void deplacerRobot(Deplacement direction){
-		//Déplacement du robot
-		robotSelect.move(direction);
-		//On remet à jour l'affichage du robot
-		robotSelect.refreshPosRobot();
 	}
 
 	//Récupère une case à une position donnée
@@ -122,27 +67,6 @@ public class Plateau extends Parent implements RobotClickedObserver, CaseClicked
 			return this.plateau[x][y];
 		}
 		return null;
-	}
-
-	public boolean collisionJetonTire(){
-		score.ajouterCoup();
-		Case caseDessus = getCasePlateau(robotSelect.getPositionX(), robotSelect.getPositionY());
-		if(caseDessus instanceof CaseJeton){
-			CaseJeton caseJetonDessus = (CaseJeton) caseDessus;
-			if(robotSelect.getCouleur() == caseJetonDessus.getCouleur() && caseJetonDessus.estSurCaseJetonTire(jetonTire)){
-				System.out.println("déplacement réalisé en " + score.getNbCoup() + " coups");
-				score.reinitialiserCoup();
-				robotSelect.nouvellePositionSocle();
-				for(int i = 0; i < State.tableauRobots.size(); i++){
-					State.tableauRobots.get(i).reinitialiserPosition();
-				}
-				jetonTire = Jeton.tirageJeton();
-				this.getChildren().add(jetonTire);
-				robotAJouer();
-				return true;
-			}
-		 }
-		 return false;
 	}
 
 	//Créer les mini-grilles
@@ -161,14 +85,13 @@ public class Plateau extends Parent implements RobotClickedObserver, CaseClicked
 			}
 			System.out.println();
 		}
-		this.getChildren().add(jetonTire);
 	}
 
 	//Ajoute la possibilité que toute les cases soient cliquables
-	public void ajoutObserveurCases(){
+	public void ajoutObserveurCases(CaseClickedObserver observer){
 		for(int y = 0; y < plateau[0].length; y++){
 			for(int x = 0; x < plateau.length; x++){
-				this.plateau[x][y].ajouterObserveurCaseClique(this);
+				this.plateau[x][y].ajouterObserveurCaseClique(observer);
 			}
 		}
 	}
@@ -384,67 +307,6 @@ public class Plateau extends Parent implements RobotClickedObserver, CaseClicked
 		}
 	}
 
-
-	public int[][] getZoneInterdite(){
-		return this.deadZone;
-	}
-
-	//Tire aléatoirement des coordonnées pour un robot et vérifie qu'un robot ne les a pas déjà
-	public int[] positionRobotNonUtilise(){
-		boolean surJeton = false;
-		boolean surRobot = false;
-		boolean surCaseInterdite = false;;
-
-		//On fait le procédé tant que les positions du robot générées ne sont ni sur un jeton, ni sur un robot, ni sur case interdite
-		do{
-			this.aleaX = r.nextInt(16);
-			this.aleaY = r.nextInt(16);
-
-			surJeton = estSurJeton();
-			//si les coordonnées sont sur un jeton, alors on re-génère des coordonnées et on recommence
-			if(surJeton){
-				continue;
-			}
-			surCaseInterdite = estSurCaseInterdite();
-
-			//si les coordonnées sont sur une case interdite, alors on re-génère, et on recommence tout
-			if(surCaseInterdite){
-				continue;
-			}
-
-			//On vérifie si on a déja des robots de créer
-			if(State.tableauRobots.size() != 0){
-				surRobot = Robot.estSurAutresRobots(this.aleaX, this.aleaY);
-
-				//si les coordonnées sont sur un robot déja crée, alors on re-génère, et on recommence tout
-				if(surRobot){
-					continue;
-				}
-			}
-		}while(surJeton || surCaseInterdite || surRobot);
-
-		int[] position = {this.aleaX, this.aleaY};
-		return position;
-	}
-
-	public boolean estSurCaseInterdite(){
-		for(int i = 0; i < deadZone.length; i++){
-			if(this.aleaX == deadZone[i][0] && this.aleaY == deadZone[i][1]){
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public boolean estSurJeton(){
-		if(getCasePlateau(this.aleaX, this.aleaY) instanceof CaseJeton){
-			return true;
-		}
-		else{
-			return false;
-		}
-	}
-
 	//Positionnement des jetons (pas très propre, à voir comment faire mieux...)
 	public void positonJeton(){
 		int k=0;
@@ -464,15 +326,8 @@ public class Plateau extends Parent implements RobotClickedObserver, CaseClicked
 		return plateau.length;
 	}
 
-	public Robot getRobotSelect(){
-		return this.robotSelect;
-	}
-
-	public Jeton getJetonTire(){
-		return this.jetonTire;
-	}
-
 	public void addGroupPlateau(Parent parent){
-		this.getChildren().add(parent);
+		if(!this.getChildren().contains(parent))
+			this.getChildren().add(parent);
 	}
 }
