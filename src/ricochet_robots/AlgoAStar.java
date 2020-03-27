@@ -38,6 +38,13 @@ public class AlgoAStar{
 		if(listeNoeudsRestant.size() == 0){
 			return;
 		}
+		//Sortie anticipée si on a trouvé la case de sortie 
+		if(this.caseGagne == noeudAParcourir){
+			System.out.println("Raccourci");
+			System.out.println(""+listeNoeudsRestant.size());
+			return;
+		}
+
 		//On met le robot sur le noeud auquel on affecte différentes directions
 		robotInitial.setPosition(noeudAParcourir.getXCase(),noeudAParcourir.getYCase());
 
@@ -51,6 +58,7 @@ public class AlgoAStar{
 				listeNoeudsRestant.add(caseDuRobot);
 				//On affecte ce nouveau noeud au noeud d'ou il vient
 				listeCaseVersCase.put(caseDuRobot, noeudAParcourir);
+				System.out.println("Possibilite : " + caseDuRobot.getXCase() + " - " + caseDuRobot.getYCase());
 			}
 			//On remet le robot au noeud après un mouvement, pour pouvoir affecter le mouvement suivant
 			robotInitial.setPosition(noeudAParcourir.getXCase(),noeudAParcourir.getYCase());
