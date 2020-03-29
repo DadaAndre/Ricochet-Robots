@@ -39,6 +39,9 @@ public class Plateau extends Parent{
 	//Le plateau
 	private Case[][] plateau;
 
+	//Zone de positionnement interdite des robots;
+	private int[][] deadZone = {{7,7},{8,7},{7,8},{8,8}};
+
 	private Score score;
 
 	public Plateau(int tailleX, int tailleY, Score score){
@@ -322,6 +325,10 @@ public class Plateau extends Parent{
 		//tableauMiniGrille.get(3)[7][4] = new CaseJeton(tableauMiniGrille.get(3)[7][4].getValHaut(), tableauMiniGrille.get(3)[7][4].getValDroit(), tableauMiniGrille.get(3)[7][4].getValBas(), tableauMiniGrille.get(3)[7][4].getValGauche(), "spirale", "multi");
 	}
 
+	public int[][] getZoneInterdite(){
+		return this.deadZone;
+	}
+	
 	public int getTaillePlateau(){
 		return plateau.length;
 	}

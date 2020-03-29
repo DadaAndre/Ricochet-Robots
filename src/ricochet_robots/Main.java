@@ -45,12 +45,16 @@ public class Main extends Application{
 		//Plateau plateauJeu = new Plateau(16,16, score);
 		State etatInitial = new State(16,16, score, scene);
 		root.getChildren().add(etatInitial.getEtatPlateau());
-
+		System.out.println("=========== AVANT ALGO =============");
+		System.out.println(etatInitial.jetonTire.getForme() +" - "+ etatInitial.jetonTire.getCouleur());
+		System.out.println("doit jouer: " + etatInitial.getRobotAJouer());
 		//On montre les dessins
 		primaryStage.show();
 
-		AlgoAStar algo = new AlgoAStar(etatInitial);
-		algo.parcoursTotal();
+		// AlgoAStar algo = new AlgoAStar(etatInitial);
+		// algo.parcoursTotal();
 
+		AlgoAStarBis algo = new AlgoAStarBis(etatInitial);
+		algo.parcoursTotal();
     }
 }

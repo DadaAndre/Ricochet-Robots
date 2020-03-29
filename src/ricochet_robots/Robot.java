@@ -33,20 +33,28 @@ public class Robot extends Parent implements RobotClickedObservable{
 	private int positionY;
 	private State etatJeu;
 
+	private int id;
+
 	private ImageView imageRobot;
 	private ImageView imageSocle;
 
 	private ArrayList<RobotClickedObserver> listObserver;
 
 	public Robot(State etatJeu, String couleur, int positionX, int positionY){
+		this(etatJeu,couleur,positionX,positionY,positionX,positionY);
+	}
+
+	public Robot(State etatJeu, String couleur, int positionX, int positionY,  int posXInitial, int posYInitial){
 		//On ajoute le robot crée à la liste des robots
 		this.couleur = couleur;
-		this.positionInitialeX = positionX;
-		this.positionInitialeY = positionY;
+		this.positionInitialeX = posXInitial;
+		this.positionInitialeY = posYInitial;
 		this.positionX = positionX;
 		this.positionY = positionY;
 		this.etatJeu = etatJeu;
 		etatJeu.addTableauRobots(this);
+
+		hashCode();
 
 		dessinerSocleRobot();
 		dessinerRobot();
@@ -157,6 +165,20 @@ public class Robot extends Parent implements RobotClickedObservable{
 
 	}
 
+	@Override
+	public boolean equals(Object obj){
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+
+		Robot robot = (Robot) obj;
+
+		return this.couleur == robot.couleur && this.positionX == robot.positionX && this.positionY == robot.positionY && this.positionInitialeX == robot.positionInitialeX && this.positionInitialeY == robot.positionInitialeY;
+	}
+
 	//On dessine le robot
 	public void dessinerRobot(){
 		this.imageRobot = new ImageView(new Image("images/imgRobot/" + this.couleur + ".png"));
@@ -181,5 +203,11 @@ public class Robot extends Parent implements RobotClickedObservable{
 	public void refreshPosSocleRobot(){
 		this.imageSocle.setX(this.positionInitialeX * Case.DIM + Plateau.DEPART_X);
 		this.imageSocle.setY(this.positionInitialeY * Case.DIM + Plateau.DEPART_X);
+	}
+
+	@Override
+	public int hashCode(){
+		this.id = positionX + positionY + positionInitialeX + positionInitialeY;
+		return id;
 	}
 }
