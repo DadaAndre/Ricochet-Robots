@@ -57,9 +57,6 @@ public class AlgoAStarBis{
 			}
 		}
 
-		System.out.println(noeudEnCours.getCout());
-		//System.out.println(coup);
-
 		//après avoir explorer le noeud, on supprime le noeuds des noeuds à explorer
 		listeNoeudsRestant.remove(noeudEnCours);
 
