@@ -56,6 +56,9 @@ public class Robot extends Parent implements RobotClickedObservable{
 
 		hashCode();
 
+	}
+
+	public void robotRender(){
 		dessinerSocleRobot();
 		dessinerRobot();
 
@@ -152,31 +155,19 @@ public class Robot extends Parent implements RobotClickedObservable{
 		return xCase == this.positionX && yCase == this.positionY;
 	}
 
+	//Mise a jour des nouvelles positions du socle
 	public void nouvellePositionSocle(){
 		this.positionInitialeX = this.positionX;
 		this.positionInitialeY = this.positionY;
 		refreshPosSocleRobot();
 	}
 
+	//Replacement du robot sur son socle
 	public void reinitialiserPosition(){
 		this.positionX = this.positionInitialeX;
 		this.positionY = this.positionInitialeY;
 		refreshPosRobot();
 
-	}
-
-	@Override
-	public boolean equals(Object obj){
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-
-		Robot robot = (Robot) obj;
-
-		return this.couleur == robot.couleur && this.positionX == robot.positionX && this.positionY == robot.positionY && this.positionInitialeX == robot.positionInitialeX && this.positionInitialeY == robot.positionInitialeY;
 	}
 
 	//On dessine le robot
@@ -195,8 +186,10 @@ public class Robot extends Parent implements RobotClickedObservable{
 
 	//Mise à jour des positionnements des dessins du robot
 	public void refreshPosRobot(){
-		this.imageRobot.setX(this.positionX * Case.DIM + Plateau.DEPART_X);
-		this.imageRobot.setY(this.positionY * Case.DIM + Plateau.DEPART_X);
+		if(imageRobot != null){
+			this.imageRobot.setX(this.positionX * Case.DIM + Plateau.DEPART_X);
+			this.imageRobot.setY(this.positionY * Case.DIM + Plateau.DEPART_X);
+		}
 	}
 
 	//Mise à jour des positionnements des dessins du robot
@@ -206,8 +199,21 @@ public class Robot extends Parent implements RobotClickedObservable{
 	}
 
 	@Override
+	public boolean equals(Object obj){
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+
+		Robot robot = (Robot) obj;
+
+		return this.couleur.equals(robot.couleur) && this.positionX == robot.positionX && this.positionY == robot.positionY && this.positionInitialeX == robot.positionInitialeX && this.positionInitialeY == robot.positionInitialeY;
+	}
+
+	@Override
 	public int hashCode(){
-		this.id = positionX + positionY + positionInitialeX + positionInitialeY;
-		return id;
+		return couleur.hashCode() + positionX + positionY + positionInitialeX + positionInitialeY;
 	}
 }

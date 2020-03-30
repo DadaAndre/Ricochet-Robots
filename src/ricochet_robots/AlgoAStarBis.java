@@ -15,7 +15,6 @@ public class AlgoAStarBis{
 	HashMap<State,State> listeStateVersState = new HashMap<>();
 	//liste les états successeurs à aller
 	ArrayList<State> path = new ArrayList<>();
-
 	//Stocke le robot à utiliser pour la direction à aller
 	ArrayList<Robot> listRobot = new ArrayList<>();
 	//Stocke la direction à aller
@@ -24,40 +23,44 @@ public class AlgoAStarBis{
 	State etatInitial;
 	State etatFinal;
 
+	int coup = 0;
+
 	public AlgoAStarBis(State etatInitial){
 		this.etatInitial = etatInitial;
 	}
 
 	//Permet de parcourir l'ensemble des noeuds possibles dans toute les directions possibles
 	public void parcoursNoeud(State noeudEnCours){
-		//Si on a plus de noeud, alors on arrête
+		//Si on a plus de noeud à explorer alors on arrête
 		if(listeNoeudsRestant.size() == 0){
 			return;
 		}
 		//Sortie anticipée si on a trouvé la case de sortie
 		if(noeudEnCours.estEtatFinal()){
+			System.out.println("fin");
 			etatFinal = noeudEnCours;
 			return;
 		}
 
-		//On affecte les différentes positions
 		for(Deplacement direction : Deplacement.values()){
-			// for(Robot robot : noeudEnCours.getListeRobot()){
-
-				//On fait l'action de deplacement tout en renvoyant un nouvel état
-				State etatSuivant = noeudEnCours.etatSuivant(direction, noeudEnCours.getRobotAJouer());
-
+			//Affectation d'une direction à chaque robot
+			for(Robot robot : noeudEnCours.getListeRobot()){
+				//Récupère le nouvel état (noeud)
+				State etatSuivant = noeudEnCours.etatSuivant(direction, robot);
 				//Vérifie si le noeud n'a pas déja été exploré
 				if(!listeStateVersState.containsKey(etatSuivant)){
 					//Si il est nouveau, alors on l'ajoute à la liste des noeuds restants à explorer
 					listeNoeudsRestant.add(etatSuivant);
 					//On affecte ce nouveau noeud au noeud d'ou il vient
 					listeStateVersState.put(etatSuivant, noeudEnCours);
-
 				}
+			}
 		}
 
-		//après lui avoir affecté chaque direction pour chaque robot, on supprime le noeuds des noeuds à explorer puisqu'il à été exploré
+		System.out.println(noeudEnCours.getCout());
+		//System.out.println(coup);
+
+		//après avoir explorer le noeud, on supprime le noeuds des noeuds à explorer
 		listeNoeudsRestant.remove(noeudEnCours);
 
 		//On passe à un noeud suivant tant qu'il existe des noeuds à explorer
@@ -75,6 +78,7 @@ public class AlgoAStarBis{
 		//on parcours ce premier noeud
 		parcoursNoeud(etatInitial);
 
+		//On récupère l'état final
 		State current = etatFinal;
 
 		//On parcours le chemin inverse à partir de l'objectif
@@ -103,10 +107,9 @@ public class AlgoAStarBis{
 			for(int i = 1; i < listRobot.size(); i++){
 				System.out.println("robot " + listRobot.get(i).getCouleur() + " en "+ listDeplacement.get(i));
 			}
-
 		}
 		else{
-			System.out.println("Pas de solution sans bouger les robots");
+			System.out.println("Pas de solution");
 		}
 
 	}

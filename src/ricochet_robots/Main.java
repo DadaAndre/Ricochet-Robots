@@ -5,6 +5,10 @@ import java.util.Random;
 
 import java.io.FileNotFoundException;
 
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.event.EventHandler;
+
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -12,6 +16,9 @@ import javafx.stage.Stage;
 import javafx.scene.paint.Color;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
+import javafx.scene.control.Button;
+import javafx.event.ActionEvent;
 
 import javafx.scene.shape.Rectangle;
 
@@ -45,16 +52,24 @@ public class Main extends Application{
 		//Plateau plateauJeu = new Plateau(16,16, score);
 		State etatInitial = new State(16,16, score, scene);
 		root.getChildren().add(etatInitial.getEtatPlateau());
-		System.out.println("=========== AVANT ALGO =============");
-		System.out.println(etatInitial.jetonTire.getForme() +" - "+ etatInitial.jetonTire.getCouleur());
-		System.out.println("doit jouer: " + etatInitial.getRobotAJouer());
+
+		Button sampleButton = new Button("Solution");
+		sampleButton.setTranslateX(400);
+		sampleButton.setTranslateY(850);
+		sampleButton.setOnAction(new EventHandler<ActionEvent>() {
+		   @Override
+		   public void handle(ActionEvent event) {
+			   System.out.println("Hello World!");
+			   etatInitial.getStateActuel();
+			   etatInitial.robotAJouer();
+			   AlgoAStarBis algo2 = new AlgoAStarBis(etatInitial);
+	   		   algo2.parcoursTotal();
+		   }
+	   	});
+
+		root.getChildren().add(sampleButton);
+
 		//On montre les dessins
 		primaryStage.show();
-
-		// AlgoAStar algo = new AlgoAStar(etatInitial);
-		// algo.parcoursTotal();
-
-		AlgoAStarBis algo = new AlgoAStarBis(etatInitial);
-		algo.parcoursTotal();
     }
 }

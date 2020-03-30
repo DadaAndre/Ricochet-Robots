@@ -74,5 +74,25 @@ public class Jeton extends Parent{
 		image.setY(8 * Case.DIM + 0.5  * Case.DIM);
 	}
 
+	@Override
+	public boolean equals(Object obj){
+		if (this == obj)
+			return true;
+
+		if (obj == null)
+			return false;
+
+		if (getClass() != obj.getClass())
+			return false;
+
+		Jeton jeton = (Jeton) obj;
+
+		return this.forme.equals(jeton.forme) && this.couleur.equals(jeton.couleur);
+	}
+
+	@Override
+	public int hashCode(){
+		return couleur.hashCode() + forme.hashCode();
+	}
 
 }

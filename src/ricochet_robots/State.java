@@ -23,8 +23,6 @@ public class State implements RobotClickedObserver, CaseClickedObserver{
 
 	Robot robotSelect;
 
-	int hashCodeState;
-
 	Deplacement lastDirection = null;
 	Robot lastRobot = null;
 
@@ -51,12 +49,17 @@ public class State implements RobotClickedObserver, CaseClickedObserver{
 
 	//Constructeur de copie
 	public State(State state){
+		//Copie du plateau et du jeton tiré
 		this.plateauJeu = state.plateauJeu;
 		this.jetonTire = state.jetonTire;
 
+		//Copie des robots
 		this.tableauRobots = new ArrayList<>();
 		for(int i = 0 ; i < state.tableauRobots.size() ; i++) {
 			Robot r = new Robot(this, state.tableauRobots.get(i).getCouleur(), state.tableauRobots.get(i).getPositionX(), state.tableauRobots.get(i).getPositionY(), state.tableauRobots.get(i).getPositionInitialeX(), state.tableauRobots.get(i).getPositionInitialeY());
+			//Calcul du hashcode
+			refreshHashCode(r);
+			//Copie du robot selectionné
 			if(state.robotSelect == state.tableauRobots.get(i)) {
 				this.robotSelect = r;
 			}
@@ -67,6 +70,7 @@ public class State implements RobotClickedObserver, CaseClickedObserver{
 		deplacerRobot(direction, robotSelect);
 	}
 
+	//Déplacement du robot et de l'image
 	public void deplacerRobot(Deplacement direction, Robot robot){
 		//Déplacement du robot
 		move(direction, robot);
@@ -77,7 +81,7 @@ public class State implements RobotClickedObserver, CaseClickedObserver{
 		//On remet à jour l'affichage du robot
 		robot.refreshPosRobot();
 		//on recalcule le hashcode
-		refreshHashCode();
+		refreshHashCode(robot);
 	}
 
 	//On sélectionne le robot à déplacer si on clique dessus
@@ -97,6 +101,8 @@ public class State implements RobotClickedObserver, CaseClickedObserver{
         int[] posRobotJaune = positionRobotNonUtilise();
         //Création d'un robot Jaune
         Robot robotJaune = new Robot(this, "jaune", posRobotJaune[0], posRobotJaune[1]);
+
+		robotJaune.robotRender();
 		//On ajoute le robot créé au groupe de dessin
 		plateauJeu.addGroupPlateau(robotJaune);
         //On ajoute la possibilité du robot à avoir des événements clics
@@ -104,17 +110,20 @@ public class State implements RobotClickedObserver, CaseClickedObserver{
 
         int[] posRobotBleu = positionRobotNonUtilise();
         Robot robotBleu = new Robot(this, "bleu", posRobotBleu[0], posRobotBleu[1]);
+		robotBleu.robotRender();
 		plateauJeu.addGroupPlateau(robotBleu);
 		robotBleu.ajouterObserveurRobotClique(this);
 
         int[] posRobotRouge = positionRobotNonUtilise();
         Robot robotRouge = new Robot(this, "rouge", posRobotRouge[0], posRobotRouge[1]);
+		robotRouge.robotRender();
 		plateauJeu.addGroupPlateau(robotRouge);
         //tableauRobots.add(robotRouge);
 		robotRouge.ajouterObserveurRobotClique(this);
 
         int[] posRobotVert = positionRobotNonUtilise();
         Robot robotVert = new Robot(this, "vert", posRobotVert[0], posRobotVert[1]);
+		robotVert.robotRender();
 		plateauJeu.addGroupPlateau(robotVert);
         //tableauRobots.add(robotVert);
 		robotVert.ajouterObserveurRobotClique(this);
@@ -122,6 +131,7 @@ public class State implements RobotClickedObserver, CaseClickedObserver{
 		robotAJouer();
 	}
 
+	//Déplacement du robot selon l'entrée clavier
 	public void actionClavier(){
 		scene.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
 			public void handle(KeyEvent ke){
@@ -161,6 +171,7 @@ public class State implements RobotClickedObserver, CaseClickedObserver{
 		robotAJouer();
 	}
 
+	//Vérifie si l'on est sur une case interdite, définies dans plateau
 	public boolean estSurCaseInterdite(){
 		for(int i = 0; i < plateauJeu.getZoneInterdite().length; i++){
 			if(this.aleaX == plateauJeu.getZoneInterdite()[i][0] && this.aleaY == plateauJeu.getZoneInterdite()[i][1]){
@@ -170,6 +181,7 @@ public class State implements RobotClickedObserver, CaseClickedObserver{
 		return false;
 	}
 
+	//Vérifie si l'on se situe sur une case jeton ou non
 	public boolean estSurJeton(){
 		if(plateauJeu.getCasePlateau(this.aleaX, this.aleaY) instanceof CaseJeton){
 			return true;
@@ -179,11 +191,17 @@ public class State implements RobotClickedObserver, CaseClickedObserver{
 		}
 	}
 
+	//Détermine si le robot séléctionné est en collision avec un autre robot ou non
 	public boolean estUneCollisionRobot(Deplacement direction){
+		return estUneCollisionRobot(direction, this.robotSelect);
+	}
+
+	//Détermine si le robot envoyé est en collision avec un autre robot ou non
+	public boolean estUneCollisionRobot(Deplacement direction, Robot robot){
 		switch(direction){
 			case UP:
 				for(int i = 0; i< this.tableauRobots.size(); i++){
-					if(this.tableauRobots.get(i).getCouleur() != robotSelect.getCouleur() && this.tableauRobots.get(i).getPositionX() == robotSelect.getPositionX() &&  this.tableauRobots.get(i).getPositionY() == (robotSelect.getPositionY() - 1)){
+					if(this.tableauRobots.get(i).getCouleur().equals(robot.getCouleur()) == false && this.tableauRobots.get(i).getPositionX() == robot.getPositionX() &&  this.tableauRobots.get(i).getPositionY() == (robot.getPositionY() - 1)){
 						return true;
 					}
 				}
@@ -191,7 +209,7 @@ public class State implements RobotClickedObserver, CaseClickedObserver{
 
 			case DOWN:
 				for(int i = 0; i< this.tableauRobots.size(); i++){
-					if(this.tableauRobots.get(i).getCouleur() != robotSelect.getCouleur() && this.tableauRobots.get(i).getPositionX() == robotSelect.getPositionX() &&  this.tableauRobots.get(i).getPositionY() == (robotSelect.getPositionY() + 1)){
+					if(this.tableauRobots.get(i).getCouleur().equals(robot.getCouleur()) == false && this.tableauRobots.get(i).getPositionX() == robot.getPositionX() &&  this.tableauRobots.get(i).getPositionY() == (robot.getPositionY() + 1)){
 						return true;
 					}
 				}
@@ -199,7 +217,7 @@ public class State implements RobotClickedObserver, CaseClickedObserver{
 
 			case LEFT:
 				for(int i = 0; i< this.tableauRobots.size(); i++){
-					if(this.tableauRobots.get(i).getCouleur() != robotSelect.getCouleur() && this.tableauRobots.get(i).getPositionX() == (robotSelect.getPositionX() - 1)  &&  this.tableauRobots.get(i).getPositionY() == robotSelect.getPositionY()){
+					if(this.tableauRobots.get(i).getCouleur().equals(robot.getCouleur()) == false && this.tableauRobots.get(i).getPositionX() == (robot.getPositionX() - 1)  &&  this.tableauRobots.get(i).getPositionY() == robot.getPositionY()){
 						return true;
 					}
 				}
@@ -207,7 +225,7 @@ public class State implements RobotClickedObserver, CaseClickedObserver{
 
 			case RIGHT:
 				for(int i = 0; i< this.tableauRobots.size(); i++){
-					if(this.tableauRobots.get(i).getCouleur() != robotSelect.getCouleur() && this.tableauRobots.get(i).getPositionX() == (robotSelect.getPositionX() + 1)  &&  this.tableauRobots.get(i).getPositionY() == robotSelect.getPositionY()){
+					if(this.tableauRobots.get(i).getCouleur().equals(robot.getCouleur()) == false&& this.tableauRobots.get(i).getPositionX() == (robot.getPositionX() + 1)  &&  this.tableauRobots.get(i).getPositionY() == robot.getPositionY()){
 						return true;
 					}
 				}
@@ -229,17 +247,34 @@ public class State implements RobotClickedObserver, CaseClickedObserver{
 		return false;
 	}
 
+	//Retourne si le jeu est un état ganant ou non
 	public boolean estGagnant(){
-		return estGagnant(this.robotSelect);
+		Robot robot = getRobotGagnant();
+		//score.ajouterCoup();
+		Case caseDessus = plateauJeu.getCasePlateau(robot.getPositionX(), robot.getPositionY());
+		if(caseDessus instanceof CaseJeton){
+			CaseJeton caseJetonDessus = (CaseJeton) caseDessus;
+			if(robot.getCouleur() == caseJetonDessus.getCouleur() && caseJetonDessus.estSurCaseJetonTire(jetonTire)){
+				return true;
+			}
+		}
+		return false;
 	}
 
+	//si le jeu est un état ganant ou non
 	public boolean estEtatFinal(){
 		return this.estGagnant();
 	}
 
+	//Re-génération du hashcode
 	public void refreshHashCode(){
-		robotSelect.hashCode();
-		this.hashCodeState = hashCode();
+		refreshHashCode(this.robotSelect);
+	}
+
+	//Re-génération du hashcode
+	public void refreshHashCode(Robot robot){
+		robot.hashCode();
+		this.hashCode();
 	}
 
 	//Tire aléatoirement des coordonnées pour un robot et vérifie qu'un robot ne les a pas déjà
@@ -281,7 +316,17 @@ public class State implements RobotClickedObserver, CaseClickedObserver{
 		return position;
 	}
 
-	//désigner quel robot doit être déplacé
+	//Récupère le robot qui peermet de gagner la partie
+	public Robot getRobotGagnant(){
+		for(int i =0; i< this.tableauRobots.size(); i++){
+			if(this.tableauRobots.get(i).estRobotAJouer(jetonTire.getCouleur())){
+				return this.tableauRobots.get(i);
+			}
+		}
+		return null;
+	}
+
+	//désigner quel robot doit "attraper" le jeton
 	public void robotAJouer(){
 		for(int i =0; i< this.tableauRobots.size(); i++){
 			if(this.tableauRobots.get(i).estRobotAJouer(jetonTire.getCouleur())){
@@ -291,40 +336,53 @@ public class State implements RobotClickedObserver, CaseClickedObserver{
 		}
 	}
 
+	//Modifie le robot séléctionné à partir d'une couleur
+	public void setRobotbyColor(String couleur){
+		for(int i = 0; i < tableauRobots.size(); i++){
+			if(tableauRobots.get(i).getCouleur().equals(couleur)){
+				robotSelect = tableauRobots.get(i);
+			}
+		}
+	}
+
+	//Déplacement du robot sélectionné
 	public void move(Deplacement direction){
 		move(direction, robotSelect);
 	}
 
 	//Déplacement du robot
-	public void move(Deplacement direction, Robot robotSelect){
-		this.robotSelect = robotSelect;
+	public void move(Deplacement direction, Robot robot){
+		//this.robot = robot;
 		//Vérification de la direction choisie
 		if(direction == Deplacement.UP){
 			//Tant que le robot ne rencontre pas un mur en haut, ou un autre robot, il se dirige vers le haut
-			while(this.plateauJeu.getCasePlateau(robotSelect.getPositionX(), robotSelect.getPositionY()).getValHaut() != 1 && this.plateauJeu.getCasePlateau(robotSelect.getPositionX(), robotSelect.getPositionY() - 1).getValBas() != 1 && !estUneCollisionRobot(direction)){
-				robotSelect.translatePositionY(-1);
+			while(this.plateauJeu.getCasePlateau(robot.getPositionX(), robot.getPositionY()).getValHaut() != 1 && this.plateauJeu.getCasePlateau(robot.getPositionX(), robot.getPositionY() - 1).getValBas() != 1 && !estUneCollisionRobot(direction, robot)){
+				robot.translatePositionY(-1);
 			}
 		}else if(direction == Deplacement.DOWN){
 			//Tant que le robot ne rencontre pas un mur en bas, ou un autre robot, il se dirige vers le bas
-			while(this.plateauJeu.getCasePlateau(robotSelect.getPositionX(), robotSelect.getPositionY()).getValBas() != 1 && this.plateauJeu.getCasePlateau(robotSelect.getPositionX(), robotSelect.getPositionY() +1).getValHaut() != 1 && !estUneCollisionRobot(direction)){
-				robotSelect.translatePositionY(1);
+			while(this.plateauJeu.getCasePlateau(robot.getPositionX(), robot.getPositionY()).getValBas() != 1 && this.plateauJeu.getCasePlateau(robot.getPositionX(), robot.getPositionY() +1).getValHaut() != 1 && !estUneCollisionRobot(direction, robot)){
+				robot.translatePositionY(1);
 			}
 		}else if(direction == Deplacement.LEFT){
 			//Tant que le robot ne rencontre pas un mur à gauche,  ou un autre robot, il se dirige vers la gauche
-			while(this.plateauJeu.getCasePlateau(robotSelect.getPositionX(), robotSelect.getPositionY()).getValGauche() != 1 && this.plateauJeu.getCasePlateau(robotSelect.getPositionX() -1, robotSelect.getPositionY()).getValDroit() != 1&& !estUneCollisionRobot(direction)){
-				robotSelect.translatePositionX(-1);
+			while(this.plateauJeu.getCasePlateau(robot.getPositionX(), robot.getPositionY()).getValGauche() != 1 && this.plateauJeu.getCasePlateau(robot.getPositionX() -1, robot.getPositionY()).getValDroit() != 1&& !estUneCollisionRobot(direction, robot)){
+				robot.translatePositionX(-1);
 			}
 		}else if(direction == Deplacement.RIGHT){
 			//Tant que le robot ne rencontre pas un mur à droite,  ou un autre robot, il se dirige vers la droite
-			while(this.plateauJeu.getCasePlateau(robotSelect.getPositionX(), robotSelect.getPositionY()).getValDroit() != 1 && this.plateauJeu.getCasePlateau(robotSelect.getPositionX() + 1, robotSelect.getPositionY()).getValGauche() != 1  && !estUneCollisionRobot(direction)){
-				robotSelect.translatePositionX(1);
+			while(this.plateauJeu.getCasePlateau(robot.getPositionX(), robot.getPositionY()).getValDroit() != 1 && this.plateauJeu.getCasePlateau(robot.getPositionX() + 1, robot.getPositionY()).getValGauche() != 1  && !estUneCollisionRobot(direction, robot)){
+				robot.translatePositionX(1);
 			}
 		}
 	}
 
+	//Réinitialiser le state, c'est-à-dire regénération du jeton et repositionnement des robots à leurs spawns
 	public void reinitState(){
 		reinitState(robotSelect);
 	}
+
+	//Réinitialiser le state, c'est-à-dire regénération du jeton et repositionnement des robots à leurs spawns
 	public void reinitState(Robot robot){
 		boolean gagnant = estGagnant();
 		if(gagnant){
@@ -340,18 +398,7 @@ public class State implements RobotClickedObserver, CaseClickedObserver{
 		}
 	}
 
-	public boolean estGagnant(Robot robot){
-		//score.ajouterCoup();
-		Case caseDessus = plateauJeu.getCasePlateau(robot.getPositionX(), robot.getPositionY());
-		if(caseDessus instanceof CaseJeton){
-			CaseJeton caseJetonDessus = (CaseJeton) caseDessus;
-			if(robot.getCouleur() == caseJetonDessus.getCouleur() && caseJetonDessus.estSurCaseJetonTire(jetonTire)){
-				return true;
-			}
-		}
-		return false;
-	}
-
+	//récupère la case gagnante
 	public CaseJeton getCaseJetonTire(){
 		CaseJeton caseGagne;
 		for(int y = 0; y < plateauJeu.getTaillePlateau(); y++){
@@ -367,16 +414,22 @@ public class State implements RobotClickedObserver, CaseClickedObserver{
 		return null;
 	}
 
+	//Ajoute un robot à la liste des robots
 	public void addTableauRobots(Robot robot){
 		this.tableauRobots.add(robot);
 	}
 
+	//Création d'un état suivant après déplacement d'un robot
 	public State etatSuivant(Deplacement direction, Robot robot){
 		State newState = new State(this);
+		newState.setRobotbyColor(robot.getCouleur());
 		newState.deplacerRobot(direction);
+		//System.out.println(robot.getCouleur() + " - " + direction);
 
 		return newState;
 	}
+
+	//getters/setters
 
 	public ArrayList<Robot> getListeRobot(){
 		return this.tableauRobots;
@@ -386,13 +439,9 @@ public class State implements RobotClickedObserver, CaseClickedObserver{
 		return this.jetonTire;
 	}
 
-	public Robot getRobotAJouer(){
+	public Robot getRobotSelect(){
 		return this.robotSelect;
 	}
-
-	// public void getIdRobot(int i){
-	// 	System.out.println("id robot " + tableauRobots.get(i).getCouleur() + ": " + tableauRobots.get(i).hashCode() );
-	// }
 
 	public Robot getLastRobot(){
 		return this.lastRobot;
@@ -406,15 +455,21 @@ public class State implements RobotClickedObserver, CaseClickedObserver{
 		return this.plateauJeu;
 	}
 
+	public State getStateActuel(){
+		return this;
+	}
+
 	@Override
 	public boolean equals(Object obj){
-		if (this == obj)
+		if (this == obj){
 			return true;
-		if (obj == null)
+		}
+		if (obj == null){
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()){
 			return false;
-
+		}
 		State state = (State) obj;
 
 		for(int i = 0; i< state.tableauRobots.size(); i++){
@@ -429,12 +484,13 @@ public class State implements RobotClickedObserver, CaseClickedObserver{
 	}
 
 	@Override
-	public int hashCode() {
+	public int hashCode(){
 		 final int prime = 31;
 		 int result = 1;
 		 for(int i = 0; i < this.tableauRobots.size(); i++){
 			  result += tableauRobots.get(i).hashCode();
 		 }
+		 result += jetonTire.hashCode();
 		 result *= prime;
 		 return result;
 	}
