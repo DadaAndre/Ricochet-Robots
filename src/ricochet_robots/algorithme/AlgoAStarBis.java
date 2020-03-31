@@ -1,4 +1,7 @@
-package ricochet_robots;
+package ricochet_robots.algorithme;
+
+import ricochet_robots.jeu.*;
+import ricochet_robots.jeu.pions.*;
 
 import java.util.HashSet;
 import java.util.ArrayList;

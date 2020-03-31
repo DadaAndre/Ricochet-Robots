@@ -1,4 +1,8 @@
-package ricochet_robots;
+package ricochet_robots.jeu.plateau;
+
+import ricochet_robots.jeu.observer.*;
+import ricochet_robots.jeu.plateau.*;
+import ricochet_robots.utilitaire.*;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -19,7 +23,7 @@ import javafx.scene.shape.Rectangle;
 
 public class Case extends CaseCalque implements CaseClickedObservable{
 
-	//Diomension laissée pour une case
+	//Dimension laissée pour une case
 	public static int DIM = 26;
 
 	private int valHaut;

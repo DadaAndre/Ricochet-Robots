@@ -1,4 +1,4 @@
-// package ricochet_robots;
+// package ricochet_robots.algorithme;
 //
 // import java.util.HashSet;
 // import java.util.ArrayList;

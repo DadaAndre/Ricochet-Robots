@@ -1,4 +1,6 @@
-package ricochet_robots;
+package ricochet_robots.utilitaire;
+
+import ricochet_robots.jeu.plateau.*;
 
 public class Utilitaire{
 

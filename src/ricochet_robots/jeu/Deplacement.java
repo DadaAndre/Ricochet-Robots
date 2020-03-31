@@ -1,4 +1,4 @@
-package ricochet_robots;
+package ricochet_robots.jeu;
 
 public enum Deplacement{
 	UP,

@@ -1,4 +1,6 @@
-package ricochet_robots;
+package ricochet_robots.jeu;
+
+import ricochet_robots.jeu.plateau.*;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;

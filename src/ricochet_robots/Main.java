@@ -1,5 +1,9 @@
 package ricochet_robots;
 
+import ricochet_robots.jeu.plateau.*;
+import ricochet_robots.jeu.*;
+import ricochet_robots.algorithme.*;
+
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.List;

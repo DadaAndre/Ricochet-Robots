@@ -1,4 +1,4 @@
-package ricochet_robots;
+package ricochet_robots.jeu.plateau;
 
 
 import javafx.scene.image.Image;

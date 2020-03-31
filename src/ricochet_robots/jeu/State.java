@@ -1,4 +1,9 @@
-package ricochet_robots;
+package ricochet_robots.jeu;
+
+import ricochet_robots.jeu.pions.*;
+import ricochet_robots.jeu.observer.*;
+import ricochet_robots.jeu.plateau.*;
+import ricochet_robots.jeu.*;
 
 import java.util.Random;
 import java.util.ArrayList;
