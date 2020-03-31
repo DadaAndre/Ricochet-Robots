@@ -57,6 +57,8 @@ public class Jeton extends Parent{
 	//dessine le jeton qui est tiré
 	public void dessinerJetonTire(){
 		this.imageJeton = new ImageView(new Image("images/imgJeton/" + forme + "-" + couleur + ".png"));
+		this.imageJeton.setFitWidth(Case.DIM  * 2);
+		this.imageJeton.setFitHeight(Case.DIM * 2);
 		this.getChildren().add(this.imageJeton);
 		posGraph(this.imageJeton);
 	}
@@ -64,14 +66,16 @@ public class Jeton extends Parent{
 	//dessiner un fond pour le jeton tiré
 	public void dessinerFond(){
 		this.fondPiece = new ImageView(new Image("images/imgJeton/fondPiece.png"));
+		this.fondPiece.setFitWidth(Case.DIM*2);
+		this.fondPiece.setFitHeight(Case.DIM*2);
 		this.getChildren().add(this.fondPiece);
 		posGraph(this.fondPiece);
 	}
 
 	//positionnement graphique du jeton tiré et de son fond
 	public void posGraph(ImageView image){
-		image.setX(8 * Case.DIM + 0.5  * Case.DIM);
-		image.setY(8 * Case.DIM + 0.5  * Case.DIM);
+		image.setX(8 * Case.DIM);
+		image.setY(8 * Case.DIM);
 	}
 
 	@Override

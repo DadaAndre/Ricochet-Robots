@@ -173,6 +173,8 @@ public class Robot extends Parent implements RobotClickedObservable{
 	//On dessine le robot
 	public void dessinerRobot(){
 		this.imageRobot = new ImageView(new Image("images/imgRobot/" + this.couleur + ".png"));
+		this.imageRobot.setFitWidth(Case.DIM);
+		this.imageRobot.setFitHeight(Case.DIM);
 		this.getChildren().add(this.imageRobot);
 		refreshPosRobot();
 	}
@@ -180,6 +182,8 @@ public class Robot extends Parent implements RobotClickedObservable{
 	//On dessine la "socle" du robot
 	public void dessinerSocleRobot(){
 		this.imageSocle = new ImageView(new Image("images/imgSocleRobot/" + this.couleur + ".png"));
+		this.imageSocle.setFitWidth(Case.DIM);
+		this.imageSocle.setFitHeight(Case.DIM);
 		this.getChildren().add(this.imageSocle);
 		refreshPosSocleRobot();
 	}

@@ -14,6 +14,8 @@ public class CaseCalque extends Group {
 
 	public void addImage(Image image) {
 		ImageView view = new ImageView(image);
+		view.setFitWidth(Case.DIM);
+		view.setFitHeight(Case.DIM);
 		this.getChildren().add(view);
 	}
 

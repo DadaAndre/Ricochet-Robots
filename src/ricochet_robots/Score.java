@@ -18,7 +18,7 @@ public class Score extends FlowPane{
 	Label labelMeilleurScore;
 
     public Score(){
-        score = 1000;
+        score = 0;
         nbCoups = 0;
         meilleurScore = 0;
 
@@ -26,9 +26,9 @@ public class Score extends FlowPane{
 		labelScore = new Label("Score: " + score);
 		labelMeilleurScore = new Label("Highscore: " + meilleurScore);
 
-		crerLabel(labelCoup, 50);
-		crerLabel(labelScore, 200);
-		crerLabel(labelMeilleurScore, 350);
+		crerLabel(labelCoup, Case.DIM*2);
+		crerLabel(labelScore, Case.DIM*5);
+		crerLabel(labelMeilleurScore, Case.DIM*8);
     }
 
     public int getScore(){
@@ -65,7 +65,7 @@ public class Score extends FlowPane{
 		this.getChildren().add(labelVar);
 		labelVar.setTranslateX(posX);
 		labelVar.setTranslateY(5);
-		labelVar.setFont(new Font("Arial", 25));
+		labelVar.setFont(new Font("Arial", Case.DIM/2));
 	}
 
     public void setMeilleurScore(int nouveauMeilleurScore){

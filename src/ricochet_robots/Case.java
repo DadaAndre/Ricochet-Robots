@@ -20,7 +20,7 @@ import javafx.scene.shape.Rectangle;
 public class Case extends CaseCalque implements CaseClickedObservable{
 
 	//Diomension laissée pour une case
-	public static final int DIM = 49;
+	public static int DIM = 26;
 
 	private int valHaut;
 	private int valDroit;

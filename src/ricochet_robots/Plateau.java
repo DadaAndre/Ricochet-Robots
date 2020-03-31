@@ -23,8 +23,8 @@ import javafx.scene.Parent;
 public class Plateau extends Parent{
 
 	//La position de départ de dessin du plateau (en pixels)
-	public static final int DEPART_X = 49;
-	public static final int DEPART_Y = 49;
+	public static int DEPART_X = Case.DIM;
+	public static int DEPART_Y = Case.DIM;
 
 	//Un tableau de miniGrille
 	private ArrayList<Case[][]> tableauMiniGrille = new ArrayList<>();
@@ -328,7 +328,7 @@ public class Plateau extends Parent{
 	public int[][] getZoneInterdite(){
 		return this.deadZone;
 	}
-	
+
 	public int getTaillePlateau(){
 		return plateau.length;
 	}
