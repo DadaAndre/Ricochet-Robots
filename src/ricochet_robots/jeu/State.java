@@ -12,6 +12,9 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.event.EventHandler;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 import javafx.scene.Group;
 import javafx.scene.Scene;
 
@@ -32,6 +35,8 @@ public class State implements RobotClickedObserver, CaseClickedObserver, Compara
 	Robot lastRobot = null;
 
 	Random r = new Random();
+
+	ImageView imgSelect;
 
 	//Les nombres aléatoires
 	private int aleaX = -1;
@@ -64,6 +69,7 @@ public class State implements RobotClickedObserver, CaseClickedObserver, Compara
 		this.plateauJeu.addGroupPlateau(jetonTire);
 		this.plateauJeu.ajoutObserveurCases(this);
 		creerRobot();
+		dessinerSelecteur();
 		actionClavier();
 	}
 
@@ -106,6 +112,7 @@ public class State implements RobotClickedObserver, CaseClickedObserver, Compara
 	public void clicSurRobot(Robot robot){
 		System.out.println("Robot " + robot.getCouleur() + " cliqué");
 		robotSelect = robot;
+		refreshSelecteurRobot();
 	}
 
 	//Création des robots
@@ -156,24 +163,28 @@ public class State implements RobotClickedObserver, CaseClickedObserver, Compara
 					System.out.println("Key Pressed: " + ke.getCode());
 					deplacerRobot(Deplacement.DOWN);
 					reinitState();
+					refreshSelecteurRobot();
 					//score.afficherCoup();
 					ke.consume(); // <-- stops passing the event to next node
 				} else if (ke.getCode() == KeyCode.LEFT) {
 					System.out.println("Key Pressed: " + ke.getCode());
 					deplacerRobot(Deplacement.LEFT);
 					reinitState();
+					refreshSelecteurRobot();
 					//score.afficherCoup();
 					ke.consume(); // <-- stops passing the event to next node
 				} else if (ke.getCode() == KeyCode.UP) {
 					System.out.println("Key Pressed: " + ke.getCode());
 					deplacerRobot(Deplacement.UP);
 					reinitState();
+					refreshSelecteurRobot();
 					//score.afficherCoup();
 					ke.consume(); // <-- stops passing the event to next node
 				} else if (ke.getCode() == KeyCode.RIGHT) {
 					System.out.println("Key Pressed: " + ke.getCode());
 					deplacerRobot(Deplacement.RIGHT);
 					reinitState();
+					refreshSelecteurRobot();
 					//score.afficherCoup();
 					ke.consume(); // <-- stops passing the event to next node
 				}
@@ -186,6 +197,7 @@ public class State implements RobotClickedObserver, CaseClickedObserver, Compara
 	public void clicSurCase(Case casePlateau){
 		System.out.println("case " + casePlateau +"cliqué");
 		robotAJouer();
+		refreshSelecteurRobot();
 	}
 
 	//Vérifie si l'on est sur une case interdite, définies dans plateau
@@ -489,6 +501,21 @@ public class State implements RobotClickedObserver, CaseClickedObserver, Compara
 
 
 		return true;
+	}
+
+	public void dessinerSelecteur(){
+		this.imgSelect = new ImageView(new Image("images/select.png"));
+		this.imgSelect.setFitWidth(Case.DIM);
+		this.imgSelect.setFitHeight(Case.DIM);
+		plateauJeu.addGroupPlateau(this.imgSelect);
+		refreshSelecteurRobot();
+	}
+
+	public void refreshSelecteurRobot(){
+		if(imgSelect != null){
+			this.imgSelect.setX(robotSelect.getPositionX() * Case.DIM + Plateau.DEPART_X);
+			this.imgSelect.setY(robotSelect.getPositionY() * Case.DIM + Plateau.DEPART_X);
+		}
 	}
 
 	@Override

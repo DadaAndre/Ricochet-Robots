@@ -45,6 +45,7 @@ public class AlgoAStar{
 		listRobot.clear();
 		listDeplacement.clear();
 
+		//ajout du cout de l'état initial
 		etatInitial.cost = 0;
 		//ajout de l'état initial
 		frontier.add(etatInitial);
@@ -63,18 +64,20 @@ public class AlgoAStar{
 			}
 			//On affecte chaque déplacement à chaque robot
 			for(Deplacement direction : Deplacement.values()){
-				//Affectation d'une direction à chaque robot
 				for(Robot robot : noeudEnCours.getListeRobot()){
 					//Récupère le nouvel état (noeud)
 					State etatSuivant = noeudEnCours.etatSuivant(direction, robot);
 
+					//On coumpte le coût du noeud suivant
 					int new_cost = cost_so_far.get(noeudEnCours) + 1;
 
-					//Vérifie si le noeud n'a pas déja été exploré
+					//Vérifie que le noeud n'a pas déja été exploré ou si son cout est moins important que le noeud enregistré
 					if(!cost_so_far.containsKey(etatSuivant) || new_cost < cost_so_far.get(etatSuivant)){
+						//On ajoute ce nouveau noeud avec son cout
 						cost_so_far.put(etatSuivant, new_cost);
+						//On affecte au nouveau noeud son cout
 						etatSuivant.cost = new_cost;
-						//Si il est nouveau, alors on l'ajoute à la liste des noeuds restants à explorer
+						//On l'ajoute à la liste des noeuds restants à explorer
 						frontier.add(etatSuivant);
 						//On affecte ce nouveau noeud au noeud d'ou il vient
 						came_from.put(etatSuivant, noeudEnCours);
@@ -88,10 +91,8 @@ public class AlgoAStar{
 
 		//On parcours le chemin inverse à partir de l'objectif
 		while(current != etatInitial && current != null){
-			//On l'ajoute l'état à la liste du chemin à faire
 			path.add(current);
 			current = came_from.get(current);
-			System.out.println(""+current);
 		}
 
 		if(current != null){

@@ -342,4 +342,9 @@ public class Plateau extends Parent{
 		if(!this.getChildren().contains(parent))
 			this.getChildren().add(parent);
 	}
+
+	public void addGroupPlateau(ImageView image){
+		if(!this.getChildren().contains(image))
+			this.getChildren().add(image);
+	}
 }
