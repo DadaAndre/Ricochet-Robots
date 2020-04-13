@@ -4,7 +4,6 @@ import ricochet_robots.jeu.pions.*;
 import ricochet_robots.jeu.observer.*;
 import ricochet_robots.jeu.plateau.*;
 import ricochet_robots.jeu.*;
-import ricochet_robots.algorithme.*;
 
 import java.util.Random;
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ import javafx.scene.Scene;
 
 import javafx.scene.input.*;
 
-public class State implements RobotClickedObserver, CaseClickedObserver{
+public class State implements RobotClickedObserver, CaseClickedObserver, Comparable<State>{
 
 	private Plateau plateauJeu;
 	//Liste des robots instanciés
@@ -40,6 +39,22 @@ public class State implements RobotClickedObserver, CaseClickedObserver{
 
 	Jeton jetonTire;
 
+	public int cost;
+
+	@Override
+	public int compareTo(State s) {
+		return (cost() - s.cost());
+	}
+
+	public int cost() {
+		return cost + heuris();
+	}
+
+	public int heuris() {
+		Robot r = getRobotGagnant();
+		return plateauJeu.getCasePlateau(r.getPositionX() , r.getPositionY()).getHeuristique();
+	}
+
 	public State(int x, int y, Score score, Scene scene){
 		this.score = score;
 		this.scene = scene;
@@ -48,10 +63,7 @@ public class State implements RobotClickedObserver, CaseClickedObserver{
 		jetonTire = Jeton.tirageJeton();
 		this.plateauJeu.addGroupPlateau(jetonTire);
 		this.plateauJeu.ajoutObserveurCases(this);
-
-		Heuristique heuri = new Heuristique(this);
 		creerRobot();
-		refreshHashCode();
 		actionClavier();
 	}
 
@@ -65,8 +77,7 @@ public class State implements RobotClickedObserver, CaseClickedObserver{
 		this.tableauRobots = new ArrayList<>();
 		for(int i = 0 ; i < state.tableauRobots.size() ; i++) {
 			Robot r = new Robot(this, state.tableauRobots.get(i).getCouleur(), state.tableauRobots.get(i).getPositionX(), state.tableauRobots.get(i).getPositionY(), state.tableauRobots.get(i).getPositionInitialeX(), state.tableauRobots.get(i).getPositionInitialeY());
-			//Calcul du hashcode
-			refreshHashCode(r);
+
 			//Copie du robot selectionné
 			if(state.robotSelect == state.tableauRobots.get(i)) {
 				this.robotSelect = r;
@@ -88,8 +99,6 @@ public class State implements RobotClickedObserver, CaseClickedObserver{
 
 		//On remet à jour l'affichage du robot
 		robot.refreshPosRobot();
-		//on recalcule le hashcode
-		refreshHashCode(robot);
 	}
 
 	//On sélectionne le robot à déplacer si on clique dessus
@@ -209,7 +218,7 @@ public class State implements RobotClickedObserver, CaseClickedObserver{
 		switch(direction){
 			case UP:
 				for(int i = 0; i< this.tableauRobots.size(); i++){
-					if(this.tableauRobots.get(i).getCouleur().equals(robot.getCouleur()) == false && this.tableauRobots.get(i).getPositionX() == robot.getPositionX() &&  this.tableauRobots.get(i).getPositionY() == (robot.getPositionY() - 1)){
+					if(this.tableauRobots.get(i).getCouleur().equals(robot.getCouleur()) == false && this.tableauRobots.get(i).getPositionX() == robot.getPositionX() && this.tableauRobots.get(i).getPositionY() == (robot.getPositionY() - 1)){
 						return true;
 					}
 				}
@@ -262,42 +271,16 @@ public class State implements RobotClickedObserver, CaseClickedObserver{
 		Case caseDessus = plateauJeu.getCasePlateau(robot.getPositionX(), robot.getPositionY());
 		if(caseDessus instanceof CaseJeton){
 			CaseJeton caseJetonDessus = (CaseJeton) caseDessus;
-			if(robot.getCouleur() == caseJetonDessus.getCouleur() && caseJetonDessus.estSurCaseJetonTire(jetonTire)){
+			if(robot.getCouleur().equals(caseJetonDessus.getCouleur()) && caseJetonDessus.estSurCaseJetonTire(jetonTire)){
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public Case getCaseGagnante(){
-		for(int y = 0; y < plateauJeu.getTaillePlateau(); y++){
-			for(int x = 0; x < plateauJeu.getTaillePlateau(); x++){
-				Case caseGagnante = plateauJeu.getCasePlateau(x,y);
-				if(caseGagnante instanceof CaseJeton){
-					CaseJeton caseJetonGagnante = (CaseJeton) caseGagnante;
-					if(caseJetonGagnante.getCouleur().equals(jetonTire.getCouleur()) && caseJetonGagnante.getForme().equals(jetonTire.getForme())){
-						return caseJetonGagnante;
-					}
-				}
-			}
-		}
-		return null;
-	}
-
 	//si le jeu est un état ganant ou non
 	public boolean estEtatFinal(){
 		return this.estGagnant();
-	}
-
-	//Re-génération du hashcode
-	public void refreshHashCode(){
-		refreshHashCode(this.robotSelect);
-	}
-
-	//Re-génération du hashcode
-	public void refreshHashCode(Robot robot){
-		robot.hashCode();
-		this.hashCode();
 	}
 
 	//Tire aléatoirement des coordonnées pour un robot et vérifie qu'un robot ne les a pas déjà
@@ -428,7 +411,7 @@ public class State implements RobotClickedObserver, CaseClickedObserver{
 			for(int x = 0; x < plateauJeu.getTaillePlateau(); x++){
 				if(plateauJeu.getCasePlateau(x, y) instanceof CaseJeton){
 					caseGagne = (CaseJeton) plateauJeu.getCasePlateau(x, y);
-					if(jetonTire.getCouleur() == caseGagne.getCouleur() && jetonTire.getForme() == caseGagne.getForme()){
+					if(jetonTire.getCouleur().equals(caseGagne.getCouleur()) && jetonTire.getForme().equals(caseGagne.getForme())){
 						return caseGagne;
 					}
 				 }
@@ -494,27 +477,43 @@ public class State implements RobotClickedObserver, CaseClickedObserver{
 			return false;
 		}
 		State state = (State) obj;
-
 		for(int i = 0; i< state.tableauRobots.size(); i++){
 			if(!state.tableauRobots.get(i).equals(tableauRobots.get(i))){
 				return false;
 			}
 		}
+
 		if(!state.jetonTire.equals(jetonTire)){
 			return false;
 		}
+
+
 		return true;
 	}
 
 	@Override
 	public int hashCode(){
-		 final int prime = 31;
 		 int result = 1;
-		 for(int i = 0; i < this.tableauRobots.size(); i++){
-			  result += tableauRobots.get(i).hashCode();
-		 }
-		 result += jetonTire.hashCode();
-		 result *= prime;
+		 result += 1 * tableauRobots.get(0).hashCode();
+		 result += 345 * tableauRobots.get(1).hashCode();
+		 result += 7564 * tableauRobots.get(2).hashCode();
+		 result += 31 * tableauRobots.get(3).hashCode();
+
+		 result += 7 * jetonTire.hashCode();
 		 return result;
+	}
+
+	/**
+	* Create string representation of State for printing
+	* @return
+	*/
+	@Override
+	public String toString() {
+		String str = "State [tableauRobots=";
+		for(Robot r : tableauRobots)
+			str += r;
+		return str + ", cost=" + cost +", jeton=" + jetonTire + "id mem" + super.toString() + "]";
+
+		//return "getLastDeplacement" + ((getLastDeplacement() != null) ? getLastDeplacement() : "") + " robot " + ((getLastRobot() == null) ? "" : getLastRobot().getCouleur());
 	}
 }

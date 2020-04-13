@@ -94,10 +94,8 @@ public class Main extends Application{
 		   @Override
 		   public void handle(ActionEvent event) {
 			   System.out.println("Hello World!");
-			   etatInitial.getStateActuel();
-			   etatInitial.robotAJouer();
-			   AlgoBFS algo2 = new AlgoBFS(etatInitial);
-	   		   algo2.parcoursTotal();
+			   AlgoAStar algo2 = new AlgoAStar(etatInitial);
+			    algo2.parcoursTotal(new State(etatInitial));
 		   }
 	   	});
 

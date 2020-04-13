@@ -57,9 +57,6 @@ public class Robot extends Parent implements RobotClickedObservable{
 		this.positionY = positionY;
 		this.etatJeu = etatJeu;
 		etatJeu.addTableauRobots(this);
-
-		hashCode();
-
 	}
 
 	public void robotRender(){
@@ -210,18 +207,24 @@ public class Robot extends Parent implements RobotClickedObservable{
 	public boolean equals(Object obj){
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 
 		Robot robot = (Robot) obj;
 
-		return this.couleur.equals(robot.couleur) && this.positionX == robot.positionX && this.positionY == robot.positionY && this.positionInitialeX == robot.positionInitialeX && this.positionInitialeY == robot.positionInitialeY;
+		return this.couleur.equals(robot.couleur)
+			&& this.positionX == robot.positionX
+			&& this.positionY == robot.positionY
+			&& this.positionInitialeX == robot.positionInitialeX
+			&& this.positionInitialeY == robot.positionInitialeY;
 	}
 
 	@Override
 	public int hashCode(){
-		return couleur.hashCode() + positionX + positionY + positionInitialeX + positionInitialeY;
+		return couleur.hashCode() +  37 * positionX + 787 * positionY + 31987 * positionInitialeX + 1 * positionInitialeY;
 	}
 }
