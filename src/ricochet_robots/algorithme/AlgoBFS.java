@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class AlgoAStarBis{
+public class AlgoBFS{
 	//liste des noeuds restants à explorer
 	ArrayList<State> listeNoeudsRestant = new ArrayList<>();
 	//Associe une case suivante vers sa précédente
@@ -28,7 +28,7 @@ public class AlgoAStarBis{
 
 	int coup = 0;
 
-	public AlgoAStarBis(State etatInitial){
+	public AlgoBFS(State etatInitial){
 		this.etatInitial = etatInitial;
 	}
 

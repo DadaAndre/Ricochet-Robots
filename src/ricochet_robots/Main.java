@@ -96,7 +96,7 @@ public class Main extends Application{
 			   System.out.println("Hello World!");
 			   etatInitial.getStateActuel();
 			   etatInitial.robotAJouer();
-			   AlgoAStarBis algo2 = new AlgoAStarBis(etatInitial);
+			   AlgoBFS algo2 = new AlgoBFS(etatInitial);
 	   		   algo2.parcoursTotal();
 		   }
 	   	});

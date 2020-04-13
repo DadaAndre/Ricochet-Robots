@@ -34,6 +34,8 @@ public class Case extends CaseCalque implements CaseClickedObservable{
 	protected int xCase;
 	protected int yCase;
 
+	protected int heurist;
+
 	private ArrayList<CaseClickedObserver> listObserver;
 
 	protected boolean clic = false;
@@ -116,6 +118,14 @@ public class Case extends CaseCalque implements CaseClickedObservable{
 
 	public int getID() {
 	   return id;
+	}
+
+	public void addHeuristique(int heurist){
+		this.heurist = heurist;
+	}
+
+	public int getHeuristique(){
+		return heurist;
 	}
 
 	public void setPositionsXY(int xCase, int yCase){

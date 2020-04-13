@@ -4,6 +4,7 @@ import ricochet_robots.jeu.pions.*;
 import ricochet_robots.jeu.observer.*;
 import ricochet_robots.jeu.plateau.*;
 import ricochet_robots.jeu.*;
+import ricochet_robots.algorithme.*;
 
 import java.util.Random;
 import java.util.ArrayList;
@@ -47,6 +48,8 @@ public class State implements RobotClickedObserver, CaseClickedObserver{
 		jetonTire = Jeton.tirageJeton();
 		this.plateauJeu.addGroupPlateau(jetonTire);
 		this.plateauJeu.ajoutObserveurCases(this);
+
+		Heuristique heuri = new Heuristique(this);
 		creerRobot();
 		refreshHashCode();
 		actionClavier();
@@ -264,6 +267,21 @@ public class State implements RobotClickedObserver, CaseClickedObserver{
 			}
 		}
 		return false;
+	}
+
+	public Case getCaseGagnante(){
+		for(int y = 0; y < plateauJeu.getTaillePlateau(); y++){
+			for(int x = 0; x < plateauJeu.getTaillePlateau(); x++){
+				Case caseGagnante = plateauJeu.getCasePlateau(x,y);
+				if(caseGagnante instanceof CaseJeton){
+					CaseJeton caseJetonGagnante = (CaseJeton) caseGagnante;
+					if(caseJetonGagnante.getCouleur().equals(jetonTire.getCouleur()) && caseJetonGagnante.getForme().equals(jetonTire.getForme())){
+						return caseJetonGagnante;
+					}
+				}
+			}
+		}
+		return null;
 	}
 
 	//si le jeu est un état ganant ou non
