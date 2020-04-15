@@ -56,7 +56,6 @@ public class Robot extends Parent implements RobotClickedObservable{
 		this.positionX = positionX;
 		this.positionY = positionY;
 		this.etatJeu = etatJeu;
-		etatJeu.addTableauRobots(this);
 	}
 
 	public void robotRender(){
@@ -225,6 +224,6 @@ public class Robot extends Parent implements RobotClickedObservable{
 
 	@Override
 	public int hashCode(){
-		return couleur.hashCode() +  37 * positionX + 787 * positionY + 31987 * positionInitialeX + 1 * positionInitialeY;
+		return couleur.hashCode() +  37 * positionX + 787 * positionY + 31987 * positionInitialeX + 100 * positionInitialeY;
 	}
 }

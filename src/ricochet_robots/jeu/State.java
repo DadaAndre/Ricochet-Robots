@@ -3,6 +3,7 @@ package ricochet_robots.jeu;
 import ricochet_robots.jeu.pions.*;
 import ricochet_robots.jeu.observer.*;
 import ricochet_robots.jeu.plateau.*;
+import ricochet_robots.algorithme.*;
 import ricochet_robots.jeu.*;
 
 import java.util.Random;
@@ -31,6 +32,8 @@ public class State implements RobotClickedObserver, CaseClickedObserver, Compara
 
 	Robot robotSelect;
 
+	Heuristique heuristiquePlateau;
+
 	Deplacement lastDirection = null;
 	Robot lastRobot = null;
 
@@ -47,15 +50,19 @@ public class State implements RobotClickedObserver, CaseClickedObserver, Compara
 	public int cost;
 
 	@Override
-	public int compareTo(State s) {
+	public int compareTo(State s){
 		return (cost() - s.cost());
 	}
 
-	public int cost() {
+	public int cost(){
 		return cost + heuris();
 	}
 
-	public int heuris() {
+	public int getVarCost(){
+		return cost;
+	}
+
+	public int heuris(){
 		Robot r = getRobotGagnant();
 		return plateauJeu.getCasePlateau(r.getPositionX() , r.getPositionY()).getHeuristique();
 	}
@@ -71,6 +78,8 @@ public class State implements RobotClickedObserver, CaseClickedObserver, Compara
 		creerRobot();
 		dessinerSelecteur();
 		actionClavier();
+
+		heuristiquePlateau = new Heuristique(this);
 	}
 
 	//Constructeur de copie
@@ -78,12 +87,12 @@ public class State implements RobotClickedObserver, CaseClickedObserver, Compara
 		//Copie du plateau et du jeton tiré
 		this.plateauJeu = state.plateauJeu;
 		this.jetonTire = state.jetonTire;
-
+		this.heuristiquePlateau = state.heuristiquePlateau;
 		//Copie des robots
 		this.tableauRobots = new ArrayList<>();
 		for(int i = 0 ; i < state.tableauRobots.size() ; i++) {
 			Robot r = new Robot(this, state.tableauRobots.get(i).getCouleur(), state.tableauRobots.get(i).getPositionX(), state.tableauRobots.get(i).getPositionY(), state.tableauRobots.get(i).getPositionInitialeX(), state.tableauRobots.get(i).getPositionInitialeY());
-
+			addTableauRobots(r);
 			//Copie du robot selectionné
 			if(state.robotSelect == state.tableauRobots.get(i)) {
 				this.robotSelect = r;
@@ -125,7 +134,7 @@ public class State implements RobotClickedObserver, CaseClickedObserver, Compara
         int[] posRobotJaune = positionRobotNonUtilise();
         //Création d'un robot Jaune
         Robot robotJaune = new Robot(this, "jaune", posRobotJaune[0], posRobotJaune[1]);
-
+		addTableauRobots(robotJaune);
 		robotJaune.robotRender();
 		//On ajoute le robot créé au groupe de dessin
 		plateauJeu.addGroupPlateau(robotJaune);
@@ -134,12 +143,14 @@ public class State implements RobotClickedObserver, CaseClickedObserver, Compara
 
         int[] posRobotBleu = positionRobotNonUtilise();
         Robot robotBleu = new Robot(this, "bleu", posRobotBleu[0], posRobotBleu[1]);
+		addTableauRobots(robotBleu);
 		robotBleu.robotRender();
 		plateauJeu.addGroupPlateau(robotBleu);
 		robotBleu.ajouterObserveurRobotClique(this);
 
         int[] posRobotRouge = positionRobotNonUtilise();
         Robot robotRouge = new Robot(this, "rouge", posRobotRouge[0], posRobotRouge[1]);
+		addTableauRobots(robotRouge);
 		robotRouge.robotRender();
 		plateauJeu.addGroupPlateau(robotRouge);
         //tableauRobots.add(robotRouge);
@@ -147,6 +158,7 @@ public class State implements RobotClickedObserver, CaseClickedObserver, Compara
 
         int[] posRobotVert = positionRobotNonUtilise();
         Robot robotVert = new Robot(this, "vert", posRobotVert[0], posRobotVert[1]);
+		addTableauRobots(robotVert);
 		robotVert.robotRender();
 		plateauJeu.addGroupPlateau(robotVert);
         //tableauRobots.add(robotVert);
@@ -411,6 +423,7 @@ public class State implements RobotClickedObserver, CaseClickedObserver, Compara
 				this.tableauRobots.get(i).reinitialiserPosition();
 			}
 			this.jetonTire = Jeton.tirageJeton();
+			heuristiquePlateau = new Heuristique(this);
 			plateauJeu.addGroupPlateau(jetonTire);
 			robotAJouer();
 		}
@@ -526,7 +539,7 @@ public class State implements RobotClickedObserver, CaseClickedObserver, Compara
 		 result += 7564 * tableauRobots.get(2).hashCode();
 		 result += 31 * tableauRobots.get(3).hashCode();
 
-		 result += 7 * jetonTire.hashCode();
+		 result += 700 * jetonTire.hashCode();
 		 return result;
 	}
 

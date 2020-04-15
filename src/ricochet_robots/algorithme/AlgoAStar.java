@@ -15,9 +15,9 @@ import java.util.Map.Entry;
 public class AlgoAStar{
 	//liste des noeuds restants à explorer
 	PriorityQueue<State> frontier = new PriorityQueue<>();
-	//Associe une case suivante vers sa précédente
+	//Associe un noeud suivante vers sa précédente
 	HashMap<State,State> came_from = new HashMap<>();
-	//Associe une case à un coût
+	//Associe un noeud à un coût
 	HashMap<State,Integer> cost_so_far = new HashMap<>();
 	//liste les états successeurs à aller
 	ArrayList<State> path = new ArrayList<>();
@@ -50,7 +50,7 @@ public class AlgoAStar{
 		//ajout de l'état initial
 		frontier.add(etatInitial);
 		came_from.put(etatInitial, null);
-		cost_so_far.put(etatInitial, 0);
+		cost_so_far.put(etatInitial, etatInitial.cost());
 
 		//On parcours les noeuds restants tant qu'il en reste
 		while(frontier.size() != 0){
@@ -68,15 +68,15 @@ public class AlgoAStar{
 					//Récupère le nouvel état (noeud)
 					State etatSuivant = noeudEnCours.etatSuivant(direction, robot);
 
-					//On coumpte le coût du noeud suivant
-					int new_cost = cost_so_far.get(noeudEnCours) + 1;
+					//On compte le coût du noeud suivant
+					int new_cost = etatSuivant.getVarCost() + 1 + etatSuivant.heuris();
 
 					//Vérifie que le noeud n'a pas déja été exploré ou si son cout est moins important que le noeud enregistré
 					if(!cost_so_far.containsKey(etatSuivant) || new_cost < cost_so_far.get(etatSuivant)){
 						//On ajoute ce nouveau noeud avec son cout
 						cost_so_far.put(etatSuivant, new_cost);
 						//On affecte au nouveau noeud son cout
-						etatSuivant.cost = new_cost;
+						etatSuivant.cost = etatSuivant.getVarCost() + 1;
 						//On l'ajoute à la liste des noeuds restants à explorer
 						frontier.add(etatSuivant);
 						//On affecte ce nouveau noeud au noeud d'ou il vient
@@ -91,6 +91,7 @@ public class AlgoAStar{
 
 		//On parcours le chemin inverse à partir de l'objectif
 		while(current != etatInitial && current != null){
+			System.out.println(current);
 			path.add(current);
 			current = came_from.get(current);
 		}

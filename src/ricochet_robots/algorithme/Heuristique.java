@@ -28,13 +28,12 @@ public class Heuristique{
 	}
 
 	public void addHeuristiquePlateau(){
-		Case caseGagnante = state.getCaseGagnante();
+		Case caseGagnante = state.getCaseJetonTire();
 		caseGagnante.addHeuristique(0);
 		listeCase.add(caseGagnante);
 		robotBlanc = new Robot(state, "blanc", 0, 0);
 		//int cout = caseAcuelle.getHeuristique();
 		while(listeCase.size() != 0){
-			System.out.println(listeCase.size());
 			robotBlanc.setPosition(listeCase.get(0).getXCase(), listeCase.get(0).getYCase());
 			int coup = listeCase.get(0).getHeuristique();
 			for(Deplacement direction : Deplacement.values()){
@@ -93,7 +92,6 @@ public class Heuristique{
 				}
 			}
 		}else if(direction == Deplacement.LEFT){
-			System.out.println("yep");
 			//Tant que le robot ne rencontre pas un mur à gauche,  ou un autre robot, il se dirige vers la gauche
 			while(this.plateauJeu.getCasePlateau(robot.getPositionX(), robot.getPositionY()).getValGauche() != 1 && this.plateauJeu.getCasePlateau(robot.getPositionX() -1, robot.getPositionY()).getValDroit() != 1){
 				robot.translatePositionX(-1);
