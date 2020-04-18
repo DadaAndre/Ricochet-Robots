@@ -4,15 +4,10 @@ import ricochet_robots.jeu.plateau.*;
 import ricochet_robots.jeu.*;
 import ricochet_robots.algorithme.*;
 
-import java.util.ArrayList;
 import java.util.Random;
 import java.util.List;
 import java.io.FileNotFoundException;
-
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.event.EventHandler;
-
+//-----------------------------------
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -20,23 +15,24 @@ import javafx.stage.Stage;
 import javafx.scene.paint.Color;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
-import javafx.beans.property.SimpleFloatProperty;
-
+//-------------------------------------
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
-
-import javafx.scene.shape.Rectangle;
-
+import javafx.event.EventHandler;
 
 public class Main extends Application{
 
+	/**
+	 * Lancement du programme
+	 */
     public static void main(String[] args){
 		//Lancement de l'application avec javaFx
         Application.launch(Main.class, args);
     }
 
-
+	/**
+	 * Démarage de l'application avec JavaFX
+	 */
     @Override
     public void start(Stage primaryStage) throws FileNotFoundException {
 
@@ -70,21 +66,16 @@ public class Main extends Application{
 
         primaryStage.setTitle("Ricochet Robots");
 
-		//Créatoin du groupe contenant tout les groupes graphiques
+		//Création du groupe contenant tout les groupes graphiques
         Group root = new Group();
 
-		//Créatoin de la fenêtre, contenant l'objet Group
+		//Création de la fenêtre, contenant l'objet Group
         Scene scene = new Scene(root, tailleFenetre, tailleFenetre, Color.WHITE);
 
 		//Ajout de la fenêtre à l'objet Stage
 		primaryStage.setScene(scene);
 
-		Score score = new Score();
-		root.getChildren().add(score);
-
-        //On créer un plateau
-		//Plateau plateauJeu = new Plateau(16,16, score);
-		State etatInitial = new State(16,16, score, scene);
+		State etatInitial = new State(16,16,scene);
 		root.getChildren().add(etatInitial.getEtatPlateau());
 
 		Button sampleButton = new Button("Solution");
@@ -93,7 +84,7 @@ public class Main extends Application{
 		sampleButton.setOnAction(new EventHandler<ActionEvent>() {
 		   @Override
 		   public void handle(ActionEvent event) {
-			   System.out.println("Hello World!");
+			   System.out.println("Solution en cours....");
 			   AlgoAStar algo2 = new AlgoAStar(etatInitial);
 			    algo2.parcoursTotal(new State(etatInitial));
 		   }

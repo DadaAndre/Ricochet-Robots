@@ -4,19 +4,15 @@ import ricochet_robots.jeu.plateau.*;
 import ricochet_robots.jeu.pions.*;
 import ricochet_robots.jeu.*;
 
-import java.util.HashSet;
 import java.util.ArrayList;
-import java.util.Set;
-import java.util.HashMap;
-import java.util.Collections;
 
 public class Heuristique{
 
-	Plateau plateauJeu;
-	Case caseGagnante;
-	State state;
-	ArrayList<Case> listeCase = new ArrayList<>();
-	Robot robotBlanc;
+	private Plateau plateauJeu;
+	private Case caseGagnante;
+	private State state;
+	private ArrayList<Case> listeCase = new ArrayList<>();
+	private Robot robotBlanc;
 
 	public Heuristique(State state){
 		this.state = state;
@@ -24,9 +20,12 @@ public class Heuristique{
 		creeHeuristique();
 		addHeuristiquePlateau();
 		affichageHeuristique();
-	 	robotBlanc = null;
+	 	this.robotBlanc = null;
 	}
 
+	/**
+	 * Ajout de l'heuristique à chaque case du plateau
+	 */
 	public void addHeuristiquePlateau(){
 		Case caseGagnante = state.getCaseJetonTire();
 		caseGagnante.addHeuristique(0);
@@ -45,6 +44,9 @@ public class Heuristique{
 		}
 	}
 
+	/**
+	 * Affichage de l'heuristique en console
+	 */
 	public void affichageHeuristique(){
 		for(int y = 0; y < plateauJeu.getTaillePlateau(); y++){
 			for(int x = 0; x < plateauJeu.getTaillePlateau(); x++){
@@ -59,6 +61,9 @@ public class Heuristique{
 		}
 	}
 
+	/**
+	 * Initialisation de l'heuristique pour chaque case (-1 par défaut)
+	 */
 	public void creeHeuristique(){
 		for(int y = 0; y < plateauJeu.getTaillePlateau(); y++){
 			for(int x = 0; x < plateauJeu.getTaillePlateau(); x++){
@@ -67,7 +72,12 @@ public class Heuristique{
 		}
 	}
 
-	//Déplacement du robot
+	/**
+	 * Placement de l'heuristique dans les 4 directions à partir d'une case
+	 * @param direction la direction souhaitée
+	 * @param robot le robot positionné sur la case de départ
+	 * @param heuristique l'heuristique à placer
+	 */
 	public void parcoursMapHeuristique(Deplacement direction, Robot robot, int heuristique){
 		//this.robot = robot;
 		//Vérification de la direction choisie

@@ -3,50 +3,43 @@ package ricochet_robots.algorithme;
 import ricochet_robots.jeu.*;
 import ricochet_robots.jeu.pions.*;
 
-import java.util.HashSet;
 import java.util.PriorityQueue;
 import java.util.ArrayList;
-import java.util.Set;
 import java.util.HashMap;
 import java.util.Collections;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.Map.*;
 
 public class AlgoAStar{
-	//liste des noeuds restants à explorer
-	PriorityQueue<State> frontier = new PriorityQueue<>();
-	//Associe un noeud suivante vers sa précédente
-	HashMap<State,State> came_from = new HashMap<>();
-	//Associe un noeud à un coût
-	HashMap<State,Integer> cost_so_far = new HashMap<>();
-	//liste les états successeurs à aller
-	ArrayList<State> path = new ArrayList<>();
-	//Stocke le robot à utiliser pour la direction à aller
-	ArrayList<Robot> listRobot = new ArrayList<>();
-	//Stocke la direction à aller
-	ArrayList<Deplacement> listDeplacement = new ArrayList<>();
 
-	State etatInitial;
-	State etatFinal;
-
-	int coup = 0;
+	private State etatInitial;
+	private State etatFinal;
 
 	public AlgoAStar(State etatInitial){
 		this.etatInitial = etatInitial;
 	}
 
-	//Algorithme de parcours en largeur (Breadth-first search)
+	/**
+	 * Algorithme de parcours en largeur (Breadth-first search)
+	 * @param etatInitial L'état initial du plateau de jeu
+	 */
 	public void parcoursTotal(State etatInitial){
 		//On initialise l'ensemble des tableaux
-		frontier.clear();
-		came_from.clear();
-		cost_so_far.clear();
-		path.clear();
-		listRobot.clear();
-		listDeplacement.clear();
+
+		//liste des noeuds restants à explorer
+		PriorityQueue<State> frontier = new PriorityQueue<>();
+		//Associe un noeud suivante vers sa précédente
+		HashMap<State,State> came_from = new HashMap<>();
+		//Associe un noeud à un coût
+		HashMap<State,Integer> cost_so_far = new HashMap<>();
+		//liste les états successeurs à aller
+		ArrayList<State> path = new ArrayList<>();
+		//Stocke le robot à utiliser pour la direction à aller
+		ArrayList<Robot> listRobot = new ArrayList<>();
+		//Stocke la direction à aller
+		ArrayList<Deplacement> listDeplacement = new ArrayList<>();
 
 		//ajout du cout de l'état initial
-		etatInitial.cost = 0;
+		etatInitial.setValCost(0);
 		//ajout de l'état initial
 		frontier.add(etatInitial);
 		came_from.put(etatInitial, null);
@@ -58,7 +51,6 @@ public class AlgoAStar{
 			State noeudEnCours = frontier.poll();
 			//Sortie anticipée si on a trouvé la case de sortie
 			if(noeudEnCours.estEtatFinal()){
-				System.out.println("fin");
 				etatFinal = noeudEnCours;
 				break;
 			}
@@ -76,7 +68,7 @@ public class AlgoAStar{
 						//On ajoute ce nouveau noeud avec son cout
 						cost_so_far.put(etatSuivant, new_cost);
 						//On affecte au nouveau noeud son cout
-						etatSuivant.cost = etatSuivant.getVarCost() + 1;
+						etatSuivant.setValCost(etatSuivant.getVarCost() + 1);
 						//On l'ajoute à la liste des noeuds restants à explorer
 						frontier.add(etatSuivant);
 						//On affecte ce nouveau noeud au noeud d'ou il vient
@@ -91,7 +83,6 @@ public class AlgoAStar{
 
 		//On parcours le chemin inverse à partir de l'objectif
 		while(current != etatInitial && current != null){
-			System.out.println(current);
 			path.add(current);
 			current = came_from.get(current);
 		}
