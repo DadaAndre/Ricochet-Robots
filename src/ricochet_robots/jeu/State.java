@@ -95,7 +95,7 @@ public class State implements RobotClickedObserver, CaseClickedObserver, Compara
 		//Copie du plateau, du jeton tiré, du coup et de l'heuristique de chaque case
 		this.plateauJeu = state.plateauJeu;
 		this.jetonTire = state.jetonTire;
-		this.heuristiquePlateau = state.heuristiquePlateau;
+		this.heuristiquePlateau = new Heuristique(this);
 		this.cost = state.cost;
 		//Copie des robots
 		this.tableauRobots = new ArrayList<>();

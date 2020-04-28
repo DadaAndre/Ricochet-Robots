@@ -19,7 +19,7 @@ public class Heuristique{
 		this.plateauJeu = state.getEtatPlateau();
 		creeHeuristique();
 		addHeuristiquePlateau();
-		affichageHeuristique();
+		//affichageHeuristique();
 	 	this.robotBlanc = null;
 	}
 
