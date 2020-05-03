@@ -254,7 +254,7 @@ Le Ricochet Robots est à l'origine un jeu de plateau. D'après Wikipédia\cite{
         Le projet est structuré de la manière suivante:
         
         \begin{figure}[H]
-    		\centering\includegraphics[width=0.5\textwidth]{images/dossier.png}
+    		\centering\includegraphics[width=0.5\textwidth]{images/structureProjet.png}
     		\caption{Arborescence du projet}
     	\end{figure}
     	
@@ -264,6 +264,7 @@ Le Ricochet Robots est à l'origine un jeu de plateau. D'après Wikipédia\cite{
     	\begin{description}
     	    \item [expression:] contient ce rapport et le diaporama pour la soutenance.
     	    \item [images:] contient l'ensemble des images utilisées pour la partie interface graphique du jeu.
+    	    \item [src:] contient différents scripts pour faciliter le lancement du projet.
     	    \item [src:] contient le code source du projet.
     	    \item [build.sh:] le script de compilation du projet.
     	\end{description}
@@ -903,8 +904,8 @@ Le Ricochet Robots est à l'origine un jeu de plateau. D'après Wikipédia\cite{
     \subsection{Lancement du programme}
         Le lancement du jeu se fait par l'exécution du script de compilation, c'est-à-dire en réalisant la commande suivante à la racine du projet:
         \lstinputlisting[firstline=1,lastline=1,numbers=none]{code/compile.sh}
-        Le lancement peut également se faire en cliquant directement sur le ficher "launcherBuild.sh", qui exécute la commande indiquée ci-dessus.
-        Si nous ne fournissons pas d'arguments à cette commande, alors la taille de la fenêtre sera par défaut de 980x980 pixels. Si nous ajoutons comme argument par exemple 300 comme ci-dessous, alors la fenêtre fera du 300x300 pixels au lancement du jeu.
+        Le lancement peut également se faire en cliquant directement sur le ficher "launcherBuild.sh", se trouvant dans le dossier script à la racine, qui exécute la commande indiquée ci-dessus.
+        Si nous ne fournissons pas d'arguments à cette commande, alors la taille de la fenêtre sera par défaut de 500x500 pixels. Si nous ajoutons comme argument par exemple 300 comme ci-dessous, alors la fenêtre fera du 300x300 pixels au lancement du jeu.
         \lstinputlisting[firstline=2,lastline=2, numbers=none]{code/compile.sh}
         
         Le contenu de la fenêtre (le plateau, les robots et les autres éléments visuels relatifs au jeu) sont alors adaptés selon la taille de la fenêtre.

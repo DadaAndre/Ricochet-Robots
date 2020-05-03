@@ -37,7 +37,7 @@ public class Main extends Application{
     public void start(Stage primaryStage) throws FileNotFoundException {
 
 		//Taille de la fenêtre et des cases par défaut (sans arguments)
-		int tailleFenetre = 980;
+		int tailleFenetre = 500;
 		Case.DIM = tailleFenetre/18;
 
 		//Récupère la liste des paramètres

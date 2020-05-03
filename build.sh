@@ -16,7 +16,7 @@ javadocDir="javadoc"
 libsDir=""
 srcDir="src"
 testDir="test"
-resDir="res"
+resDir="images"
 
 projectBuilded=false
 
@@ -164,6 +164,7 @@ runProject() {
 	echo '>run'
 
 	updateLibs
+	cp "$resDir" "$buildDir" -r
 	java -cp "$buildDir$libs" "$javaMainClass" $*
 }
 
